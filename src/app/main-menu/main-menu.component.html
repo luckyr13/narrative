@@ -1,0 +1,95 @@
+<mat-nav-list *ngIf="account | async">
+  <a 
+    mat-list-item
+    matRipple
+    [routerLink]="['home']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaHome="routerLinkActive">
+    <mat-icon 
+      mat-list-icon 
+      [class]="{ 'material-icons-outlined': !rlaHome.isActive }" 
+      [color]="rlaHome.isActive ? 'accent' : 'default'">house</mat-icon>
+    <div mat-line>Home</div>
+  </a>
+  <a mat-list-item
+    matRipple
+    [routerLink]="['stories']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaSearch="routerLinkActive">
+    <mat-icon 
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaSearch.isActive }" 
+      [color]="rlaSearch.isActive ? 'accent' : 'default'">timeline</mat-icon>
+    <div mat-line>Stories</div>
+  </a>
+  <a mat-list-item
+    matRipple
+    [routerLink]="['notifications']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaNotifications="routerLinkActive">
+    <mat-icon
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaNotifications.isActive }" 
+      [color]="rlaNotifications.isActive ? 'accent' : 'default'">notifications</mat-icon>
+    <div mat-line>Notifications</div>
+  </a>
+  <a mat-list-item
+    matRipple
+    [routerLink]="['profile']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaProfile="routerLinkActive">
+    <mat-icon
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaProfile.isActive }" 
+      [color]="rlaProfile.isActive ? 'accent' : 'default'">person</mat-icon>
+    <div mat-line>Profile</div>
+  </a>
+  <a mat-list-item
+    matRipple
+    [routerLink]="['friends']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaFriends="routerLinkActive">
+    <mat-icon
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaFriends.isActive }" 
+      [color]="rlaFriends.isActive ? 'accent' : 'default'">people_alt</mat-icon>
+    <div mat-line>Friends</div>
+  </a>
+  <a mat-list-item
+    matRipple
+    [routerLink]="['settings']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaSettings="routerLinkActive">
+    <mat-icon
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaSettings.isActive }" 
+      [color]="rlaSettings.isActive ? 'accent' : 'default'">settings</mat-icon>
+    <div mat-line>Settings</div>
+  </a>
+</mat-nav-list>
+
+<mat-nav-list *ngIf="!(account | async)">
+  <a 
+    mat-list-item
+    matRipple
+    [routerLink]="['home']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaHome2="routerLinkActive">
+    <mat-icon 
+      mat-list-icon 
+      [class]="{ 'material-icons-outlined': !rlaHome2.isActive }" 
+      [color]="rlaHome2.isActive ? 'accent' : 'default'">house</mat-icon>
+    <div mat-line>Home</div>
+  </a>
+  <a mat-list-item
+    matRipple
+    [routerLink]="['settings']" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaSettings2="routerLinkActive">
+    <mat-icon
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaSettings2.isActive }" 
+      [color]="rlaSettings2.isActive ? 'accent' : 'default'">settings</mat-icon>
+    <div mat-line>Settings</div>
+  </a>
+</mat-nav-list>

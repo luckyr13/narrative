@@ -1,0 +1,52 @@
+<p>
+  <mat-toolbar class="mat-elevation-z1" color="primary">
+    <span class="logo" routerLink="./home">Narrative</span>
+    <span class="spacer"></span>
+    <button mat-icon-button aria-label="Theme" [matMenuTriggerFor]="themeMenu">
+      <mat-icon>format_color_fill</mat-icon>
+    </button>
+    <mat-menu #themeMenu="matMenu">
+      <mat-radio-group aria-label="Select an option" [formControl]="theme" (change)="updateTheme(theme.value)">
+        <div mat-menu-item>
+          <mat-radio-button value="dark-theme">Dark Theme</mat-radio-button>
+        </div>
+        <div mat-menu-item>
+          <mat-radio-button value="light-theme">Light Theme</mat-radio-button>
+        </div>
+        <div mat-menu-item>
+          <mat-radio-button value="light-pink-theme">Pink Panther</mat-radio-button>
+        </div>
+        <div mat-menu-item>
+          <mat-radio-button value="dark-deep-purple-theme">Deep Purple</mat-radio-button>
+        </div>
+        <div mat-menu-item>
+          <mat-radio-button value="dark-pink-theme">Dark Pink</mat-radio-button>
+        </div>
+        <div mat-menu-item>
+          <mat-radio-button value="light-red-theme">Red Corvette</mat-radio-button>
+        </div>
+      </mat-radio-group>
+    </mat-menu>
+    <button
+      mat-button
+      aria-label="Log in"
+      (click)="login()"
+      *ngIf="!(account | async)">
+      <mat-icon>login</mat-icon>
+      <span>Connect</span>
+    </button>
+    <button 
+      mat-icon-button
+      aria-label="User menu"
+      [matMenuTriggerFor]="userMenu"
+      *ngIf="account | async">
+      <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item [routerLink]="['logout']">
+        <mat-icon>logout</mat-icon>
+        <span>Log Out</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+</p>

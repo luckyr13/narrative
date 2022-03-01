@@ -1,0 +1,17 @@
+.mat-drawer-container {
+	height: 100%;
+}
+
+.container-top-m {
+	margin-top: -60px;
+	height: calc(100% + 60px);
+}
+
+mat-sidenav {
+	width: 70px;
+}
+@media (min-width: 600px) {
+	mat-sidenav {
+		width: 320px;
+	}
+}

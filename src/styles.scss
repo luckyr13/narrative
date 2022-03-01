@@ -1,1 +1,309 @@
-/* You can add global styles to this file, and also import other style files */
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. 
+@include mat.core();
+
+
+// Default app font
+$theme-font-family: 'Libre Baskerville';
+
+$theme-typography: mat.define-typography-config(
+  $font-family: $theme-font-family,
+);
+
+// Light theme
+$light-theme-primary: mat.define-palette(mat.$grey-palette, A100);
+$light-theme-accent: mat.define-palette(mat.$grey-palette, 900);
+
+// The warn palette is optional (defaults to red).
+$theme-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$light-theme: mat.define-light-theme((
+  color: (
+    primary: $light-theme-primary,
+    accent: $light-theme-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+
+// Dark theme
+$dark-theme-primary: mat.define-palette(mat.$grey-palette, 900);
+$dark-theme-accent: mat.define-palette(mat.$grey-palette, A100);
+$dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-theme-primary,
+    accent: $dark-theme-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+
+
+/*
+* THEME: Light Pink
+*/
+$light-pink-primary: mat.define-palette(mat.$pink-palette, 100);
+$light-pink-accent: mat.define-palette(mat.$cyan-palette, 200);
+$light-pink-theme: mat.define-light-theme((
+  color: (
+    primary: $light-pink-primary,
+    accent: $light-theme-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+/*
+* THEME: Dark Pink
+*/
+$dark-pink-primary: mat.define-palette(mat.$pink-palette, 600);
+$dark-pink-accent: mat.define-palette(mat.$green-palette, A200);
+$dark-pink-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-pink-primary,
+    accent: $dark-pink-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+
+
+/*
+* THEME: Deep Purple
+*/
+// Define the palettes for your theme
+$dark-deep-purple-primary: mat.define-palette(mat.$deep-purple-palette, A700);
+$dark-deep-purple-accent: mat.define-palette(mat.$light-green-palette, A400);
+$dark-deep-purple-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-deep-purple-primary,
+    accent: $dark-deep-purple-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+
+/*
+* THEME: Light Red
+*/
+$light-red-primary: mat.define-palette(mat.$red-palette, 500);
+$light-red-accent: mat.define-palette(mat.$cyan-palette, 200);
+$light-red-theme: mat.define-light-theme((
+  color: (
+    primary: $light-red-primary,
+    accent: $light-theme-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+
+
+// Define all themes
+.light-theme {
+  @include mat.all-component-colors($light-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+  }
+}
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($light-theme-primary, 'default') !important;
+  }
+}
+.light-pink-theme {
+  @include mat.all-component-colors($light-pink-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+  }
+}
+.dark-deep-purple-theme {
+  @include mat.all-component-colors($dark-deep-purple-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($dark-deep-purple-accent, 'default') !important;
+  }
+}
+
+.dark-pink-theme {
+  @include mat.all-component-colors($dark-pink-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($dark-pink-accent, 'default') !important;
+  }
+}
+.light-red-theme {
+  @include mat.all-component-colors($light-red-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+  }
+}
+
+/* Global styles */
+html, body { height: 100%; }
+body {
+  font-family: $theme-font-family, 'serif';
+  padding-top: 60px;
+}
+* {
+  font-family: $theme-font-family, 'serif';
+  box-sizing: border-box;
+  margin: 0;
+  padding:0;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.text-justify {
+  text-align: justify;
+}
+
+/* FADE IN */
+.fadeIn {
+  -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1s; /* Firefox < 16 */
+  -ms-animation: fadein 1s; /* Internet Explorer */
+  -o-animation: fadein 1s; /* Opera < 12.1 */
+  animation: fadein 1s;
+
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* /FADE IN */
+
+
+/* GLOBAL STYLES FOR MATERIAL COMPONENTS */
+.mat-snack-bar-container.error{
+  background-color: #f44336;
+  color: #FFF;
+}
+
+.mat-snack-bar-container.success{
+  background-color: #69f0ae;
+  color: rgba(0,0,0,.87);
+}
+
+/*
+// Remove background color from drawer bg
+.mat-drawer-container {
+  background-color: inherit;
+}
+*/
+
+.secondary-toolbar {
+  height: 52px;
+  font-size: 16px;
+  line-height: 52px;
+}
+
+.secondary-toolbar mat-icon {
+  font-size: 25px;
+}
+
+
+/*
+* codemirror
+*/
+.message .cm-scroller {
+  min-height: 60px !important;
+  max-height: 220px !important;
+  overflow: auto !important;
+}
+
+
+.message .cm-editor:hover {
+  border-bottom: 1px solid;
+}
+
+.message .cm-editor.cm-focused {
+  outline-color: transparent;
+  border-bottom: 1px solid;
+  border-color: inherit;
+}
+.message .cm-content {
+  caret-color: inherit;
+}
+
+
+/*
+* /codemirror
+*/
+
+.hide {
+  display: none !important;
+}
+
+
+.clear-both {
+  clear: both;
+}
+
+
+.nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+}
+
+.word-break {
+  word-break: break-word;
+}
+
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
