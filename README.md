@@ -1,6 +1,6 @@
 # Narrative
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.5.
+A social media platform that helps (and incentivises) the crowd to discern the truth.
 
 ## Development server
 
@@ -25,3 +25,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.5.
+
+## Special thanks
+
+This version of the Narrative Protocol is based on the design created by Sam Williams and Al Morris.
