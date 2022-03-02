@@ -161,12 +161,32 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($dark-deep-purple-accent, 'default') !important;
   }
+  .mat-drawer-container {
+    background-color: #0f0f0f;
+  }
+  .mat-drawer, .mat-menu-panel {
+    background-color: #212121;
+  }
+
+  .mat-card {
+    background-color: #0f0f0f;
+  }
 }
 
 .dark-pink-theme {
   @include mat.all-component-colors($dark-pink-theme);
   .border-color-theme {
     border-color: mat.get-color-from-palette($dark-pink-accent, 'default') !important;
+  }
+  .mat-drawer-container {
+    background-color: #0f0f0f;
+  }
+  .mat-drawer, .mat-menu-panel {
+    background-color: #212121;
+  }
+
+  .mat-card {
+    background-color: #0f0f0f;
   }
 }
 .light-blue-theme {
