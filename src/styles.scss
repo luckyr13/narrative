@@ -49,12 +49,12 @@ $dark-theme: mat.define-dark-theme((
 /*
 * THEME: Light Pink
 */
-$light-pink-primary: mat.define-palette(mat.$pink-palette, 100);
-$light-pink-accent: mat.define-palette(mat.$cyan-palette, 200);
+$light-pink-primary: mat.define-palette(mat.$grey-palette, A100);
+$light-pink-accent: mat.define-palette(mat.$pink-palette, A400);
 $light-pink-theme: mat.define-light-theme((
   color: (
     primary: $light-pink-primary,
-    accent: $light-theme-accent,
+    accent: $light-pink-accent,
     warn: $theme-warn,
   ),
   typography: $theme-typography
@@ -104,11 +104,31 @@ $light-red-theme: mat.define-light-theme((
 ));
 
 
+/*
+* THEME: Dark blue gray
+*/
+$dark-blue-gray-primary: mat.define-palette(mat.$blue-gray-palette, 900);
+$dark-blue-gray-accent: mat.define-palette(mat.$blue-gray-palette, A200);
+$dark-blue-gray-theme: mat.define-dark-theme((
+  color: (
+    primary: $dark-blue-gray-primary,
+    accent: $dark-blue-gray-accent,
+    warn: $theme-warn,
+  ),
+  typography: $theme-typography
+));
+
+
+
 // Define all themes
 .light-theme {
   @include mat.all-component-colors($light-theme);
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+  }
+
+  .mat-drawer-container {
+    background-color: #FFFFFF;
   }
 }
 .dark-theme {
@@ -116,11 +136,21 @@ $light-red-theme: mat.define-light-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-theme-primary, 'default') !important;
   }
+  .mat-drawer-container {
+    background-color: #0f0f0f;
+  }
+  .mat-drawer, .mat-menu-panel {
+    background-color: #212121;
+  }
+
+  .mat-card {
+    background-color: #0f0f0f;
+  }
 }
 .light-pink-theme {
   @include mat.all-component-colors($light-pink-theme);
   .border-color-theme {
-    border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+    border-color: mat.get-color-from-palette($light-pink-accent, 'default') !important;
   }
 }
 .dark-deep-purple-theme {
@@ -141,6 +171,24 @@ $light-red-theme: mat.define-light-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
   }
+}
+
+.dark-blue-gray-theme {
+  @include mat.all-component-colors($dark-blue-gray-theme);
+  .border-color-theme {
+    border-color: mat.get-color-from-palette($dark-blue-gray-accent, 'default') !important;
+  }
+  .mat-drawer-container {
+    background-color: #000a12;
+  }
+  .mat-drawer, .mat-menu-panel {
+    background-color: #172126;
+  }
+
+  .mat-card {
+    background-color: #000a12;
+  }
+  
 }
 
 /* Global styles */

@@ -1,5 +1,5 @@
 .active {
-	background-color: rgba(221, 221, 221, 0.2);
+	background-color: rgba(221, 221, 221, 0.1);
 	border-left: 2px solid;
 	font-weight: bold;
 }
@@ -14,4 +14,8 @@
 
 .mat-list-item {
 	letter-spacing: 2px;
+}
+
+.mat-line {
+	margin-left: 10px;
 }

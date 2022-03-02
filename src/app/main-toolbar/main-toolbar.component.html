@@ -8,13 +8,16 @@
     <mat-menu #themeMenu="matMenu">
       <mat-radio-group aria-label="Select an option" [formControl]="theme" (change)="updateTheme(theme.value)">
         <div mat-menu-item>
-          <mat-radio-button value="dark-theme">Dark Theme</mat-radio-button>
+          <mat-radio-button value="dark-blue-gray-theme">Dark Blue</mat-radio-button>
         </div>
         <div mat-menu-item>
           <mat-radio-button value="light-theme">Light Theme</mat-radio-button>
         </div>
         <div mat-menu-item>
-          <mat-radio-button value="light-pink-theme">Pink Panther</mat-radio-button>
+          <mat-radio-button value="dark-theme">Dark Theme</mat-radio-button>
+        </div>
+        <div mat-menu-item>
+          <mat-radio-button value="light-pink-theme">Light Pink</mat-radio-button>
         </div>
         <div mat-menu-item>
           <mat-radio-button value="dark-deep-purple-theme">Deep Purple</mat-radio-button>
@@ -23,7 +26,7 @@
           <mat-radio-button value="dark-pink-theme">Dark Pink</mat-radio-button>
         </div>
         <div mat-menu-item>
-          <mat-radio-button value="light-red-theme">Red Corvette</mat-radio-button>
+          <mat-radio-button value="light-red-theme">Light Red</mat-radio-button>
         </div>
       </mat-radio-group>
     </mat-menu>
