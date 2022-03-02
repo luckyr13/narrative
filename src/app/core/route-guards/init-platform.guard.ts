@@ -16,7 +16,7 @@ export class InitPlatformGuard implements CanActivateChild {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     // Hide toolbar and main menu
-    this._userSettings.setShowMainToolbar(false);
+    // this._userSettings.setShowMainToolbar(false);
     return true;
   }
   canActivateChild(

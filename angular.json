@@ -37,7 +37,8 @@
             "allowedCommonJsDependencies": [
               "arweave",
               "typescript-is",
-              "ardb"
+              "ardb",
+              "validator"
             ]
           },
           "configurations": {

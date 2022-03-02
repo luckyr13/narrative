@@ -2,7 +2,7 @@
   *ngIf="platformLoading$ | async"
   class="main-loader" 
   mode="indeterminate"></mat-progress-bar>
-<app-main-toolbar *ngIf="opened"></app-main-toolbar>
+<app-main-toolbar></app-main-toolbar>
 <mat-sidenav-container [ngClass]="{'container-top-m': !opened}">
   <mat-sidenav
     mode="side" 
