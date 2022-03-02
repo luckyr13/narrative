@@ -56,7 +56,7 @@ export class StoryService {
   next(): Observable<TransactionMetadata[]> {
     return from(this._ardb.next()).pipe(
     		map((_posts: ArdbTransaction[]) => {
-          const res = _posts.map((tx) => {
+          const res = _posts && _posts.length ? _posts.map((tx) => {
             const post: TransactionMetadata = {
               id: tx.id,
               owner: tx.owner.address,
@@ -66,7 +66,7 @@ export class StoryService {
               dataType: tx.data.type,
             }
             return post;
-          });
+          }) : [];
           return res;
         })
     	);

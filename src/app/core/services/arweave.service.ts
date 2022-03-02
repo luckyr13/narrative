@@ -13,19 +13,22 @@ declare const window: any;
 })
 export class ArweaveService {
   public readonly arweave: Arweave;
-  public readonly baseURL: string = 'https://arweave.net/';
+  public readonly host: string = 'arweave.net';
+  public readonly protocol: string = 'https';
+  public readonly port: number = 443;
+  public readonly baseURL: string = `${this.protocol}://${this.host}:${this.port}/`;
   public readonly blockToSeconds: number = 0.5 / 60;
   public readonly arweaveWebWallet: ArweaveWebWallet;
 
   constructor() {
     this.arweave = Arweave.init({
-      host: "arweave.net",
-      port: 443,
-      protocol: "https",
+      host: this.host,
+      port: this.port,
+      protocol: this.protocol,
     });
 
     this.arweaveWebWallet = new ArweaveWebWallet({
-      name: 'Poseidon News',
+      name: 'Narrative App',
       logo: 'https://arweave.net/wJGdli6nMQKCyCdtCewn84ba9-WsJ80-GS-KtKdkCLg'
     })
     this.arweaveWebWallet.setUrl('arweave.app');
@@ -225,7 +228,7 @@ export class ArweaveService {
     }, key);
 
     transaction.addTag('Content-Type', contentType);
-    transaction.addTag('Service', 'PublicSquare');
+    // transaction.addTag('Application', 'Narrative');
 
     // Sign transaction
     await this.arweave.transactions.sign(transaction, key);
@@ -249,7 +252,7 @@ export class ArweaveService {
     const tx = await this.arweave.createTransaction({ 
       target: _to, quantity: this.arweave.ar.arToWinston(_fee) 
     }, jwk)
-    tx.addTag('Service', 'PublicSquare');
+    tx.addTag('Application', 'Narrative');
     tx.addTag('Type', 'Donation');
 
     await this.arweave.transactions.sign(tx, jwk);
