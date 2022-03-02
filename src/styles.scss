@@ -90,14 +90,14 @@ $dark-deep-purple-theme: mat.define-dark-theme((
 ));
 
 /*
-* THEME: Light Red
+* THEME: Light Blue
 */
-$light-red-primary: mat.define-palette(mat.$red-palette, 500);
-$light-red-accent: mat.define-palette(mat.$cyan-palette, 200);
-$light-red-theme: mat.define-light-theme((
+$light-blue-primary: mat.define-palette(mat.$grey-palette, A100);
+$light-blue-accent: mat.define-palette(mat.$light-blue-palette, 900);
+$light-blue-theme: mat.define-light-theme((
   color: (
-    primary: $light-red-primary,
-    accent: $light-theme-accent,
+    primary: $light-blue-primary,
+    accent: $light-blue-accent,
     warn: $theme-warn,
   ),
   typography: $theme-typography
@@ -152,6 +152,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-pink-accent, 'default') !important;
   }
+  .mat-drawer-container {
+    background-color: #FFFFFF;
+  }
 }
 .dark-deep-purple-theme {
   @include mat.all-component-colors($dark-deep-purple-theme);
@@ -166,10 +169,13 @@ $dark-blue-gray-theme: mat.define-dark-theme((
     border-color: mat.get-color-from-palette($dark-pink-accent, 'default') !important;
   }
 }
-.light-red-theme {
-  @include mat.all-component-colors($light-red-theme);
+.light-blue-theme {
+  @include mat.all-component-colors($light-blue-theme);
   .border-color-theme {
-    border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+    border-color: mat.get-color-from-palette($light-blue-accent, 'default') !important;
+  }
+  .mat-drawer-container {
+    background-color: #FFFFFF;
   }
 }
 

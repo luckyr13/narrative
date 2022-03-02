@@ -99,7 +99,7 @@ export class UserSettingsService {
       case 'dark-pink-theme':
         this.setDefaultTheme(theme);
       break;
-      case 'light-red-theme':
+      case 'light-blue-theme':
         this.setDefaultTheme(theme);
       break;
       case 'dark-deep-purple-theme':
