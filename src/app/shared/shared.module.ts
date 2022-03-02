@@ -22,10 +22,14 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import {PortalModule} from '@angular/cdk/portal';
 import {MatRippleModule} from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { EmojisComponent } from './emojis/emojis.component';
+import { CreateStoryCardComponent } from './create-story-card/create-story-card.component';
 
 @NgModule({
   declarations: [
     BottomSheetLoginComponent,
+    EmojisComponent,
+    CreateStoryCardComponent,
   ],
   imports: [
     CommonModule,
@@ -66,7 +70,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     OverlayModule,
     PortalModule,
     MatRippleModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    CreateStoryCardComponent
   ]
 })
 export class SharedModule { }

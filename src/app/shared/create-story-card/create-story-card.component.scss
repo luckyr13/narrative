@@ -1,0 +1,48 @@
+.post-card {
+}
+
+mat-card-header {
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.mat-focused mat-label {
+	
+}
+
+.post-btn mat-icon {
+	margin-left: 10px;
+}
+
+.post-icon {
+	font-size: 20px;
+}
+
+.card-content {
+	margin-top: 10px;
+}
+
+.loading-avatar {
+	float: left;
+}
+
+
+.avatar-container {
+	float: left;
+	width: 72px;
+	text-align: left;
+}
+
+.avatar {
+	width: 52px;
+	height: 52px;
+}
+
+.message-container {
+	float: left;
+	width: calc(100% - 72px);
+}
+
+.mat-card-actions {
+	padding-top: 12px;
+}
