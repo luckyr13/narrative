@@ -105,6 +105,9 @@ export class UserSettingsService {
       case 'dark-deep-purple-theme':
         this.setDefaultTheme(theme);
       break;
+      case 'dark-blue-gray-theme':
+        this.setDefaultTheme(theme);
+      break;
       default:
       	console.error('UserSettings: Theme not found!');
       break;

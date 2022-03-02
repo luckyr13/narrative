@@ -1,1 +1,35 @@
-<p>home works!</p>
+<div class="dashboard-container fadeIn">
+	<p>
+	  <mat-toolbar class="secondary-toolbar" color="primary">
+	    <button mat-icon-button>
+    		<mat-icon>house</mat-icon>
+  		</button>
+  		<span>Home</span>
+	  </mat-toolbar>
+	</p>
+	<div class="col-body">
+		<div class="post-card-container">	
+			<app-create-story-card></app-create-story-card>
+		</div>
+		<mat-divider></mat-divider>
+		<div class="post-list-container">
+			<div *ngFor="let post of posts">{{ post }}</div>
+		</div>
+		<div class="more-results-container">
+			<mat-spinner *ngIf="loadingPosts" color="accent" diameter="32"></mat-spinner>
+			<mat-card class="more-results-card" matRipple *ngIf="!loadingPosts" (click)="moreResults()" >
+			  <mat-card-content class="more-results text-center">
+					Show older posts
+			  </mat-card-content>
+			</mat-card>
+		</div>
+	</div>
+	<div class="col-side-features">
+		<mat-card>
+		  <mat-card-title>🔥 Trending</mat-card-title>
+		  <mat-card-content>
+		    <p>#Topic1 #Topic2</p>
+		  </mat-card-content>
+		</mat-card>
+	</div>
+</div>
