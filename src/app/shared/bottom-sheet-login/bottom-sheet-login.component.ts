@@ -51,13 +51,13 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   login(walletOption: string, fileInput: any = null) {
 
   	this.login$ = this._auth.login(walletOption, fileInput, this.stayLoggedIn).subscribe({
-  		next: (res: any) => {
-        this._bottomSheetRef.dismiss(true);
+  		next: (address: string) => {
+        this._bottomSheetRef.dismiss(address);
         this.message('Welcome!', 'success');
   		},
   		error: (error) => {
         this.message(`Error: ${error}`, 'error');
-        this._bottomSheetRef.dismiss(false);
+        this._bottomSheetRef.dismiss('');
 
   		}
   	});

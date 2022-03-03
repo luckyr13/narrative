@@ -388,3 +388,21 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.hide-xs {
+  display: none !important;
+}
+.hide-sm {
+  display: none !important;
+}
+@media (min-width: 800px) {
+  .hide-sm {
+    display: inline !important;
+  }
+}
+
+@media (min-width: 400px) {
+  .hide-xs {
+    display: inline !important;
+  }
+}

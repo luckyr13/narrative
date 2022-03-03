@@ -8,7 +8,7 @@
     </button>
     <span class="logo" routerLink="./home">{{ appName }}</span>
     <span class="spacer"></span>
-    <button mat-icon-button aria-label="Theme" [matMenuTriggerFor]="themeMenu">
+    <button class="hide-xs" mat-icon-button aria-label="Theme" [matMenuTriggerFor]="themeMenu">
       <mat-icon>format_color_fill</mat-icon>
     </button>
     <mat-menu #themeMenu="matMenu">
@@ -41,16 +41,17 @@
       class="btn-connect"
       aria-label="Log in"
       (click)="login()"
-      *ngIf="!(account | async)">
+      *ngIf="!account">
       <mat-icon>login</mat-icon>
-      <span>Connect</span>
+      <span class="hide-sm">Connect</span>
     </button>
     <button 
       mat-icon-button
       aria-label="User menu"
       [matMenuTriggerFor]="userMenu"
-      *ngIf="account | async">
-      <mat-icon>person</mat-icon>
+      *ngIf="account">
+      <img *ngIf="profileImage" class="avatar" [src]="profileImage">
+      <mat-icon *ngIf="!profileImage">person</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item [routerLink]="['logout']">

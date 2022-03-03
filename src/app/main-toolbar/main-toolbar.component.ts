@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UserSettingsService } from '../core/services/user-settings.service';
 import { UserAuthService } from '../core/services/user-auth.service';
@@ -8,17 +8,25 @@ import { Direction } from '@angular/cdk/bidi';
 import { Router } from '@angular/router';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import { AppSettingsService } from '../core/services/app-settings.service';
+import { Subscription, Observable } from 'rxjs';
+import { VertoService } from '../core/services/verto.service';
+import { ArweaveService } from '../core/services/arweave.service';
+import { UserInterface } from '@verto/js/dist/faces';
+
 
 @Component({
   selector: 'app-main-toolbar',
   templateUrl: './main-toolbar.component.html',
   styleUrls: ['./main-toolbar.component.scss']
 })
-export class MainToolbarComponent implements OnInit {
+export class MainToolbarComponent implements OnInit, OnDestroy {
 	theme = new FormControl('');
   @Output() toggleEvent = new EventEmitter<boolean>();
-  account = this._auth.account$;
+  account = '';
   appName = this._appSettings.appName;
+  profileSubscription: Subscription = Subscription.EMPTY;
+  profile: UserInterface|null = null;
+  profileImage: string = '';
 
   constructor(
     private _userSettings: UserSettingsService,
@@ -26,12 +34,38 @@ export class MainToolbarComponent implements OnInit {
     private _bottomSheet: MatBottomSheet,
     private _router: Router,
     private _auth: UserAuthService,
-    private _appSettings: AppSettingsService) {
-
+    private _appSettings: AppSettingsService,
+    private _verto: VertoService,
+    private _arweave: ArweaveService) {
   }
 
   ngOnInit(): void {
     this.theme.setValue(this._userSettings.getDefaultTheme());
+    this._auth.account$.subscribe((address) => {
+      if (address != this.account) {
+        this.account = address;
+
+        this.profileSubscription = this._verto.getProfile(this.account).subscribe({
+          next: (profile: UserInterface|undefined) => {
+            if (profile) {
+              if (profile.image) {
+                this.profileImage = `${this._arweave.baseURL}${profile.image}`;
+              }
+            } else {
+              this.profile = null;
+              this.profileImage = '';
+            }
+          },
+          error: (error) => {
+            this.message(error, 'error');
+          }
+        });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.profileSubscription.unsubscribe();
   }
 
   updateTheme(theme: string) {
@@ -73,10 +107,8 @@ export class MainToolbarComponent implements OnInit {
     //}
     );
 
-    sheet.afterDismissed().subscribe((success) => {
-      if (success) {
-        // this._router.navigate(['home']);
-      }
+    sheet.afterDismissed().subscribe((address) => {
+      // this.account = address;
     });
   }
 

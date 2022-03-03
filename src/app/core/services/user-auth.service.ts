@@ -8,41 +8,25 @@ import { FormControl } from '@angular/forms';
   providedIn: 'root'
 })
 export class UserAuthService {
-private account: Subject<string>;
+  private _account: Subject<string>;
   // Observable string streams
   public account$: Observable<string>;
   // User's private key
   private _arKey: any = null;
   // User's arweave public address
   private _mainAddress: string = '';
-  // Save a temporal copy of the admin list
-  private _adminList: string[] = [];
   // Login method 
   private _method: string = '';
 
-  // Observable source
-  private _userIsModeratorSource = new Subject<boolean>();
-  // Observable stream
-  public userIsModeratorStream = this._userIsModeratorSource.asObservable();
-  public updateUserIsModerator(_isModerator: boolean) {
-    this._userIsModeratorSource.next(_isModerator);
+
+  constructor(
+    private _arweave: ArweaveService) {
+    this._account = new Subject<string>();
+    this.account$ = this._account.asObservable();
+   
   }
 
-  getAdminList() {
-    return this._adminList;
-  }
-
-  setAdminList(admins: string[]) {
-    this._adminList = admins;
-  }
-
-  constructor(private _arweave: ArweaveService) {
-    this.account = new Subject<string>();
-    this.account$ = this.account.asObservable();
-    
-  }
-
-  loadAccount() {
+  public loadAccount() {
     const mainAddress = window.sessionStorage.getItem('MAINADDRESS')
       || window.localStorage.getItem('MAINADDRESS');
     const arkey = window.sessionStorage.getItem('ARKEY')
@@ -54,11 +38,11 @@ private account: Subject<string>;
       this._mainAddress = mainAddress
       this._method = method!;
       if (arkey) { this._arKey = JSON.parse(arkey) }
-      this.account.next(mainAddress);
+      this._account.next(mainAddress);
       if (this._method === 'webwallet') {
         this._arweave.arweaveWebWallet.connect().then((res: any) => {
           this._mainAddress = res;
-          this.account.next(this._mainAddress);
+          this._account.next(this._mainAddress);
         }).catch((error: any) => {
           console.log('Error loading address');
         });
@@ -66,7 +50,7 @@ private account: Subject<string>;
     }
   }
 
-  setAccount(mainAddress: string, arKey: any = null, stayLoggedIn: boolean = false, method='') {
+  public setAccount(mainAddress: string, arKey: any = null, stayLoggedIn: boolean = false, method='') {
     const storage = stayLoggedIn ? window.localStorage : window.sessionStorage;
     this._mainAddress = mainAddress;
     this._method = method;
@@ -76,16 +60,11 @@ private account: Subject<string>;
       this._arKey = arKey
       storage.setItem('ARKEY', JSON.stringify(this._arKey))
     }
-    this.account.next(mainAddress);
-    const isAdmin = this.getAdminList().indexOf(mainAddress) >= 0;
-    if (isAdmin) {
-      this.updateUserIsModerator(true);
-    } else {
-      this.updateUserIsModerator(false);
-    }
+    this._account.next(mainAddress);
   }
 
-  removeAccount() {
+  public removeAccount() {
+    this._account.next('');
     this._mainAddress = '';
     this._method = '';
     this._arKey = null;
@@ -100,12 +79,12 @@ private account: Subject<string>;
     return this._mainAddress;
   }
 
-  getPrivateKey() {
+  public getPrivateKey() {
     return this._arKey ? this._arKey : 'use_wallet'
   }
 
-  login(walletOption: string, uploadInputEvent: any = null, stayLoggedIn: boolean = false): Observable<any> {
-    let method = of({});
+  public login(walletOption: string, uploadInputEvent: any = null, stayLoggedIn: boolean = false): Observable<string> {
+    let method = of('');
 
     switch (walletOption) {
       case 'upload_file':
@@ -148,9 +127,7 @@ private account: Subject<string>;
     return method;
   }
 
-  logout() {
-    this.account.next('');
-    this.updateUserIsModerator(false);
+  public logout() {
     if ((this._method === 'finnie' || 
         this._method === 'arconnect' || 
         this._method === 'webwallet') &&
@@ -159,5 +136,6 @@ private account: Subject<string>;
     }
     this.removeAccount();
   }
+
 
 }
