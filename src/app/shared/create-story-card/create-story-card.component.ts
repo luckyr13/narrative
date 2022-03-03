@@ -5,6 +5,10 @@ import { EmojisComponent } from '../emojis/emojis.component';
 import { Observable, Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
+import { UserInterface } from '@verto/js/dist/faces';
+import { ArweaveService } from '../../core/services/arweave.service';
+import { VertoService } from '../../core/services/verto.service';
+import { UserAuthService } from '../../core/services/user-auth.service';
 
 @Component({
   selector: 'app-create-story-card',
@@ -19,15 +23,39 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   loadEditorSubscription: Subscription = Subscription.EMPTY;
   codemirrorWrapper: CodeMirrorWrapper;
   loadingData = false;
+  profileSubscription: Subscription = Subscription.EMPTY;
+  profile: UserInterface|null = null;
+  profileImage: string = 'assets/images/blank-profile.png';
 
   constructor(
     private _overlay: Overlay,
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private _verto: VertoService,
+    private _arweave: ArweaveService,
+    private _auth: UserAuthService) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
 
   ngOnInit(): void {
-
+    const account = this._auth.getMainAddressSnapshot();
+    this.loadingData = true;
+    this.profileSubscription = this._verto.getProfile(account).subscribe({
+        next: (profile: UserInterface|undefined) => {
+          if (profile) {
+            if (profile.image) {
+              this.profileImage = `${this._arweave.baseURL}${profile.image}`;
+            }
+          } else {
+            this.profile = null;
+            this.profileImage = 'assets/images/blank-profile.png';
+          }
+          this.loadingData = false;
+        },
+        error: (error) => {
+          this.loadingData = false;
+          this.message(error, 'error');
+        }
+      });
   }
 
 
@@ -92,6 +120,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnDestroy() {
     this.loadEditorSubscription.unsubscribe();
+    this.profileSubscription.unsubscribe();
   }
 
   /*
