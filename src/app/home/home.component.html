@@ -11,7 +11,7 @@
 		<div class="post-card-container" *ngIf="account">
 			<app-create-story-card></app-create-story-card>
 		</div>
-		<mat-divider></mat-divider>
+		<mat-divider *ngIf="account"></mat-divider>
 		<div class="post-list-container">
 			<div *ngFor="let post of posts">{{ post }}</div>
 		</div>
@@ -37,6 +37,12 @@
 		  <mat-card-title>🌎 Who to follow</mat-card-title>
 		  <mat-card-content>
 		    <p>#Topic1 #Topic2</p>
+		  </mat-card-content>
+		</mat-card>
+
+		<mat-card class="mat-elevation-z0">
+		  <mat-card-content>
+		    <p>V. {{ version }}</p>
 		  </mat-card-content>
 		</mat-card>
 	</div>

@@ -6,6 +6,10 @@ mat-card-header {
 	margin-bottom: 20px;
 }
 
+.mat-card-content {
+	min-height: 50px;
+}
+
 .mat-focused mat-label {
 	
 }
@@ -35,6 +39,7 @@ mat-card-header {
 	float: left;
 	width: 72px;
 	text-align: left;
+	height: 100%;
 }
 
 .avatar {
@@ -45,8 +50,24 @@ mat-card-header {
 .message-container {
 	float: left;
 	width: calc(100% - 72px);
+	height: 100;
 }
 
 .mat-card-actions {
 	padding-top: 12px;
+}
+
+.emotions-container {
+	text-align: center;
+}
+
+.emotions-container .mat-icon {
+	font-size: 18px;
+}
+
+@media (min-width: 800px) {
+	.emotions-container {
+		text-align: left;
+		margin-left: 72px;
+	}
 }

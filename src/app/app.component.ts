@@ -8,12 +8,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'narrative';
   opened = true;
   platformLoading$ = this._userSettings.loadingPlatform$;
   openerSubscription: Subscription = Subscription.EMPTY;
 
-  constructor(private _userSettings: UserSettingsService) {
+  constructor(
+    private _userSettings: UserSettingsService) {
 
   }
 

@@ -7,6 +7,7 @@ import { BottomSheetLoginComponent } from '../shared/bottom-sheet-login/bottom-s
 import { Direction } from '@angular/cdk/bidi';
 import { Router } from '@angular/router';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
+import { AppSettingsService } from '../core/services/app-settings.service';
 
 @Component({
   selector: 'app-main-toolbar',
@@ -17,13 +18,15 @@ export class MainToolbarComponent implements OnInit {
 	theme = new FormControl('');
   @Output() toggleEvent = new EventEmitter<boolean>();
   account = this._auth.account$;
+  appName = this._appSettings.appName;
 
   constructor(
     private _userSettings: UserSettingsService,
     private _snackBar: MatSnackBar,
     private _bottomSheet: MatBottomSheet,
     private _router: Router,
-    private _auth: UserAuthService) {
+    private _auth: UserAuthService,
+    private _appSettings: AppSettingsService) {
 
   }
 

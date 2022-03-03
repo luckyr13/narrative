@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { TransactionMetadata } from '../core/interfaces/transaction-metadata';
 import { UserAuthService } from '../core/services/user-auth.service';
+import { AppSettingsService } from '../core/services/app-settings.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -16,11 +17,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   private maxPosts: number = 10;
   public loadingPosts = false;
   account: string = '';
+  version = this._appSettings.version;
 
   constructor(
     private _story: StoryService,
     private _snackBar: MatSnackBar,
-    private _auth: UserAuthService) { }
+    private _auth: UserAuthService,
+    private _appSettings: AppSettingsService) { }
 
   ngOnInit(): void {
     this.loadingPosts = true;
