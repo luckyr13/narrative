@@ -8,7 +8,7 @@
 	  </mat-toolbar>
 	</p>
 	<div class="col-body">
-		<div class="post-card-container">	
+		<div class="post-card-container" *ngIf="account">
 			<app-create-story-card></app-create-story-card>
 		</div>
 		<mat-divider></mat-divider>
@@ -17,6 +17,7 @@
 		</div>
 		<div class="more-results-container">
 			<mat-spinner *ngIf="loadingPosts" color="accent" diameter="32"></mat-spinner>
+			<div class="no-results" *ngIf="!posts.length && !loadingPosts"> There are no Stories yet! </div>
 			<mat-card class="more-results-card mat-elevation-z0" matRipple *ngIf="!loadingPosts && posts.length" (click)="moreResults()" >
 			  <mat-card-content class="more-results text-center">
 					Show older posts

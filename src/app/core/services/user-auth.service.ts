@@ -86,6 +86,9 @@ private account: Subject<string>;
   }
 
   removeAccount() {
+    this._mainAddress = '';
+    this._method = '';
+    this._arKey = null;
     for (let key of ['MAINADDRESS', 'ARKEY', 'METHOD']) {
       window.sessionStorage.removeItem(key)
       window.localStorage.removeItem(key)
@@ -146,7 +149,6 @@ private account: Subject<string>;
   }
 
   logout() {
-    this.removeAccount();
     this.account.next('');
     this.updateUserIsModerator(false);
     if ((this._method === 'finnie' || 
@@ -155,6 +157,7 @@ private account: Subject<string>;
         (window && window.arweaveWallet)) {
       window.arweaveWallet.disconnect();
     }
+    this.removeAccount();
   }
 
 }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PanelComponent } from './panel.component';
 import { LogoutComponent } from './logout/logout.component';
 import { InitPlatformAuthGuard } from '../core/route-guards/init-platform-auth.guard';
 

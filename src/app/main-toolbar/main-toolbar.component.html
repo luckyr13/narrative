@@ -1,5 +1,11 @@
 <p>
   <mat-toolbar class="mat-elevation-z1" color="primary">
+    <button 
+      mat-icon-button
+      (click)="toggle()"
+      aria-label="Main menu">
+      <mat-icon>menu</mat-icon>
+    </button>
     <span class="logo" routerLink="./home">Narrative</span>
     <span class="spacer"></span>
     <button mat-icon-button aria-label="Theme" [matMenuTriggerFor]="themeMenu">
@@ -32,6 +38,7 @@
     </mat-menu>
     <button
       mat-button
+      class="btn-connect"
       aria-label="Log in"
       (click)="login()"
       *ngIf="!(account | async)">

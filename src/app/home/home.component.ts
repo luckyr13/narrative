@@ -3,6 +3,7 @@ import { StoryService } from '../core/services/story.service';
 import { Subscription } from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { TransactionMetadata } from '../core/interfaces/transaction-metadata';
+import { UserAuthService } from '../core/services/user-auth.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -14,13 +15,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   public posts: TransactionMetadata[] = [];
   private maxPosts: number = 10;
   public loadingPosts = false;
+  account: string = '';
 
   constructor(
     private _story: StoryService,
-    private _snackBar: MatSnackBar,) { }
+    private _snackBar: MatSnackBar,
+    private _auth: UserAuthService) { }
 
   ngOnInit(): void {
     this.loadingPosts = true;
+    this.account = this._auth.getMainAddressSnapshot();
 
     this._postSubscription = this._story.getLatestPosts([], this.maxPosts).subscribe({
       next: (posts) => {
@@ -32,6 +36,10 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.message(error, 'error');
       }
     })
+
+    this._auth.account$.subscribe((_account) => {
+      this.account = _account;
+    });
 
   }
 

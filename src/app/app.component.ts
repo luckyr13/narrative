@@ -27,4 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
   	this.openerSubscription.unsubscribe();
   }
 
+  toggle(val: boolean) {
+    this.opened = !this.opened;
+  }
+
 }
