@@ -1,4 +1,4 @@
-import { EditorState, StateField, StateEffect} from '@codemirror/state';
+import { EditorState, StateField, StateEffect, Compartment } from '@codemirror/state';
 import { EditorView, keymap, placeholder, highlightSpecialChars } from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
 import { history, historyKeymap } from '@codemirror/history';
@@ -11,9 +11,10 @@ import { linkExtension } from '../utils/codemirror/link-extension';
 export class CodeMirrorWrapper {
 	editorState: EditorState|null = null;
   editorView: EditorView|null = null;
+  placeholderCompartment: Compartment = new Compartment();
   
 
-  init(container: any) {
+  init(container: any, placeholderTxt= 'What\'s on your mind?') {
 		const obs = new Observable((subscriber) => {
 	    try {
 	      window.setTimeout(() => {
@@ -24,7 +25,7 @@ export class CodeMirrorWrapper {
 	          	highlightSpecialChars(),
 							bracketMatching(),
 							closeBrackets(),
-							placeholder('What\'s on your mind?'),
+							this.placeholderCompartment.of(placeholder(placeholderTxt)),
 	          	keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
 	          	defaultHighlightStyle.fallback,
 	          	EditorView.lineWrapping,
@@ -50,6 +51,11 @@ export class CodeMirrorWrapper {
 	  return obs;
   }
 
+  updatePlaceholder(placeholderTxt: string) {
+  	this.editorView!.dispatch({
+	    effects: this.placeholderCompartment.reconfigure(placeholder(placeholderTxt))
+	  })
+  }
   
 
 }

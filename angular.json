@@ -38,7 +38,8 @@
               "arweave",
               "typescript-is",
               "ardb",
-              "validator"
+              "validator",
+              "@verto/js"
             ]
           },
           "configurations": {

@@ -4,5 +4,5 @@ export interface TransactionMetadata {
   blockId: string;
   blockHeight: number;
   dataSize: number;
- dataType: string;
+	dataType: string;
 }
