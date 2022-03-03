@@ -2,7 +2,7 @@ import { EditorState, StateField, StateEffect, Compartment } from '@codemirror/s
 import { EditorView, keymap, placeholder, highlightSpecialChars } from '@codemirror/view';
 import { defaultKeymap } from '@codemirror/commands';
 import { history, historyKeymap } from '@codemirror/history';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { defaultHighlightStyle } from "@codemirror/highlight";
 import { bracketMatching } from "@codemirror/matchbrackets";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/closebrackets";
@@ -12,7 +12,16 @@ export class CodeMirrorWrapper {
 	editorState: EditorState|null = null;
   editorView: EditorView|null = null;
   placeholderCompartment: Compartment = new Compartment();
-  
+  updateEffectsCompartment: Compartment = new Compartment();
+  private _content: Subject<string>;
+  public contentStream: Observable<string>;
+  public content: string;
+
+  constructor() {
+  	this._content = new Subject<string>();
+    this.contentStream = this._content.asObservable();
+    this.content = '';
+  }
 
   init(container: any, placeholderTxt= 'What\'s on your mind?') {
 		const obs = new Observable((subscriber) => {
@@ -26,6 +35,7 @@ export class CodeMirrorWrapper {
 							bracketMatching(),
 							closeBrackets(),
 							this.placeholderCompartment.of(placeholder(placeholderTxt)),
+							this.updateEffectsCompartment.of([]),
 	          	keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
 	          	defaultHighlightStyle.fallback,
 	          	EditorView.lineWrapping,
@@ -37,6 +47,13 @@ export class CodeMirrorWrapper {
 	          state: this.editorState,
 	          parent: container
 	        });
+
+	        this.editorView.dispatch({
+						effects: this.updateEffectsCompartment.reconfigure(EditorView.updateListener.of((upd) => {
+							this.content = upd.state.doc.toString().trim();
+							this._content.next(this.content);
+						}))
+					});
 
 	        subscriber.next();
 	        subscriber.complete();

@@ -38,10 +38,15 @@
 			 *ngIf="loading"
 				appearance="line" 
 				[theme]="{ 'height.px': 36, 'width.px': 100, 'marginBottom.px': 0 }"></ngx-skeleton-loader>
-		<button *ngIf="!loading" class="post-btn" mat-raised-button color="accent"><span>Post</span> <mat-icon>send</mat-icon></button>
+		<button 
+			*ngIf="!loading"
+			[disabled]="!messageContent || loadingCreatePost"
+			class="post-btn"
+			(click)="submit()"
+			mat-raised-button color="accent"><span>Post</span> <mat-icon>send</mat-icon></button>
 	</mat-card-actions>
 	
-	<mat-card-footer *ngIf="loadingData" class="fadeIn">
-    <mat-progress-bar color="accent" [mode]="loadingData ? 'indeterminate' : 'determinate'" value="0" ></mat-progress-bar>
+	<mat-card-footer *ngIf="loadingData || loadingCreatePost" class="fadeIn">
+    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
   </mat-card-footer>
 </mat-card>

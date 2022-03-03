@@ -5,6 +5,7 @@ import Arweave from 'arweave';
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { TransactionStatusResponse } from 'arweave/web/transactions';
 import Transaction from 'arweave/web/lib/transaction';
+import { JWKInterface } from 'arweave/web/lib/wallet';
 import { ArweaveWebWallet } from 'arweave-wallet-connector';
 declare const window: any;
 
@@ -221,14 +222,20 @@ export class ArweaveService {
   /*
   * @dev Upload a file to the permaweb
   */
-  async uploadFileToArweave(fileBin: any, contentType: string, key: any): Promise<any> {
+  private async _uploadFileToArweave(
+    fileBin: any,
+    contentType: string,
+    key: JWKInterface | "use_wallet",
+    tags: {name: string, value: string}[] ): Promise<Transaction> {
     // Create transaction
     let transaction = await this.arweave.createTransaction({
         data: fileBin,
     }, key);
 
     transaction.addTag('Content-Type', contentType);
-    // transaction.addTag('Application', 'Narrative');
+    for (const t of tags) {
+      transaction.addTag(t.name, t.value);
+    }
 
     // Sign transaction
     await this.arweave.transactions.sign(transaction, key);
@@ -319,5 +326,16 @@ export class ArweaveService {
     }
     res = res ? `~${res}` : '';
     return res;
+  }
+
+  /*
+  * @dev Upload a file to the permaweb
+  */
+  uploadFileToArweave(
+      fileBin: any,
+      contentType: string,
+      key:  JWKInterface | "use_wallet",
+      tags: {name: string, value: string}[] ): Observable<Transaction> {
+    return from(this._uploadFileToArweave(fileBin, contentType, key, tags));
   }
 }

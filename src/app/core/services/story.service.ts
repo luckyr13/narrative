@@ -4,6 +4,7 @@ import { Observable, from, map } from 'rxjs';
 import { ArdbWrapper } from '../classes/ardb-wrapper';
 import { ArweaveService } from './arweave.service';
 import { TransactionMetadata } from '../interfaces/transaction-metadata';
+import { UserAuthService } from './user-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,16 @@ import { TransactionMetadata } from '../interfaces/transaction-metadata';
 export class StoryService {
   private _ardb: ArdbWrapper;
 
-  constructor(private _arweave: ArweaveService) {
+  constructor(private _arweave: ArweaveService, private _userAuth: UserAuthService) {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
+  }
+
+  createPost(msg: string) {
+    const key = this._userAuth.getPrivateKey();
+    const tags: {name: string, value: string}[] = [
+      { name: 'Application', value: 'Narrative' }
+    ];
+    return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags);
   }
 
   getLatestPosts(from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {

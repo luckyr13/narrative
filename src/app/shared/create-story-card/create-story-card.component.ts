@@ -1,6 +1,4 @@
 import { Component, OnInit, ElementRef, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { EmojisComponent } from '../emojis/emojis.component';
 import { Observable, Subscription, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
@@ -8,6 +6,7 @@ import { UserInterface } from '@verto/js/dist/faces';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
+import { StoryService } from '../../core/services/story.service';
 
 @Component({
   selector: 'app-create-story-card',
@@ -17,24 +16,30 @@ import { UserAuthService } from '../../core/services/user-auth.service';
 export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('postMessage', {static: true}) postMessage!: ElementRef;
   loading: boolean = true;
-  emojisPortal: ComponentPortal<EmojisComponent>|null = null;
   loadEditorSubscription: Subscription = Subscription.EMPTY;
   codemirrorWrapper: CodeMirrorWrapper;
   loadingData = false;
   profileSubscription: Subscription = Subscription.EMPTY;
   profileImage: string = 'assets/images/blank-profile.png';
   nickname: string = '';
+  messageContent: string = '';
+  contentSubscription: Subscription = Subscription.EMPTY;
+  loadingCreatePost = false;
+  createPostSubscription: Subscription = Subscription.EMPTY;
 
   constructor(
     private _snackBar: MatSnackBar,
     private _verto: VertoService,
     private _arweave: ArweaveService,
-    private _auth: UserAuthService) {
+    private _auth: UserAuthService,
+    private _story: StoryService) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
 
   ngOnInit(): void {
-    
+    this.contentSubscription = this.codemirrorWrapper.contentStream.subscribe((content) => {
+      this.messageContent = content;
+    });
   }
 
 
@@ -94,6 +99,23 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   ngOnDestroy() {
     this.loadEditorSubscription.unsubscribe();
     this.profileSubscription.unsubscribe();
+    this.contentSubscription.unsubscribe();
+    this.createPostSubscription.unsubscribe();
+  }
+
+  submit() {
+    this.loadingCreatePost = true;
+    this.createPostSubscription = this._story.createPost(this.messageContent).subscribe({
+      next: (tx) => {
+        
+        console.log('tx', tx)
+        this.loadingCreatePost = false;
+      },
+      error: (error) => {
+        this.message(error, 'error');
+        this.loadingCreatePost = false;
+      }
+    });
   }
 
   /*
