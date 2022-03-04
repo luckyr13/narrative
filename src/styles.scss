@@ -130,6 +130,10 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #FFFFFF;
   }
+
+  .border-right-special {
+    border-color: rgba(0, 0, 0, 0.12) !important;
+  }
 }
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
@@ -154,6 +158,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   }
   .mat-drawer-container {
     background-color: #FFFFFF;
+  }
+  .border-right-special {
+    border-color: rgba(0, 0, 0, 0.12) !important;
   }
 }
 .dark-deep-purple-theme {
@@ -196,6 +203,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   }
   .mat-drawer-container {
     background-color: #FFFFFF;
+  }
+  .border-right-special {
+    border-color: rgba(0, 0, 0, 0.12) !important;
   }
 }
 

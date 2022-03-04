@@ -1,7 +1,7 @@
 <mat-card class="post-card fadeIn mat-elevation-z0">
 	<mat-card-content class="card-content">
 		<div class="avatar-container" *ngIf="loading">
-			<ngx-skeleton-loader appearance="circle" [theme]="{ 'height.px': 52, 'width.px': 52, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			<ngx-skeleton-loader appearance="circle" [theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 		</div>
 		<div class="message-container" *ngIf="loading">
 		  <ngx-skeleton-loader
@@ -17,19 +17,19 @@
 	</mat-card-content>
 	<mat-card-actions align="end">
 		<div class="emotions-container" *ngIf="!loading">
-			<button mat-icon-button color="accent">
+			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
 			</button>
-			<button mat-icon-button color="accent">
+			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">image</mat-icon>
 			</button>
-			<button mat-icon-button color="accent">
+			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">videocam</mat-icon>
 			</button>
-			<button mat-icon-button color="accent">
+			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">mic</mat-icon>
 			</button>
-			<button mat-icon-button color="accent">
+			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">post_add</mat-icon>
 			</button>
 		</div>
@@ -43,7 +43,7 @@
 			[disabled]="!messageContent || loadingCreatePost"
 			class="post-btn"
 			(click)="submit()"
-			mat-raised-button color="accent"><span>Post</span> <mat-icon>send</mat-icon></button>
+			mat-raised-button color="accent"><span class="hide-sm">Post</span><mat-icon>send</mat-icon></button>
 	</mat-card-actions>
 	
 	<mat-card-footer *ngIf="loadingData || loadingCreatePost" class="fadeIn">

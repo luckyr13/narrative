@@ -1,4 +1,4 @@
-<div class="dashboard-container fadeIn">
+<div class="fadeIn">
 	<p>
 	  <mat-toolbar class="secondary-toolbar" color="primary">
 	    <button mat-icon-button>
@@ -13,37 +13,16 @@
 		</div>
 		<mat-divider *ngIf="account"></mat-divider>
 		<div class="post-list-container">
-			<div *ngFor="let post of posts">{{ post }}</div>
+			<app-story-card *ngFor="let post of posts" [post]="post"></app-story-card>
 		</div>
 		<div class="more-results-container">
 			<mat-spinner *ngIf="loadingPosts" color="accent" diameter="32"></mat-spinner>
 			<div class="no-results" *ngIf="!posts.length && !loadingPosts"> There are no Stories yet! </div>
-			<mat-card class="more-results-card mat-elevation-z0" matRipple *ngIf="!loadingPosts && posts.length" (click)="moreResults()" >
+			<mat-card class="more-results-card mat-elevation-z0" matRipple *ngIf="!loadingPosts && moreResultsAvailable" (click)="moreResults()" >
 			  <mat-card-content class="more-results text-center">
 					Show older posts
 			  </mat-card-content>
 			</mat-card>
 		</div>
-	</div>
-	<div class="col-side-features">
-		<mat-card>
-		  <mat-card-title>🔥 Trending</mat-card-title>
-		  <mat-card-content>
-		    <p>No results.</p>
-		  </mat-card-content>
-		</mat-card>
-
-		<mat-card>
-		  <mat-card-title>🌎 Who to follow</mat-card-title>
-		  <mat-card-content>
-		    <p>No results.</p>
-		  </mat-card-content>
-		</mat-card>
-
-		<mat-card class="mat-elevation-z0 version-container">
-		  <mat-card-content>
-		    <p>v{{ version }}</p>
-		  </mat-card-content>
-		</mat-card>
 	</div>
 </div>

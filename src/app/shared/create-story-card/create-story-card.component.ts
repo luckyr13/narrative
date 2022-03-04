@@ -101,19 +101,26 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.profileSubscription.unsubscribe();
     this.contentSubscription.unsubscribe();
     this.createPostSubscription.unsubscribe();
+    this.codemirrorWrapper.destroy();
   }
 
   submit() {
     this.loadingCreatePost = true;
+    this.codemirrorWrapper.editable(false);
+
     this.createPostSubscription = this._story.createPost(this.messageContent).subscribe({
       next: (tx) => {
-        
-        console.log('tx', tx)
         this.loadingCreatePost = false;
+        this.codemirrorWrapper.resetEditor();
+        this.codemirrorWrapper.editable(true);
+        this.message('Success!', 'success');
+    
       },
       error: (error) => {
         this.message(error, 'error');
         this.loadingCreatePost = false;
+        this.codemirrorWrapper.editable(true);
+    
       }
     });
   }
@@ -123,7 +130,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   */
   message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
     this._snackBar.open(msg, 'X', {
-      duration: 8000,
+      duration: 4000,
       horizontalPosition: 'center',
       verticalPosition: verticalPosition,
       panelClass: panelClass

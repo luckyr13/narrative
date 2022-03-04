@@ -19,7 +19,9 @@ export class StoryService {
   createPost(msg: string) {
     const key = this._userAuth.getPrivateKey();
     const tags: {name: string, value: string}[] = [
-      { name: 'Application', value: 'Narrative' }
+      { name: 'App-Name', value: 'Narrative' },
+      { name: 'Version', value: '0.1' },
+      { name: 'Type', value: 'Story' },
     ];
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags);
   }
@@ -46,11 +48,12 @@ export class StoryService {
   	return this._ardb.searchTransactions(from, limit, maxHeight, tags).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts.map((tx) => {
+
             const post: TransactionMetadata = {
               id: tx.id,
               owner: tx.owner.address,
-              blockId: tx.block.id,
-              blockHeight: tx.block.height,
+              blockId: tx.block && tx.block.id ? tx.block.id : '',
+              blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data.size,
               dataType: tx.data.type,
             }

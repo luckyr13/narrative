@@ -24,12 +24,14 @@ import {MatRippleModule} from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { EmojisComponent } from './emojis/emojis.component';
 import { CreateStoryCardComponent } from './create-story-card/create-story-card.component';
+import { StoryCardComponent } from './story-card/story-card.component';
 
 @NgModule({
   declarations: [
     BottomSheetLoginComponent,
     EmojisComponent,
     CreateStoryCardComponent,
+    StoryCardComponent,
   ],
   imports: [
     CommonModule,
@@ -71,7 +73,8 @@ import { CreateStoryCardComponent } from './create-story-card/create-story-card.
     PortalModule,
     MatRippleModule,
     MatProgressSpinnerModule,
-    CreateStoryCardComponent
+    CreateStoryCardComponent,
+    StoryCardComponent,
   ]
 })
 export class SharedModule { }

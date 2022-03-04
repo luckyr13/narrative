@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public loadingPosts = false;
   account: string = '';
   version = this._appSettings.version;
+  moreResultsAvailable = true;
 
   constructor(
     private _story: StoryService,
@@ -31,11 +32,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this._postSubscription = this._story.getLatestPosts([], this.maxPosts).subscribe({
       next: (posts) => {
+        if (!posts || !posts.length) {
+          this.moreResultsAvailable = false;
+        }
         this.posts = posts;
         this.loadingPosts = false;
       },
       error: (error) => {
         this.loadingPosts = false;
+        this.moreResultsAvailable = false;
         this.message(error, 'error');
       }
     })
@@ -50,6 +55,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadingPosts = true;
     this._nextResultsSubscription = this._story.next().subscribe({
       next: (posts) => {
+        if (!posts || !posts.length) {
+          this.moreResultsAvailable = false;
+        }
         this.posts = this.posts.concat(posts);
         this.loadingPosts = false;
       },

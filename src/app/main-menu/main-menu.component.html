@@ -1,4 +1,4 @@
-<mat-nav-list *ngIf="account | async">
+<mat-nav-list *ngIf="account">
   <a 
     mat-list-item
     matRipple
@@ -35,7 +35,7 @@
   </a>
   <a mat-list-item
     matRipple
-    [routerLink]="['profile']" 
+    [routerLink]="account" 
     [routerLinkActive]="['active', 'border-color-theme']"
     #rlaProfile="routerLinkActive">
     <mat-icon
@@ -68,7 +68,7 @@
   </a>
 </mat-nav-list>
 
-<mat-nav-list *ngIf="!(account | async)">
+<mat-nav-list *ngIf="!account">
   <a 
     mat-list-item
     matRipple

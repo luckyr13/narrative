@@ -69,7 +69,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   */
   message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
     this._snackBar.open(msg, 'X', {
-      duration: 8000,
+      duration: 5000,
       horizontalPosition: 'center',
       verticalPosition: verticalPosition,
       panelClass: panelClass

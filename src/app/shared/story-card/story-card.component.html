@@ -1,0 +1,31 @@
+<mat-card class="post-card fadeIn mat-elevation-z0">
+	<mat-card-content>
+		<div class="card-content">
+			<div class="avatar-container" *ngIf="loading">
+				<ngx-skeleton-loader appearance="circle" [theme]="{ 'height.px': 52, 'width.px': 52, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			</div>
+			<div class="message-container" *ngIf="loading">
+			  <ngx-skeleton-loader
+			  	appearance="line" 
+			  	[theme]="{ 'height.px': 66, 'marginBottom.px': 0, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			</div>
+			<div class="avatar-container" *ngIf="!loading">
+			  <img class="avatar" mat-card-avatar [src]="profileImage">
+			</div>
+			<div class="message-container" [ngClass]="{ 'hide': loading }">
+			  <div class="message fadeIn border-color-theme">
+			  	{{ post | json }}
+			  </div>
+			</div>
+		</div>
+	</mat-card-content>
+	<mat-card-actions align="end">
+		
+	</mat-card-actions>
+	
+	<mat-card-footer *ngIf="loadingData" class="fadeIn">
+    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>
+
+<mat-divider></mat-divider>

@@ -13,6 +13,7 @@ export class CodeMirrorWrapper {
   editorView: EditorView|null = null;
   placeholderCompartment: Compartment = new Compartment();
   updateEffectsCompartment: Compartment = new Compartment();
+  editableCompartment: Compartment = new Compartment();
   private _content: Subject<string>;
   public contentStream: Observable<string>;
   public content: string;
@@ -40,12 +41,14 @@ export class CodeMirrorWrapper {
 	          	defaultHighlightStyle.fallback,
 	          	EditorView.lineWrapping,
 	          	linkExtension(),
+	          	this.editableCompartment.of(EditorView.editable.of(true))
 	          ]
 	        });
 
 	        this.editorView = new EditorView({
 	          state: this.editorState,
-	          parent: container
+	          parent: container,
+	          
 	        });
 
 	        this.editorView.dispatch({
@@ -72,6 +75,24 @@ export class CodeMirrorWrapper {
   	this.editorView!.dispatch({
 	    effects: this.placeholderCompartment.reconfigure(placeholder(placeholderTxt))
 	  })
+  }
+
+  editable(readOnly: boolean) {
+  	this.editorView!.dispatch({
+	    effects: this.editableCompartment.reconfigure(EditorView.editable.of(readOnly))
+	  })
+  }
+
+  resetEditor() {
+  	const text = this.editorView!.state.doc.toString();
+  	const size = text.length;
+  	this.editorView!.dispatch({
+		  changes: {from: 0, to: size, insert: ''}
+		});
+  }
+
+  destroy() {
+  	this.editorView!.destroy();
   }
   
 
