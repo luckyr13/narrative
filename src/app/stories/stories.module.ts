@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { StoriesRoutingModule } from './stories-routing.module';
 import { StoriesComponent } from './stories.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { StoriesComponent } from './stories.component';
   ],
   imports: [
     CommonModule,
-    StoriesRoutingModule
+    StoriesRoutingModule,
+    SharedModule
   ]
 })
 export class StoriesModule { }

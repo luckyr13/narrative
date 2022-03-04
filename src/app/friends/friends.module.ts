@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FriendsRoutingModule } from './friends-routing.module';
 import { FriendsComponent } from './friends.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { FriendsComponent } from './friends.component';
   ],
   imports: [
     CommonModule,
-    FriendsRoutingModule
+    FriendsRoutingModule,
+    SharedModule
   ]
 })
 export class FriendsModule { }
