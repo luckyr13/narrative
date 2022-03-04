@@ -14,7 +14,7 @@ mat-card-header {
 
 .card-content {
 	margin-top: 10px;
-	min-height: 10px;
+	min-height: 100px;
 	position: relative;
 	clear: both;
 	display: flex;
@@ -43,7 +43,7 @@ mat-card-header {
 	float: left;
 	width: calc(100% - 82px);
 	min-height: 100%;
-	padding-left: 10px;
+	padding-left: 14px;
 
   overflow-wrap: break-word;
 }
@@ -55,6 +55,19 @@ mat-card-header {
 
 @media (min-width: 800px) {
 	.post-card {
-		width: 90%;
+		width: 84%;
 	}
+}
+
+h2 span {
+	margin-right: 20px;
+}
+h2 small {
+	font-size: 12px;
+	font-weight: normal;
+	font-style: italic;
+}
+
+h2 {
+	margin-bottom: 20px;
 }
