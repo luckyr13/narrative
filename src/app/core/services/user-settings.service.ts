@@ -14,7 +14,7 @@ export class UserSettingsService {
   private _showMainToolbar: Subject<boolean> = new Subject<boolean>();
   public showMainToolbar$ = this._showMainToolbar.asObservable();
   private _storage = window.localStorage;
-  public themes: Record<string, any> = {
+  public themes: Record<string, {id: string, dark: boolean}> = {
     'light-theme': {
       id: 'light-theme',
       dark: false
@@ -23,7 +23,34 @@ export class UserSettingsService {
       id: 'dark-theme',
       dark: true
     },
+    'light-pink-theme': {
+      id: 'light-pink-theme',
+      dark: false
+    },
+    'dark-pink-theme': {
+      id: 'dark-pink-theme',
+      dark: true
+    },
+    'light-blue-theme': {
+      id: 'light-blue-theme',
+      dark: false
+    },
+    'dark-deep-purple-theme': {
+      id: 'dark-deep-purple-theme',
+      dark: true
+    },
+    'dark-blue-gray-theme': {
+      id: 'dark-blue-gray-theme',
+      dark: true
+    },
   };
+
+  private _currentTheme: Subject<string> = new Subject<string>();
+  public currentThemeStream = this._currentTheme.asObservable();
+
+  get themeNamesList(): string[] {
+    return Object.keys(this.themes);
+  }
 
   constructor() {
   	const dtheme = this._storage.getItem('defaultTheme');
@@ -40,7 +67,6 @@ export class UserSettingsService {
   	if (dlang) {
   		this.setDefaultLang(dlang);
   	}
-
   }
 
   setLoadingPlatform(_isLoading: boolean) {
@@ -55,6 +81,10 @@ export class UserSettingsService {
   	return this._defaultTheme;
   }
 
+  getThemeObj(theme: string): {id: string, dark: boolean} {
+    return this.themes[theme];
+  }
+
   getDefaultLang(): string {
   	return this._defaultLang;
   }
@@ -64,6 +94,7 @@ export class UserSettingsService {
     	this._defaultTheme = _theme;
     	this._storage.setItem('defaultTheme', this._defaultTheme);
       this.updateBodyClass(_theme);
+      this._currentTheme.next(this._defaultTheme);
   	}
   }
 
@@ -86,32 +117,14 @@ export class UserSettingsService {
   *  Set default theme (Updates the href property)
   */
   setTheme(theme: string) {
-    switch (theme) {
-      case 'light-theme':
+    const themes = this.themeNamesList;
+    for (const t of themes) {
+      if (theme === t) {
         this.setDefaultTheme(theme);
-      break;
-      case 'light-pink-theme':
-        this.setDefaultTheme(theme);
-      break;
-      case 'dark-theme':
-        this.setDefaultTheme(theme);
-      break;
-      case 'dark-pink-theme':
-        this.setDefaultTheme(theme);
-      break;
-      case 'light-blue-theme':
-        this.setDefaultTheme(theme);
-      break;
-      case 'dark-deep-purple-theme':
-        this.setDefaultTheme(theme);
-      break;
-      case 'dark-blue-gray-theme':
-        this.setDefaultTheme(theme);
-      break;
-      default:
-      	console.error('UserSettings: Theme not found!');
-      break;
+        return;
+      }
     }
+    console.error('UserSettings: Theme not found!');
   }
 
   updateBodyClass(className: string) {

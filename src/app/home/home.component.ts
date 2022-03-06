@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StoryService } from '../core/services/story.service';
 import { Subscription } from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import { TransactionMetadata } from '../core/interfaces/transaction-metadata';
 import { UserAuthService } from '../core/services/user-auth.service';
 import { AppSettingsService } from '../core/services/app-settings.service';
+import { UtilsService } from '../core/utils/utils.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -17,14 +17,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   private maxPosts: number = 10;
   public loadingPosts = false;
   account: string = '';
-  version = this._appSettings.version;
+  version = this._appSettings.appVersion;
   moreResultsAvailable = true;
 
   constructor(
     private _story: StoryService,
-    private _snackBar: MatSnackBar,
     private _auth: UserAuthService,
-    private _appSettings: AppSettingsService) { }
+    private _appSettings: AppSettingsService,
+    private _utils: UtilsService) { }
 
   ngOnInit(): void {
     this.loadingPosts = true;
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.loadingPosts = false;
         this.moreResultsAvailable = false;
-        this.message(error, 'error');
+        this._utils.message(error, 'error');
       }
     })
 
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.loadingPosts = false;
-        this.message(error, 'error');
+        this._utils.message(error, 'error');
       }
     })
   }
@@ -73,16 +73,5 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._nextResultsSubscription.unsubscribe();
   }
 
-  /*
-  *  Custom snackbar message
-  */
-  message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
-    this._snackBar.open(msg, 'X', {
-      duration: 8000,
-      horizontalPosition: 'center',
-      verticalPosition: verticalPosition,
-      panelClass: panelClass
-    });
-  }
 
 }

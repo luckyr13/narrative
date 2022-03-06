@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { Subscription, EMPTY } from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { UtilsService } from '../../core/utils/utils.service';
 import {MatBottomSheetRef} from '@angular/material/bottom-sheet';
 import { Router } from '@angular/router';
 
@@ -16,7 +16,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
 
   constructor(
   	private _auth: UserAuthService,
-  	private _snackBar: MatSnackBar,
+  	private _utils: UtilsService,
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetLoginComponent>,
     private _router: Router,
   ) {}
@@ -53,10 +53,10 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   	this.login$ = this._auth.login(walletOption, fileInput, this.stayLoggedIn).subscribe({
   		next: (address: string) => {
         this._bottomSheetRef.dismiss(address);
-        this.message('Welcome!', 'success');
+        this._utils.message('Welcome!', 'success');
   		},
   		error: (error) => {
-        this.message(`Error: ${error}`, 'error');
+        this._utils.message(`Error: ${error}`, 'error');
         this._bottomSheetRef.dismiss('');
 
   		}
@@ -64,15 +64,4 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   }
 
 
-  /*
-  *  Custom snackbar message
-  */
-  message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
-    this._snackBar.open(msg, 'X', {
-      duration: 5000,
-      horizontalPosition: 'center',
-      verticalPosition: verticalPosition,
-      panelClass: panelClass
-    });
-  }
 }

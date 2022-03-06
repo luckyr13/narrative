@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angu
 import { FormControl } from '@angular/forms';
 import { UserSettingsService } from '../core/services/user-settings.service';
 import { UserAuthService } from '../core/services/user-auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import { BottomSheetLoginComponent } from '../shared/bottom-sheet-login/bottom-sheet-login.component';
 import { Direction } from '@angular/cdk/bidi';
 import { Router } from '@angular/router';
@@ -12,6 +11,7 @@ import { Subscription, Observable } from 'rxjs';
 import { VertoService } from '../core/services/verto.service';
 import { ArweaveService } from '../core/services/arweave.service';
 import { UserInterface } from '@verto/js/dist/faces';
+import { UtilsService } from '../core/utils/utils.service';
 
 
 @Component({
@@ -30,13 +30,13 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private _userSettings: UserSettingsService,
-    private _snackBar: MatSnackBar,
     private _bottomSheet: MatBottomSheet,
     private _router: Router,
     private _auth: UserAuthService,
     private _appSettings: AppSettingsService,
     private _verto: VertoService,
-    private _arweave: ArweaveService) {
+    private _arweave: ArweaveService,
+    private _utils: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -57,7 +57,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
             }
           },
           error: (error) => {
-            this.message(error, 'error');
+            this._utils.message(error, 'error');
           }
         });
       }
@@ -72,24 +72,12 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   	try {
   		this._userSettings.setTheme(theme);
   	} catch (error) {
-  		this.message(`Error: ${error}`, 'error');
+  		this._utils.message(`Error: ${error}`, 'error');
   	}
   }
 
   toggle() {
     this.toggleEvent.emit(true);
-  }
-
-   /*
-  *  Custom snackbar message
-  */
-  message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
-    this._snackBar.open(msg, 'X', {
-      duration: 8000,
-      horizontalPosition: 'center',
-      verticalPosition: verticalPosition,
-      panelClass: panelClass
-    });
   }
 
   /*
