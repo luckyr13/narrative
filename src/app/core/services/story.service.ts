@@ -5,6 +5,7 @@ import { ArdbWrapper } from '../classes/ardb-wrapper';
 import { ArweaveService } from './arweave.service';
 import { TransactionMetadata } from '../interfaces/transaction-metadata';
 import { UserAuthService } from './user-auth.service';
+import { AppSettingsService } from './app-settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +13,18 @@ import { UserAuthService } from './user-auth.service';
 export class StoryService {
   private _ardb: ArdbWrapper;
 
-  constructor(private _arweave: ArweaveService, private _userAuth: UserAuthService) {
+  constructor(
+    private _arweave: ArweaveService,
+    private _userAuth: UserAuthService,
+    private _appSettings: AppSettingsService) {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
   }
 
   createPost(msg: string) {
     const key = this._userAuth.getPrivateKey();
     const tags: {name: string, value: string}[] = [
-      { name: 'App-Name', value: 'Narrative' },
-      { name: 'Version', value: '0.1' },
+      { name: 'App-Name', value: this._appSettings.appName },
+      { name: 'Version', value: this._appSettings.version },
       { name: 'Type', value: 'Story' },
     ];
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags);
@@ -30,7 +34,7 @@ export class StoryService {
   	const tags = [
   		{
         name: "App-Name",
-        values: ["Narrative"]
+        values: [this._appSettings.appName]
       },
       {
         name: "Content-Type",
@@ -38,7 +42,7 @@ export class StoryService {
       },
       {
         name: "Version",
-        values: ["0.1"]
+        values: [this._appSettings.version]
       },
       {
         name: "Type",
