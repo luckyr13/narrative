@@ -1,12 +1,13 @@
 import { Component, OnInit, ElementRef, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
 import { UserInterface } from '@verto/js/dist/faces';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { StoryService } from '../../core/services/story.service';
+import { UserSettingsService } from '../../core/services/user-settings.service';
+import { UtilsService } from '../../core/utils/utils.service';
 
 @Component({
   selector: 'app-create-story-card',
@@ -26,19 +27,26 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   contentSubscription: Subscription = Subscription.EMPTY;
   loadingCreatePost = false;
   createPostSubscription: Subscription = Subscription.EMPTY;
+  isDarkTheme = false;
+  themeSubscription = Subscription.EMPTY;
 
   constructor(
-    private _snackBar: MatSnackBar,
     private _verto: VertoService,
     private _arweave: ArweaveService,
     private _auth: UserAuthService,
-    private _story: StoryService) {
+    private _story: StoryService,
+    private _userSettings: UserSettingsService,
+    private _utils: UtilsService) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
 
   ngOnInit(): void {
     this.contentSubscription = this.codemirrorWrapper.contentStream.subscribe((content) => {
       this.messageContent = content;
+    });
+    this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
+    this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {
+      this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
   }
 
@@ -73,7 +81,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         },
         error: (error) => {
           this.loadingData = false;
-          this.message(error, 'error');
+          this._utils.message(error, 'error');
         }
       });
   }
@@ -87,7 +95,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
       },
       error: (error) => {
         this.loading = false;
-        this.message(error, 'error');
+        this._utils.message(error, 'error');
       },
       complete: () => {
         this.loadVertoProfile();
@@ -113,27 +121,15 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         this.loadingCreatePost = false;
         this.codemirrorWrapper.resetEditor();
         this.codemirrorWrapper.editable(true);
-        this.message('Success!', 'success');
+        this._utils.message('Success!', 'success');
     
       },
       error: (error) => {
-        this.message(error, 'error');
+        this._utils.message(error, 'error');
         this.loadingCreatePost = false;
         this.codemirrorWrapper.editable(true);
     
       }
-    });
-  }
-
-  /*
-  *  Custom snackbar message
-  */
-  message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
-    this._snackBar.open(msg, 'X', {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: verticalPosition,
-      panelClass: panelClass
     });
   }
 

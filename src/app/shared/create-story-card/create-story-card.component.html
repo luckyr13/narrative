@@ -1,10 +1,14 @@
 <mat-card class="post-card fadeIn mat-elevation-z0">
 	<mat-card-content class="card-content">
 		<div class="avatar-container" *ngIf="loading">
-			<ngx-skeleton-loader appearance="circle" [theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			<ngx-skeleton-loader
+				[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
+				appearance="circle"
+				[theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 		</div>
 		<div class="message-container" *ngIf="loading">
 		  <ngx-skeleton-loader
+		  	[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 		  	appearance="line" 
 		  	[theme]="{ 'height.px': 66, 'marginBottom.px': 0, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 		</div>
@@ -35,6 +39,7 @@
 		</div>
 		<span class="spacer"></span>
 		<ngx-skeleton-loader
+				[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 			 *ngIf="loading"
 				appearance="line" 
 				[theme]="{ 'height.px': 36, 'width.px': 100, 'marginBottom.px': 0 }"></ngx-skeleton-loader>
