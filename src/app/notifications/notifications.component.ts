@@ -10,6 +10,9 @@ export class NotificationsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+   
+
   }
+
 
 }

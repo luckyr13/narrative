@@ -25,6 +25,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { EmojisComponent } from './emojis/emojis.component';
 import { CreateStoryCardComponent } from './create-story-card/create-story-card.component';
 import { StoryCardComponent } from './story-card/story-card.component';
+import {RouterModule} from '@angular/router';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 @NgModule({
   declarations: [
@@ -50,6 +53,7 @@ import { StoryCardComponent } from './story-card/story-card.component';
     OverlayModule,
     PortalModule,
     MatRippleModule,
+    RouterModule
   ],
   exports: [
   	MatToolbarModule,
@@ -75,6 +79,7 @@ import { StoryCardComponent } from './story-card/story-card.component';
     MatProgressSpinnerModule,
     CreateStoryCardComponent,
     StoryCardComponent,
+    MatTabsModule
   ]
 })
 export class SharedModule { }

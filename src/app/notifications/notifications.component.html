@@ -7,7 +7,17 @@
   		<span>Notifications</span>
 	  </mat-toolbar>
 	</p>
-	<div class="col-body fadeIn">
-		<div class="no-results"> No results. </div>
-	</div>
+	<nav mat-tab-nav-bar backgroundColor="primary"  [tabPanel]="tabPanel">
+	  <a mat-tab-link 
+	     [routerLink]="['/', 'notifications', 'pending']"
+	     routerLinkActive="active"
+	     #rlNotifications="routerLinkActive"
+	     [active]="rlNotifications.isActive"> Pending </a>
+	  <a mat-tab-link 
+	     #rlHistory="routerLinkActive"
+	     routerLinkActive="active"
+	     [active]="rlHistory.isActive"
+	     [routerLink]="['/', 'notifications', 'history']"> History </a>
+	</nav>
+	<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
 </div>
