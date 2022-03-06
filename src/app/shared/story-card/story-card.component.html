@@ -2,29 +2,43 @@
 	<mat-card-content>
 		<div class="card-content">
 			<div class="avatar-container">
-				<ngx-skeleton-loader  *ngIf="loadingProfile" appearance="circle" [theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
-			  <img class="avatar" *ngIf="!loadingProfile" mat-card-avatar [src]="profileImage">
+				<ngx-skeleton-loader 
+						*ngIf="loadingProfile"
+						[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
+						appearance="circle"
+						[theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			  <img class="avatar" *ngIf="!loadingProfile" [routerLink]="['/', post.owner]" mat-card-avatar [src]="profileImage">
 			</div>
-			<div class="message-container">
-				<h2 *ngIf="!loadingProfile"><span *ngIf="profile">{{ profile.username }}</span><small *ngIf="post">@{{ post.owner }}</small></h2>
+			<div class="story-container">
+				<h2 class="profile-name" *ngIf="!loadingProfile" [routerLink]="['/', post.owner]">
+					<span *ngIf="profile">{{ profile.username }}</span><small *ngIf="post">@{{ ellipsis(post.owner) }}</small>
+				</h2>
 				<ngx-skeleton-loader
+					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 			  	appearance="line" 
 			  	*ngIf="loadingProfile"
 			  	[theme]="{ 'height.px': 22, 'width': '60%', 'marginBottom.px': 12, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 				<ngx-skeleton-loader
+					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 			  	appearance="line" 
 			  	*ngIf="loadingContent"
-			  	[theme]="{ 'height.px': 60, 'marginBottom.px': 0, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			  	[theme]="{ 'height.px': 60, 'marginBottom.px': 20, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 			  <div 
 			  	*ngIf="!loadingContent && content"
-			  	class="message fadeIn border-color-theme">
+			  	class="content fadeIn">
 			  	{{ content }}
 			  </div>
 			  <div 
-			  	*ngIf="!loadingContent && post"
-			  	class="fadeIn border-color-theme">
-			  	{{ post | json }}
+			  	*ngIf="post"
+			  	class="fadeIn">
+			  	TX: {{ post.id }}
 			  </div>
+			  <div 
+			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
+			  	class="fadeIn">
+			  	Status: Pending
+			  </div>
+
 			</div>
 		</div>
 	</mat-card-content>

@@ -4,8 +4,9 @@ import { VertoService } from '../../core/services/verto.service';
 import { Subscription, Observable } from 'rxjs';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { UserInterface } from '@verto/js/dist/faces';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ArweaveService } from '../../core/services/arweave.service';
+import { UserSettingsService } from '../../core/services/user-settings.service';
+import { UtilsService } from '../../core/utils/utils.service';
 
 @Component({
   selector: 'app-story-card',
@@ -21,12 +22,15 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   contentSubscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
   content: string = '';
+  isDarkTheme = false;
+  themeSubscription = Subscription.EMPTY;
 
   constructor(
     private _verto: VertoService,
     private _auth: UserAuthService,
-    private _snackBar: MatSnackBar,
-    private _arweave: ArweaveService,) { }
+    private _arweave: ArweaveService,
+    private _userSettings: UserSettingsService,
+    private _utils: UtilsService) { }
 
   ngOnInit(): void {
     this.loadVertoProfile();
@@ -49,7 +53,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.loadingProfile = false;
-        this.message(error, 'error');
+        this._utils.message(error, 'error');
       }
     });
 
@@ -62,28 +66,26 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
       error: (error) => {
         this.loadingContent = false;
-        this.message(error, 'error');
+        this._utils.message(error, 'error');
       }
+    });
 
+    this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
+    this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {
+      this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
   }
 
 
-  /*
-  *  Custom snackbar message
-  */
-  message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
-    this._snackBar.open(msg, 'X', {
-      duration: 4000,
-      horizontalPosition: 'center',
-      verticalPosition: verticalPosition,
-      panelClass: panelClass
-    });
-  }
 
   ngOnDestroy() {
     this.contentSubscription.unsubscribe();
     this.profileSubscription.unsubscribe();
+    this.themeSubscription.unsubscribe();
+  }
+
+  ellipsis(s: string) {
+    return this._utils.ellipsis(s);
   }
 
 }

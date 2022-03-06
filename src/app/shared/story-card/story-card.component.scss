@@ -38,15 +38,21 @@ mat-card-header {
 .avatar {
 	width: 62px;
 	height: 62px;
+	cursor: pointer;
 }
 
-.message-container {
+.story-container {
 	float: left;
 	width: calc(100% - 82px);
 	min-height: 100%;
 	padding-left: 14px;
 
   overflow-wrap: break-word;
+}
+
+.story-container .content {
+	margin-bottom: 20px;
+	min-height: 100px;
 }
 
 .mat-card-actions {
@@ -72,4 +78,8 @@ h2 small {
 
 h2 {
 	margin-bottom: 20px;
+}
+
+.profile-name {
+	cursor: pointer;
 }
