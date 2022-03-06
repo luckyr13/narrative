@@ -24,7 +24,7 @@ export class StoryService {
     const key = this._userAuth.getPrivateKey();
     const tags: {name: string, value: string}[] = [
       { name: 'App-Name', value: this._appSettings.appName },
-      { name: 'Version', value: this._appSettings.version },
+      { name: 'Version', value: this._appSettings.protocolVersion },
       { name: 'Type', value: 'Story' },
     ];
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags);
@@ -42,7 +42,7 @@ export class StoryService {
       },
       {
         name: "Version",
-        values: [this._appSettings.version]
+        values: [this._appSettings.protocolVersion]
       },
       {
         name: "Type",
