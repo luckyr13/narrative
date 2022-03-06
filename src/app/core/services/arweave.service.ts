@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError, from, map } from 'rxjs';
+import { Observable, throwError, from, map, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { catchError } from 'rxjs/operators';
 import Arweave from 'arweave';
 import { NetworkInfoInterface } from 'arweave/web/network';
@@ -295,7 +296,20 @@ export class ArweaveService {
   * @dev Get tx data as string
   */
   getDataAsString(txId: string): Observable<string | Uint8Array> {
-    return from(this.arweave.transactions.getData(txId, {decode: true, string: true}));
+    return from(this.arweave.transactions.getData(txId, {decode: true, string: true})).pipe(
+        catchError((error) => {
+          console.error(error);
+          console.warn(`Fetching ${txId} data from gw cache ...`);
+          return from(fetch(`${this.baseURL}${txId}`)).pipe(
+            switchMap((res: Response) => {
+              if (!res.ok) {
+                return of('');
+              }
+              return from(res.text());
+            })
+          );
+        })
+      );
   }
 
   /**

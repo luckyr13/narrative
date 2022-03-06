@@ -1,6 +1,9 @@
 .post-card {
 	width: 100%;
 	margin: 0 auto;
+	padding: 16px;
+	margin-top: 20px;
+	margin-bottom: 20px;	
 }
 
 mat-card-header {
@@ -11,9 +14,7 @@ mat-card-header {
 .mat-card-content {
 }
 
-
 .card-content {
-	margin-top: 10px;
 	min-height: 100px;
 	position: relative;
 	clear: both;
@@ -56,6 +57,7 @@ mat-card-header {
 @media (min-width: 800px) {
 	.post-card {
 		width: 84%;
+		padding: 32px;
 	}
 }
 

@@ -6,15 +6,23 @@
 			  <img class="avatar" *ngIf="!loadingProfile" mat-card-avatar [src]="profileImage">
 			</div>
 			<div class="message-container">
-				<h2><span *ngIf="profile">{{ profile.username }}</span><small *ngIf="post">@{{ post.owner }}</small></h2>
+				<h2 *ngIf="!loadingProfile"><span *ngIf="profile">{{ profile.username }}</span><small *ngIf="post">@{{ post.owner }}</small></h2>
+				<ngx-skeleton-loader
+			  	appearance="line" 
+			  	*ngIf="loadingProfile"
+			  	[theme]="{ 'height.px': 22, 'width': '60%', 'marginBottom.px': 12, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 				<ngx-skeleton-loader
 			  	appearance="line" 
 			  	*ngIf="loadingContent"
-			  	[theme]="{ 'height.px': 66, 'marginBottom.px': 0, 'marginTop.px': 0 }"></ngx-skeleton-loader>
-
+			  	[theme]="{ 'height.px': 60, 'marginBottom.px': 0, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 			  <div 
-			  	*ngIf="!loadingContent"
+			  	*ngIf="!loadingContent && content"
 			  	class="message fadeIn border-color-theme">
+			  	{{ content }}
+			  </div>
+			  <div 
+			  	*ngIf="!loadingContent && post"
+			  	class="fadeIn border-color-theme">
 			  	{{ post | json }}
 			  </div>
 			</div>
@@ -23,10 +31,7 @@
 	<mat-card-actions align="end">
 		
 	</mat-card-actions>
-	
-	<mat-card-footer *ngIf="loadingContent" class="fadeIn">
-    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
-  </mat-card-footer>
 </mat-card>
 
+<mat-progress-bar *ngIf="loadingContent || loadingProfile" color="accent" mode="indeterminate"></mat-progress-bar>
 <mat-divider></mat-divider>
