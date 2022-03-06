@@ -21,9 +21,16 @@
 	</mat-card-content>
 	<mat-card-actions align="end">
 		<div class="emotions-container" *ngIf="!loading">
-			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
+			<button
+					mat-icon-button
+					color="accent"
+					[matMenuTriggerFor]="matMenuEmojis"
+					[disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
 			</button>
+			<mat-menu #matMenuEmojis="matMenu">
+			  <app-emojis (emojiSelectedEvent)="emojiSelected($event)"></app-emojis>
+			</mat-menu>
 			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">image</mat-icon>
 			</button>

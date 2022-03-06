@@ -23,8 +23,8 @@ export class UtilsService {
   }
 
   ellipsis(s: string) {
-    const minLength = 10;
-    const sliceLength = 6;
+    const minLength = 12;
+    const sliceLength = 5;
 
     return s.length < minLength ? s : `${s.substring(0, sliceLength)}...${s.substring(s.length - sliceLength, s.length)}`;
   }

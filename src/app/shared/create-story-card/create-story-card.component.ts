@@ -133,4 +133,10 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
+  emojiSelected(s: string) {
+    if (s) {
+      this.codemirrorWrapper.insertText(s);
+    }
+  }
+
 }
