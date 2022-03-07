@@ -27,6 +27,7 @@ import { CreateStoryCardComponent } from './create-story-card/create-story-card.
 import { StoryCardComponent } from './story-card/story-card.component';
 import {RouterModule} from '@angular/router';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -53,7 +54,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     OverlayModule,
     PortalModule,
     MatRippleModule,
-    RouterModule
+    RouterModule,
+    MatTabsModule,
+    MatTooltipModule
   ],
   exports: [
   	MatToolbarModule,
@@ -79,7 +82,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatProgressSpinnerModule,
     CreateStoryCardComponent,
     StoryCardComponent,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ]
 })
 export class SharedModule { }

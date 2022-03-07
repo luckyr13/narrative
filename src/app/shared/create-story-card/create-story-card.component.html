@@ -22,27 +22,37 @@
 	<mat-card-actions align="end">
 		<div class="emotions-container" *ngIf="!loading">
 			<button
-					mat-icon-button
-					color="accent"
-					[matMenuTriggerFor]="matMenuEmojis"
-					[disabled]="loadingCreatePost">
-				<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
+				matTooltip="Insert Emoji"
+				mat-icon-button
+				color="accent"
+				[matMenuTriggerFor]="matMenuEmojis"
+				[disabled]="loadingCreatePost">
+			<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
+			</button>
+			<button 
+				matTooltip="Add Substory"
+				mat-icon-button color="accent" [disabled]="loadingCreatePost">
+				<mat-icon class="material-icons-outlined">post_add</mat-icon>
 			</button>
 			<mat-menu #matMenuEmojis="matMenu">
 			  <app-emojis (emojiSelectedEvent)="emojiSelected($event)"></app-emojis>
 			</mat-menu>
-			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
+			<button
+				matTooltip="Add Image"
+				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">image</mat-icon>
 			</button>
-			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
+			<button
+				matTooltip="Add Video"
+				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">videocam</mat-icon>
 			</button>
-			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
+			<button
+				matTooltip="Add Audio"
+				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">mic</mat-icon>
 			</button>
-			<button mat-icon-button color="accent" [disabled]="loadingCreatePost">
-				<mat-icon class="material-icons-outlined">post_add</mat-icon>
-			</button>
+			
 		</div>
 		<span class="spacer"></span>
 		<ngx-skeleton-loader

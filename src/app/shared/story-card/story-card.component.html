@@ -18,11 +18,21 @@
 			  	appearance="line" 
 			  	*ngIf="loadingProfile"
 			  	[theme]="{ 'height.px': 22, 'width': '60%', 'marginBottom.px': 12, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			  <ngx-skeleton-loader
+					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
+			  	appearance="line" 
+			  	*ngIf="loadingContent"
+			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 8, 'marginTop.px': 0, 'width': '100%' }"></ngx-skeleton-loader>
+			  <ngx-skeleton-loader
+					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
+			  	appearance="line" 
+			  	*ngIf="loadingContent"
+			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 8, 'marginTop.px': 0, 'width': '100%' }"></ngx-skeleton-loader>
 				<ngx-skeleton-loader
 					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 			  	appearance="line" 
 			  	*ngIf="loadingContent"
-			  	[theme]="{ 'height.px': 60, 'marginBottom.px': 20, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 20, 'marginTop.px': 0, 'width': '90%' }"></ngx-skeleton-loader>
 			  <div 
 			  	*ngIf="!loadingContent && content"
 			  	class="content fadeIn">
