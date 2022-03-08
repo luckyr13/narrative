@@ -1,14 +1,28 @@
-<div class="fadeIn">
-	<div class="profile-header mat-elevation-z2 pacific-dream"></div>
-	<div class="profile-subheader">
-		<div class="profile-img ">
-			<img class="avatar border-same-as-background mat-elevation-z2" mat-card-avatar [src]="profileImage">
+<ng-template [ngIf]="loadingProfile">
+	<div  class="fadeIn">
+		<mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+	</div>
+</ng-template>
+<ng-template [ngIf]="!loadingProfile && profileFound">
+	<div class="fadeIn">
+		<div class="profile-header mat-elevation-z2 pacific-dream"></div>
+		<div class="profile-subheader">
+			<div class="profile-img ">
+				<img class="avatar border-same-as-background mat-elevation-z2" mat-card-avatar [src]="profileImage">
+			</div>
+			<div class="profile-info">
+				<h2 *ngIf="nickname">{{ nickname }}</h2>
+				<app-arweave-address [address]="address"></app-arweave-address>
+			</div>
 		</div>
-		<div class="profile-info">
-			<h2>Nickname</h2> {{ address }}
+		<div class="col-body">
+			<div class="no-results"> No results. </div>
 		</div>
 	</div>
-	<div class="col-body">
-		<div class="no-results"> No results. </div>
+</ng-template>
+
+<ng-template [ngIf]="!loadingProfile && !profileFound">
+	<div class="fadeIn not-found">
+		<h2><span>😵</span> Profile not found.</h2>
 	</div>
-</div>
+</ng-template>

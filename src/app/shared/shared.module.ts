@@ -28,6 +28,7 @@ import { StoryCardComponent } from './story-card/story-card.component';
 import {RouterModule} from '@angular/router';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { ArweaveAddressComponent } from './arweave-address/arweave-address.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     EmojisComponent,
     CreateStoryCardComponent,
     StoryCardComponent,
+    ArweaveAddressComponent
   ],
   imports: [
     CommonModule,
@@ -83,7 +85,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     CreateStoryCardComponent,
     StoryCardComponent,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ArweaveAddressComponent
   ]
 })
 export class SharedModule { }
