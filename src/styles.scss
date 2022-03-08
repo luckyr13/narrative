@@ -134,6 +134,10 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-right-special {
     border-color: rgba(0, 0, 0, 0.12) !important;
   }
+
+  .border-same-as-background {
+    border-color: #FFFFFF !important;
+  }
 }
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
@@ -150,6 +154,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-card {
     background-color: #0f0f0f;
   }
+  .border-same-as-background {
+    border-color: #0f0f0f !important;
+  }
 }
 .light-pink-theme {
   @include mat.all-component-colors($light-pink-theme);
@@ -161,6 +168,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   }
   .border-right-special {
     border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+  .border-same-as-background {
+    border-color: #FFFFFF !important;
   }
 }
 .dark-deep-purple-theme {
@@ -177,6 +187,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
 
   .mat-card {
     background-color: #0f0f0f;
+  }
+  .border-same-as-background {
+    border-color: #0f0f0f !important;
   }
 }
 
@@ -195,6 +208,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-card {
     background-color: #0f0f0f;
   }
+  .border-same-as-background {
+    border-color: #0f0f0f !important;
+  }
 }
 .light-blue-theme {
   @include mat.all-component-colors($light-blue-theme);
@@ -206,6 +222,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   }
   .border-right-special {
     border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+  .border-same-as-background {
+    border-color: #FFFFFF !important;
   }
 }
 
@@ -223,6 +242,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
 
   .mat-card {
     background-color: #000a12;
+  }
+  .border-same-as-background {
+    border-color: #0f0f0f !important;
   }
   
 }
