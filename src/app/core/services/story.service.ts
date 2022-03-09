@@ -22,12 +22,13 @@ export class StoryService {
 
   createPost(msg: string) {
     const key = this._userAuth.getPrivateKey();
+    const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
       { name: 'App-Name', value: this._appSettings.appName },
       { name: 'Version', value: this._appSettings.protocolVersion },
       { name: 'Type', value: 'Story' },
     ];
-    return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags);
+    return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod );
   }
 
   getLatestPosts(from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {

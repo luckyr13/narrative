@@ -21,6 +21,7 @@ export class ArweaveService {
   public readonly baseURL: string = `${this.protocol}://${this.host}:${this.port}/`;
   public readonly blockToSeconds: number = 0.5 / 60;
   public readonly arweaveWebWallet: ArweaveWebWallet;
+  public readonly appInfo = { name: 'Narrative', logo: '' }
 
   constructor() {
     this.arweave = Arweave.init({
@@ -62,14 +63,32 @@ export class ArweaveService {
   */
   getAccount(method: string): Observable<string> {
     const obs = new Observable<string>((subscriber) => {
-      if (method === 'arconnect' || method === 'finnie') {
+      if (method === 'arconnect'){
         if (!(window && window.arweaveWallet)) {
           subscriber.error('Login method not available!');
         }
         // Get main account
         // very similar to window.ethereum.enable
-        this.arweave.wallets.getAddress().then((res: string) => {
-          subscriber.next(res);
+        window.arweaveWallet.connect([
+          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES', 'SIGN_TRANSACTION', 'DISPATCH'
+        ]).then(async () => {
+          const address = await this.arweave.wallets.getAddress();
+          subscriber.next(address);
+          subscriber.complete();
+        }).catch((error: any) => {
+          subscriber.error(error);
+        });
+      } else if (method === 'finnie') {
+        if (!(window && window.arweaveWallet)) {
+          subscriber.error('Login method not available!');
+        }
+        // Get main account
+        // very similar to window.ethereum.enable
+        window.arweaveWallet.connect([
+          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES', 'SIGN_TRANSACTION'
+        ]).then(async () => {
+          const address = await this.arweave.wallets.getAddress();
+          subscriber.next(address);
           subscriber.complete();
         }).catch((error: any) => {
           subscriber.error(error);
@@ -83,6 +102,7 @@ export class ArweaveService {
         }).catch((error: any) => {
           subscriber.error(error);
         });
+
 
       } else {
         subscriber.error('Wrong login method!');
@@ -227,7 +247,8 @@ export class ArweaveService {
     fileBin: any,
     contentType: string,
     key: JWKInterface | "use_wallet",
-    tags: {name: string, value: string}[] ): Promise<Transaction> {
+    tags: {name: string, value: string}[],
+    loginMethod: string ): Promise<Transaction> {
     // Create transaction
     let transaction = await this.arweave.createTransaction({
         data: fileBin,
@@ -238,16 +259,24 @@ export class ArweaveService {
       transaction.addTag(t.name, t.value);
     }
 
-    // Sign transaction
-    await this.arweave.transactions.sign(transaction, key);
+    if (loginMethod === 'arconnect' && window.arweaveWallet && +transaction.data_size <= 120000 ) {
+      const dispatchResult = await window.arweaveWallet.dispatch(transaction);
+      console.log('Trying dispatch method ...', dispatchResult);
 
-    // Submit transaction 
-    let uploader = await this.arweave.transactions.getUploader(transaction);
+    } else {
+      
+      console.log('Signing transaction ...');
 
-    while (!uploader.isComplete) {
-      await uploader.uploadChunk();
-      console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
+      // Sign transaction
+      await this.arweave.transactions.sign(transaction, key);
+      // Submit transaction 
+      let uploader = await this.arweave.transactions.getUploader(transaction);
+      while (!uploader.isComplete) {
+        await uploader.uploadChunk();
+        console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
+      }
     }
+    
 
     return transaction;
   }
@@ -349,7 +378,8 @@ export class ArweaveService {
       fileBin: any,
       contentType: string,
       key:  JWKInterface | "use_wallet",
-      tags: {name: string, value: string}[] ): Observable<Transaction> {
-    return from(this._uploadFileToArweave(fileBin, contentType, key, tags));
+      tags: {name: string, value: string}[],
+      method: string): Observable<Transaction> {
+    return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method));
   }
 }

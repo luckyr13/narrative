@@ -26,6 +26,10 @@ export class UserAuthService {
    
   }
 
+  public get loginMethod(): string {
+    return this._method;
+  }
+
   public loadAccount() {
     const mainAddress = window.sessionStorage.getItem('MAINADDRESS')
       || window.localStorage.getItem('MAINADDRESS');
@@ -33,6 +37,8 @@ export class UserAuthService {
       || window.localStorage.getItem('ARKEY');
     const method = window.sessionStorage.getItem('METHOD')
       || window.localStorage.getItem('METHOD');
+    const stayLoggedIn = window.sessionStorage.getItem('STAY_LOGGED_IN')
+      || window.localStorage.getItem('STAY_LOGGED_IN');
 
     if (mainAddress) {
       this._mainAddress = mainAddress
@@ -47,6 +53,7 @@ export class UserAuthService {
           console.log('Error loading address');
         });
       }
+      this.addressChangeListener(this._mainAddress, !!stayLoggedIn, this._method);
     }
   }
 
@@ -54,8 +61,10 @@ export class UserAuthService {
     const storage = stayLoggedIn ? window.localStorage : window.sessionStorage;
     this._mainAddress = mainAddress;
     this._method = method;
+
     storage.setItem('MAINADDRESS', mainAddress);
     storage.setItem('METHOD', method);
+    storage.setItem('STAY_LOGGED_IN', stayLoggedIn ? '1' : '');
     if (arKey) {
       this._arKey = arKey
       storage.setItem('ARKEY', JSON.stringify(this._arKey))
@@ -63,15 +72,34 @@ export class UserAuthService {
     this._account.next(mainAddress);
   }
 
+  addressChangeListener(mainAddress: string, stayLoggedIn: boolean, method: string) {
+    if (method === 'arconnect') {
+      if (!(window && window.arweaveWallet)) {
+        throw Error('ArConnect not found');
+      }
+      window.addEventListener('walletSwitch', (e) => {
+        if (this._mainAddress !== e.detail.address) {
+          this.setAccount(e.detail.address, null, stayLoggedIn, method);
+        }
+      });
+
+    } else if (method === 'webwallet') {
+      if (!(window && window.arweaveWallet)) {
+        throw Error('ArweaveWallet not found');
+      }
+    }
+  }
+
   public removeAccount() {
     this._account.next('');
     this._mainAddress = '';
     this._method = '';
     this._arKey = null;
-    for (let key of ['MAINADDRESS', 'ARKEY', 'METHOD']) {
+    for (let key of ['MAINADDRESS', 'ARKEY', 'METHOD', 'STAY_LOGGED_IN']) {
       window.sessionStorage.removeItem(key)
       window.localStorage.removeItem(key)
     }
+
   }
 
 
@@ -90,7 +118,7 @@ export class UserAuthService {
       case 'upload_file':
         method = this._arweave.uploadKeyFile(uploadInputEvent).pipe(
             tap( (_res: any) => {
-              this.removeAccount()
+              this.removeAccount();
               this.setAccount(_res.address, _res.key, stayLoggedIn, walletOption)
             })
           );
@@ -98,23 +126,25 @@ export class UserAuthService {
       case 'arconnect':
         method = this._arweave.getAccount(walletOption).pipe(
             tap( (_account: any) => {
-              this.removeAccount()
-              this.setAccount(_account.toString(), null, stayLoggedIn, walletOption)
+              this.removeAccount();
+              this.setAccount(_account.toString(), null, stayLoggedIn, walletOption);
+              this.addressChangeListener(_account.toString(), stayLoggedIn, walletOption);
             })
           );
       break;
       case 'webwallet':
         method = this._arweave.getAccount(walletOption).pipe(
             tap( (_account: any) => {
-              this.removeAccount()
+              this.removeAccount();
               this.setAccount(_account.toString(), null, stayLoggedIn, walletOption)
+              this.addressChangeListener(_account.toString(), stayLoggedIn, walletOption);
             })
           );
       break;
       case 'finnie':
         method = this._arweave.getAccount(walletOption).pipe(
             tap( (_account: any) => {
-              this.removeAccount()
+              this.removeAccount();
               this.setAccount(_account.toString(), null, stayLoggedIn, walletOption)
             })
           );
