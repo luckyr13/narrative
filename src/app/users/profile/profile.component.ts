@@ -20,6 +20,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   address: string = '';
   addressSubscription: Subscription = Subscription.EMPTY;
   profileFound = false;
+  bio: string = '';
   
   constructor(
   	private route: ActivatedRoute,
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	  		this.address = params.get('address')!;
 	  		this.loadingProfile = false;
 	  		this.profileFound = true;
+        this.loadVertoProfile(this.address);
 	  	},
 	  	error: (error) => {
 	  		this.loadingProfile = false;
@@ -46,7 +48,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	  	}
 	  });
 
- 		this.loadVertoProfile(this.address);
 
   }
 
@@ -65,24 +66,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
 		}
   }
 
-  ellipsis(s: string) {
-  	return this._utils.ellipsis(s);
-  }
-
   loadVertoProfile(address: string) {
     this.loadingProfile = true;
     this.profileImage = 'assets/images/blank-profile.png';
+    this.nickname = '';
+    this.bio = '';
+
     this.profileSubscription = this._verto.getProfile(address).subscribe({
         next: (profile: UserInterface|undefined) => {
-          this.nickname = '';
-
           if (profile) {
             if (profile.image) {
               this.profileImage = `${this._arweave.baseURL}${profile.image}`;
             }
             if (profile.username) {
               this.nickname = profile.username;
-
+            }
+            if (profile.bio) {
+              this.bio = profile.bio;
             }
           }
           this.loadingProfile = false;

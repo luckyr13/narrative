@@ -11,8 +11,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./bottom-sheet-login.component.scss']
 })
 export class BottomSheetLoginComponent implements OnInit, OnDestroy {
-	login$: Subscription = Subscription.EMPTY;
+	loginSubscription: Subscription = Subscription.EMPTY;
   stayLoggedIn: boolean = false;
+  loadingLogin = false;
 
   constructor(
   	private _auth: UserAuthService,
@@ -29,9 +30,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   *  @dev Destroy subscriptions
   */
   ngOnDestroy(): void {
-  	if (this.login$) {
-  		this.login$.unsubscribe();
-  	}
+		this.loginSubscription.unsubscribe();
   }
 
   /*
@@ -49,19 +48,26 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   *  @dev Select a method to connect wallet from modal (or bottom sheet)
   */
   login(walletOption: string, fileInput: any = null) {
+    this.loadingLogin = true;
+    if (walletOption === 'webwallet') {
+      this.loadingLogin = false;
+    }
 
-  	this.login$ = this._auth.login(walletOption, fileInput, this.stayLoggedIn).subscribe({
+  	this.loginSubscription = this._auth.login(walletOption, fileInput, this.stayLoggedIn).subscribe({
   		next: (address: string) => {
+        this.loadingLogin = false;
         this._bottomSheetRef.dismiss(address);
         this._utils.message('Welcome!', 'success');
   		},
   		error: (error) => {
+        this.loadingLogin = false;
         this._utils.message(`Error: ${error}`, 'error');
         this._bottomSheetRef.dismiss('');
 
   		}
   	});
   }
+
 
 
 }

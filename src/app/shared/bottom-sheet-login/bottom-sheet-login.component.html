@@ -1,3 +1,4 @@
+<mat-progress-bar *ngIf="loadingLogin" color="accent" mode="indeterminate"></mat-progress-bar>
 <mat-nav-list>
   <mat-checkbox class="option" (change)="setStayLoggedIn($event)">Stay Logged In</mat-checkbox>
   <mat-list-item (click)="login('arconnect')">
