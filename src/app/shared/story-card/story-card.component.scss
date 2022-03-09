@@ -83,3 +83,14 @@ h2 {
 .profile-name {
 	cursor: pointer;
 }
+
+.tx {
+	font-size: 12px;
+}
+
+.story-actions {
+}
+
+.story-actions .mat-icon-button:not(:first-child) {
+	margin-left: 12px;
+}

@@ -39,14 +39,25 @@
 			  	{{ content }}
 			  </div>
 			  <div 
-			  	*ngIf="post"
-			  	class="fadeIn">
-			  	TX: {{ post.id }}
-			  </div>
-			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
 			  	class="fadeIn">
 			  	Status: Pending
+			  </div>
+			  <div 
+			  	*ngIf="!loadingContent"
+			  	class="fadeIn story-actions">
+			  	<button mat-icon-button aria-label="Comment">
+		        <mat-icon>comment</mat-icon>
+		      </button>
+		      <button mat-icon-button aria-label="Share Story">
+		        <mat-icon>repeat</mat-icon>
+		      </button>
+		      <button mat-icon-button aria-label="Like">
+		        <mat-icon>favorite</mat-icon>
+		      </button>
+		      <button mat-icon-button aria-label="Donate">
+		        <mat-icon>paid</mat-icon>
+		      </button>
 			  </div>
 
 			</div>
