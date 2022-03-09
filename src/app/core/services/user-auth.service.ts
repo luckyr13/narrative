@@ -96,6 +96,13 @@ export class UserAuthService {
       if (!(window && window.arweaveWallet)) {
         throw Error('ArweaveWallet not found');
       }
+
+      this._arweave.arweaveWebWallet.on('connect', (address) => {
+        this.setAccount(address, null, stayLoggedIn, method);
+      });
+      this._arweave.arweaveWebWallet.on('disconnect', () => {
+        this.logout()
+      });
     }
   }
 
