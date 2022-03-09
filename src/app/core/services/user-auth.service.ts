@@ -45,15 +45,23 @@ export class UserAuthService {
       this._method = method!;
       if (arkey) { this._arKey = JSON.parse(arkey) }
       this._account.next(mainAddress);
+      // Arweave wallet
       if (this._method === 'webwallet') {
         this._arweave.arweaveWebWallet.connect().then((res: any) => {
           this._mainAddress = res;
+          this.addressChangeListener(this._mainAddress, !!stayLoggedIn, this._method);
           this._account.next(this._mainAddress);
         }).catch((error: any) => {
           console.log('Error loading address');
         });
       }
-      this.addressChangeListener(this._mainAddress, !!stayLoggedIn, this._method);
+      // ArConnect
+      window.addEventListener("arweaveWalletLoaded", () => {
+        window.setTimeout(() => {
+          this.addressChangeListener(this._mainAddress, !!stayLoggedIn, this._method);
+        }, 1000);
+      });
+      
     }
   }
 
@@ -75,6 +83,7 @@ export class UserAuthService {
   addressChangeListener(mainAddress: string, stayLoggedIn: boolean, method: string) {
     if (method === 'arconnect') {
       if (!(window && window.arweaveWallet)) {
+        console.log(window, window.arweaveWallet)
         throw Error('ArConnect not found');
       }
       window.addEventListener('walletSwitch', (e) => {

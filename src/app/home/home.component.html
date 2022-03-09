@@ -9,7 +9,7 @@
 	</p>
 	<div class="col-body fadeIn">
 		<div class="post-card-container" *ngIf="account">
-			<app-create-story-card></app-create-story-card>
+			<app-create-story-card [account]="account"></app-create-story-card>
 		</div>
 		<mat-divider *ngIf="account"></mat-divider>
 		<div class="post-list-container">

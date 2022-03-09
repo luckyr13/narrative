@@ -30,6 +30,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadingPosts = true;
     this.account = this._auth.getMainAddressSnapshot();
 
+    this._auth.account$.subscribe((account) => {
+      this.account = account;
+    });
+
     this._postSubscription = this._story.getLatestPosts([], this.maxPosts).subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
