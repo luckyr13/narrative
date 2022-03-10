@@ -39,7 +39,9 @@
               "typescript-is",
               "ardb",
               "validator",
-              "@verto/js"
+              "@verto/js",
+              "ar-gql",
+              "smartweave"
             ]
           },
           "configurations": {
