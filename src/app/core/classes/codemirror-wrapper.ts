@@ -72,9 +72,11 @@ export class CodeMirrorWrapper {
   }
 
   updatePlaceholder(placeholderTxt: string) {
-    this.editorView!.dispatch({
-      effects: this.placeholderCompartment.reconfigure(placeholder(placeholderTxt))
-    })
+    if (this.editorView) {
+      this.editorView.dispatch({
+        effects: this.placeholderCompartment.reconfigure(placeholder(placeholderTxt))
+      })
+    }
   }
 
   editable(readOnly: boolean) {

@@ -35,33 +35,46 @@
 			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 20, 'marginTop.px': 0, 'width': '90%' }"></ngx-skeleton-loader>
 			  <div 
 			  	*ngIf="!loadingContent && content"
-			  	class="content fadeIn">
-			  	{{ content }}
+			  	class="content fadeIn" [innerHTML]="content">
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
 			  	class="fadeIn">
 			  	Status: Pending
 			  </div>
-			  <div 
-			  	*ngIf="!loadingContent"
-			  	class="fadeIn story-actions">
-			  	<button mat-icon-button aria-label="Comment">
-		        <mat-icon>comment</mat-icon>
-		      </button>
-		      <button mat-icon-button aria-label="Share Story">
-		        <mat-icon>repeat</mat-icon>
-		      </button>
-		      <button mat-icon-button aria-label="Like">
-		        <mat-icon>favorite</mat-icon>
-		      </button>
-		      <button mat-icon-button aria-label="Donate">
-		        <mat-icon>paid</mat-icon>
-		      </button>
-			  </div>
-
 			</div>
+
 		</div>
+		 <div 
+		  	*ngIf="!loadingContent"
+		  	class="fadeIn story-actions">
+		  	<div class="action-btn-wrapper">
+	        <button mat-button class="blue-hover" aria-label="Comment" mat-tooltip="Comment">
+		        <mat-icon class="material-icons-outlined">comment</mat-icon>
+	        	<div>Comment</div>
+		      </button>
+	      </div>
+		  	<div class="action-btn-wrapper">
+		  		<button mat-button class="green-hover" aria-label="Repost">
+		        <mat-icon class="material-icons-outlined">repeat</mat-icon>
+		        <div>Repost</div>
+		      </button>
+	        
+		  	</div>
+	      <div class="action-btn-wrapper">
+	      	<button mat-button class="pink-hover" aria-label="Like">
+		        <mat-icon class="material-icons-outlined">favorite</mat-icon>
+	        	<div>Like</div>
+		      </button>
+		  	</div>
+	      <div class="action-btn-wrapper">
+	      	<button mat-button class="orange-hover" aria-label="Share Story">
+		        <mat-icon class="material-icons-outlined">share</mat-icon>
+	        	<div>Share</div>
+		      </button>
+		  	</div>
+	      
+		  </div>
 	</mat-card-content>
 	<mat-card-actions align="end">
 		

@@ -96,6 +96,9 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
     padding-top: 60px;
     padding-left: 10px;
   }
+  .address {
+    justify-content: left !important;
+  }
 }
 
 .not-found {
@@ -111,6 +114,7 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 .address {
   font-size: 12px;
   font-weight: normal;
+  justify-content: center;
 }
 
 .bio {

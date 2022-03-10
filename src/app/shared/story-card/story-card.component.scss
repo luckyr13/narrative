@@ -2,8 +2,8 @@
 	width: 100%;
 	margin: 0 auto;
 	padding: 16px;
+	padding-bottom: 10px;	
 	margin-top: 20px;
-	margin-bottom: 20px;	
 }
 
 mat-card-header {
@@ -51,7 +51,6 @@ mat-card-header {
 }
 
 .story-container .content {
-	margin-bottom: 20px;
 	min-height: 100px;
 }
 
@@ -64,6 +63,7 @@ mat-card-header {
 	.post-card {
 		width: 84%;
 		padding: 32px;
+		padding-bottom: 20px;
 	}
 }
 
@@ -88,9 +88,29 @@ h2 {
 	font-size: 12px;
 }
 
+
 .story-actions {
+	display: flex;
 }
 
-.story-actions .mat-icon-button:not(:first-child) {
-	margin-left: 12px;
+.story-actions .mat-button {
+	width: 100%;
+	-webkit-transition: color 0.5s ease-out;
+  -moz-transition: color 0.5s ease-out;
+  -o-transition: color 0.5s ease-out;
+  transition: color 0.5s ease-out;
+}
+.story-actions .mat-icon {
+	font-size: 22px;
+}
+.story-actions .action-btn-wrapper {
+	flex-grow: 1;
+	text-align: center;
+}
+.story-actions .action-btn-wrapper div {
+	font-size: 10px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 10px;
 }

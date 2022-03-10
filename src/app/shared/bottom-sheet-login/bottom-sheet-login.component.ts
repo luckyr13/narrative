@@ -57,7 +57,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   		next: (address: string) => {
         this.loadingLogin = false;
         this._bottomSheetRef.dismiss(address);
-        this._utils.message('Welcome!', 'success');
+        this._utils.message('Connection successful!', 'success');
   		},
   		error: (error) => {
         this.loadingLogin = false;
