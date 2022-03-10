@@ -8,6 +8,7 @@ import { ArweaveService } from '../../core/services/arweave.service';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 import { UtilsService } from '../../core/utils/utils.service';
 
+
 @Component({
   selector: 'app-story-card',
   templateUrl: './story-card.component.html',
@@ -60,7 +61,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     this.loadingContent = true;
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
-        this.content = `${data}`;
+        this.content = this._utils.sanitize(`${data}`);
         this.loadingContent = false;
       },
 
