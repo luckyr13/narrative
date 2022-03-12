@@ -1,24 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { InitPlatformAuthGuard } from './core/route-guards/init-platform-auth.guard';
+import { InitPlatformGuard } from './core/route-guards/init-platform.guard';
 
 const routes: Routes = [
 	{
 		path: 'home',
 		loadChildren: () => import('./home/home.module').then(m => m.HomeModule), 
-		canActivate: [InitPlatformAuthGuard]
+		canActivate: [InitPlatformGuard]
 	},
 	{ path: '', pathMatch: 'full', redirectTo: 'home' },
 	{
 		path: '',
 		loadChildren: () => import('./panel/panel.module').then(m => m.PanelModule),
-		canActivate: [InitPlatformAuthGuard]
+		canActivate: [InitPlatformGuard]
 	},
 	{
 		path: '**',
 		loadChildren: () => import('./page-not-found/page-not-found.module').then(m => m.PageNotFoundModule), 
-		canActivate: [InitPlatformAuthGuard]
+		canActivate: [InitPlatformGuard]
 	},
 ];
 

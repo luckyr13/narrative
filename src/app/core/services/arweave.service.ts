@@ -63,14 +63,14 @@ export class ArweaveService {
   */
   getAccount(method: string): Observable<string> {
     const obs = new Observable<string>((subscriber) => {
-      if (method === 'arconnect'){
+      // If ArConnect
+      if (method === 'arconnect') {
         if (!(window && window.arweaveWallet)) {
           subscriber.error('Login method not available!');
         }
         // Get main account
-        // very similar to window.ethereum.enable
         window.arweaveWallet.connect([
-          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES', 'SIGN_TRANSACTION', 'DISPATCH'
+          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES'
         ]).then(async () => {
           const address = await this.arweave.wallets.getAddress();
           subscriber.next(address);
@@ -78,33 +78,30 @@ export class ArweaveService {
         }).catch((error: any) => {
           subscriber.error(error);
         });
-      } else if (method === 'finnie') {
-        if (!(window && window.arweaveWallet)) {
-          subscriber.error('Login method not available!');
-        }
-        // Get main account
-        // very similar to window.ethereum.enable
-        window.arweaveWallet.connect([
-          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES', 'SIGN_TRANSACTION'
-        ]).then(async () => {
-          const address = await this.arweave.wallets.getAddress();
-          subscriber.next(address);
-          subscriber.complete();
-        }).catch((error: any) => {
-          subscriber.error(error);
-        });
-
-      } else if (method === 'webwallet') {
-
+      } // Arweave Web Wallet
+      else if (method === 'arweavewebwallet') {
         this.arweaveWebWallet.connect().then((res: string) => {
           subscriber.next(res);
           subscriber.complete();
         }).catch((error: any) => {
           subscriber.error(error);
         });
-
-
-      } else {
+      } // Finnie wallet
+      else if (method === 'finnie') {
+        if (!(window && window.arweaveWallet)) {
+          subscriber.error('Login method not available!');
+        }
+        // Get main account
+        window.arweaveWallet.connect([
+          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES'
+        ]).then(async () => {
+          const address = await this.arweave.wallets.getAddress();
+          subscriber.next(address);
+          subscriber.complete();
+        }).catch((error: any) => {
+          subscriber.error(error);
+        });
+      }else {
         subscriber.error('Wrong login method!');
       }
       

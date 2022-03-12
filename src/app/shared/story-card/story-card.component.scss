@@ -69,6 +69,15 @@ mat-card-header {
 		padding: 32px;
 		padding-bottom: 20px;
 	}
+	.profile-name:hover span {
+		text-decoration: underline;
+	}
+	.profile-name small, .profile-name span {
+		display: inline !important;
+	}
+	.profile-name small {
+		margin-top: 0px;
+	}
 }
 
 h2 span {
@@ -89,6 +98,13 @@ h2 {
 }
 .profile-name:hover span {
 	text-decoration: underline;
+}
+.profile-name small, .profile-name span {
+	display: block;
+}
+
+.profile-name small {
+	margin-top: 6px;
 }
 
 .tx {

@@ -16,9 +16,7 @@ export class InitPlatformAuthGuard implements CanActivate, CanActivateChild {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this._auth.getMainAddressSnapshot()) {
-      this._auth.loadAccount();
-    }
+    
     return true;
   }
   canActivateChild(

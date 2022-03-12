@@ -49,7 +49,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   */
   login(walletOption: string, fileInput: any = null) {
     this.loadingLogin = true;
-    if (walletOption === 'webwallet') {
+    if (walletOption === 'arweavewebwallet') {
       this.loadingLogin = false;
     }
 

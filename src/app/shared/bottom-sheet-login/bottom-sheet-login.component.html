@@ -5,7 +5,7 @@
     <img matListAvatar src="./assets/images/login-methods/arconnect.jpg">
     <span mat-line>ArConnect</span>
   </mat-list-item>
-  <mat-list-item (click)="login('webwallet')">
+  <mat-list-item (click)="login('arweavewebwallet')">
     <img matListAvatar src="./assets/images/login-methods/arweaveViewSmall.svg">
     <span mat-line>Arweave.app</span>
   </mat-list-item>
@@ -23,5 +23,5 @@
   <input type="file" 
     #fileUploader 
     accept=".json,application/json" 
-    (change)="login('upload_file', $event)">
+    (change)="login('pkFile', $event)">
 </div>
