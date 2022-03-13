@@ -43,5 +43,10 @@ export class ArweaveAddressComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.verificationSubscription.unsubscribe();
   }
+  
+  ellipsis(s: string) {
+    return this._utils.ellipsis(s);
+  }
+
 
 }

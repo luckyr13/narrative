@@ -58,7 +58,8 @@ import { ArweaveAddressComponent } from './arweave-address/arweave-address.compo
     MatRippleModule,
     RouterModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule
   ],
   exports: [
   	MatToolbarModule,

@@ -32,9 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   	this.loadingProfile = true;
-  	this.addressSubscription = this.route.paramMap.pipe(
-  			tap(this.validateAddress)
-  		).subscribe({
+  	this.addressSubscription = this.route.paramMap.subscribe({
 	  	next: (params) => {
 	  		this.address = params.get('address')!;
 	  		this.loadingProfile = false;

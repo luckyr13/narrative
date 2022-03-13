@@ -137,3 +137,19 @@ h2 {
 	text-align: center;
 	line-height: 10px;
 }
+
+.pending {
+	padding: 10px;
+	font-size: 12px;
+	text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pending span {
+	line-height: 32px;
+}
+
+.pending .mat-spinner {
+	margin-left: 20px;
+}

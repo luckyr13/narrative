@@ -10,7 +10,10 @@
 			  <img class="avatar" *ngIf="!loadingProfile" [routerLink]="['/', post.owner]" mat-card-avatar [src]="profileImage">
 			</div>
 			<div class="story-container">
-				<h2 class="profile-name" *ngIf="!loadingProfile" [routerLink]="['/', post.owner]">
+				<h2 
+					class="profile-name"
+					*ngIf="!loadingProfile"
+					[routerLink]="['/', profile ? profile.username : post.owner]">
 					<span *ngIf="profile">{{ profile.username }}</span><small *ngIf="post">@{{ ellipsis(post.owner) }}</small>
 				</h2>
 				<ngx-skeleton-loader
@@ -39,8 +42,9 @@
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
-			  	class="fadeIn">
-			  	Status: Pending
+			  	class="fadeIn pending">
+			  	<span>Pending TX</span>
+			  	<mat-spinner class="" color="accent" diameter="26"></mat-spinner>
 			  </div>
 			</div>
 
