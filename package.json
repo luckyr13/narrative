@@ -6,20 +6,21 @@
     "start": "ng serve",
     "build": "ng build --configuration production --base-href ./",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-docs": "ng build --output-path docs --base-href ./ --configuration production"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~13.2.0",
-    "@angular/cdk": "^13.2.4",
-    "@angular/common": "~13.2.0",
-    "@angular/compiler": "~13.2.0",
-    "@angular/core": "~13.2.0",
-    "@angular/forms": "~13.2.0",
-    "@angular/material": "^13.2.4",
-    "@angular/platform-browser": "~13.2.0",
-    "@angular/platform-browser-dynamic": "~13.2.0",
-    "@angular/router": "~13.2.0",
+    "@angular/animations": "~13.2.6",
+    "@angular/cdk": "^13.2.6",
+    "@angular/common": "~13.2.6",
+    "@angular/compiler": "~13.2.6",
+    "@angular/core": "~13.2.6",
+    "@angular/forms": "~13.2.6",
+    "@angular/material": "^13.2.6",
+    "@angular/platform-browser": "~13.2.6",
+    "@angular/platform-browser-dynamic": "~13.2.6",
+    "@angular/router": "~13.2.6",
     "@codemirror/closebrackets": "^0.19.1",
     "@codemirror/commands": "^0.19.8",
     "@codemirror/history": "^0.19.2",
@@ -27,7 +28,7 @@
     "@codemirror/state": "^0.19.9",
     "@codemirror/view": "^0.19.45",
     "@types/dompurify": "^2.3.3",
-    "@verto/js": "^1.0.0-beta-1",
+    "@verto/js": "^1.0.0-beta-4",
     "ardb": "^1.1.10",
     "arverify": "^0.0.11",
     "arweave": "^1.10.23",
@@ -45,9 +46,9 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.2.5",
-    "@angular/cli": "~13.2.5",
-    "@angular/compiler-cli": "~13.2.0",
+    "@angular-devkit/build-angular": "~13.2.6",
+    "@angular/cli": "~13.2.6",
+    "@angular/compiler-cli": "~13.2.6",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",
@@ -57,5 +58,10 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.5.2"
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "@three-em/node": false
   }
 }
