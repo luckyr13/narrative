@@ -35,7 +35,9 @@ export class ArweaveAddressComponent implements OnInit, OnDestroy {
     }
   }
 
-  copyClipboard(content: string, msg: string = 'Content copied!') {
+  copyClipboard(content: string, msg: string = 'Content copied!', event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
     this._clipboard.copy(content);
     this._utils.message(msg, 'success');
   }

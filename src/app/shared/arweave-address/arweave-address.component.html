@@ -12,7 +12,8 @@
 		matTooltip="Open in Viewblock"
 		target="_blank"
 		*ngIf="isAddress"
-		href="https://viewblock.io/arweave/address/{{address}}">
+		href="https://viewblock.io/arweave/address/{{address}}"
+		(click)="$event.stopPropagation()">
 		<mat-icon>open_in_new</mat-icon>
 	</a>
 	<a 
@@ -25,7 +26,7 @@
 	<a 
 		matTooltip="Copy address"
 		target="_blank"
-		(click)="copyClipboard(address, 'Address copied!')">
+		(click)="copyClipboard(address, 'Address copied!', $event)">
 		<mat-icon>content_copy</mat-icon>
 	</a>
 </div>
