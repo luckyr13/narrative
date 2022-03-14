@@ -4,14 +4,13 @@
 		<span>App Info</span>
 	</h2>
 	<mat-list>
-		<mat-list-item> Name: {{ appName }} </mat-list-item>
-		<mat-list-item> Platform Version: {{ appVersion }} </mat-list-item>
 		<mat-list-item> Protocol: {{ appName }} v{{ protocolVersion }} </mat-list-item>
+		<mat-list-item> Platform Version: {{ appVersion }} </mat-list-item>
 	</mat-list>
 	<h3>
 		Session data
 	</h3>
 	<p>
-		<button (click)="deleteSes()" mat-button color="warn">Delete all session data</button>
+		<button (click)="deleteSes()" mat-button color="warn">Clear Session</button>
 	</p>
 </div>
