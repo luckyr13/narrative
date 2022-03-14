@@ -21,7 +21,7 @@ export class ArweaveService {
   public readonly baseURL: string = `${this.protocol}://${this.host}:${this.port}/`;
   public readonly blockToSeconds: number = 0.5 / 60;
   public readonly arweaveWebWallet: ArweaveWebWallet;
-  public readonly appInfo = { name: 'Narrative', logo: '' }
+  public readonly appInfo = { name: 'Narrative', logo: '' };
 
   constructor() {
     this.arweave = Arweave.init({
@@ -256,7 +256,8 @@ export class ArweaveService {
       transaction.addTag(t.name, t.value);
     }
 
-    if (loginMethod === 'arconnect' && window.arweaveWallet && +transaction.data_size <= 120000 ) {
+    // If ArConnect try Dispatch first
+    if (loginMethod === 'arconnect' && +transaction.data_size <= 120000 ) {
       if (!(window && window.arweaveWallet)) {
         throw new Error('ArConnect method not available!');
       }
@@ -268,8 +269,28 @@ export class ArweaveService {
       const dispatchResult = await window.arweaveWallet.dispatch(transaction);
       console.log('Trying dispatch method ...', dispatchResult);
 
+    } // Else, try ArConnect Sign method
+    else if (loginMethod === 'arconnect') {
+      if (!(window && window.arweaveWallet)) {
+        throw new Error('ArConnect method not available!');
+      }
+
+      // Ask for SIGN_TRANSACTION permission
+      const account = await window.arweaveWallet.connect([
+        'SIGN_TRANSACTION'
+      ]);
+
+      console.log('Signing transaction ...');
+
+      // Sign transaction
+      await this.arweave.transactions.sign(transaction, key);
+      // Submit transaction 
+      let uploader = await this.arweave.transactions.getUploader(transaction);
+      while (!uploader.isComplete) {
+        await uploader.uploadChunk();
+        console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
+      }
     } else {
-      
       console.log('Signing transaction ...');
 
       // Sign transaction
@@ -281,7 +302,6 @@ export class ArweaveService {
         console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
       }
     }
-    
 
     return transaction;
   }

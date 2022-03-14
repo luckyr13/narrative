@@ -12,6 +12,23 @@ h2 span {
 	margin-left: 12px;
 }
 
-.info-container h3, .info-container p {
+.info-container h3 {
+	padding: 20px 0px 0px 20px;
+
+}
+
+.info-container p {
 	padding: 20px;
+}
+
+.info-container .mat-button {
+	font-size: 14px !important;
+}
+
+.mat-list-item {
+	font-size: 14px;
+}
+
+.mat-list-item span {
+	margin-left: 6px;
 }

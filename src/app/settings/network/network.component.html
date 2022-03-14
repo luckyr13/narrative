@@ -3,7 +3,28 @@
 		<mat-icon class="header-icon material-icons-outlined">settings_input_antenna</mat-icon>
 		<span>Network Settings</span>
 	</h2>
-	<p>
-		--
-	</p>
+	<mat-list>
+		<mat-list-item>
+			<strong>Gateway:</strong>
+			<span>{{ protocol }}://{{ host }}:{{ port }}</span>
+		</mat-list-item>
+		<mat-list-item>
+			<strong>Base URL:</strong>
+			<span> {{ baseURL }}</span>
+		</mat-list-item>
+	</mat-list>
+	<mat-divider></mat-divider>
+	<h3>
+		Gateway Status
+	</h3>
+	<mat-list>
+		<mat-list-item>
+			<strong>Current Block Height:</strong>
+			<span>{{ protocol }}://{{ host }}:{{ port }}</span>
+		</mat-list-item>
+		<mat-list-item>
+			<strong>Base URL:</strong>
+			<span> {{ baseURL }}</span>
+		</mat-list-item>
+	</mat-list>
 </div>

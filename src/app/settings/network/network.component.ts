@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ArweaveService } from '../../core/services/arweave.service';
 
 @Component({
   selector: 'app-network',
@@ -6,8 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./network.component.scss']
 })
 export class NetworkComponent implements OnInit {
+  host = '';
+  protocol = '';
+  port = 0;
+  baseURL = '';
+  currentHeight = 0;
 
-  constructor() { }
+  constructor(
+    private _arweave: ArweaveService
+  ) {
+    this.host = this._arweave.host;
+    this.protocol = this._arweave.protocol;
+    this.port = this._arweave.port;
+    this.baseURL = this._arweave.baseURL;
+    
+  }
 
   ngOnInit(): void {
   }

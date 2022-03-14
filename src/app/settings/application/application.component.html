@@ -4,9 +4,16 @@
 		<span>App Info</span>
 	</h2>
 	<mat-list>
-		<mat-list-item> Protocol: {{ appName }} v{{ protocolVersion }} </mat-list-item>
-		<mat-list-item> Platform Version: {{ appVersion }} </mat-list-item>
+		<mat-list-item>
+			<strong>Protocol:</strong>
+			<span> {{ appName }} v{{ protocolVersion }}</span>
+		</mat-list-item>
+		<mat-list-item>
+			<strong>Platform Version:</strong>
+			<span> {{ appVersion }}</span>
+		</mat-list-item>
 	</mat-list>
+	<mat-divider></mat-divider>
 	<h3>
 		Session data
 	</h3>
