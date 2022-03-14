@@ -3,7 +3,8 @@ import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserInterface } from '@verto/js/dist/faces';
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
-import { Subscription, tap, Observable } from 'rxjs';
+import { Subscription, tap, Observable, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
 
@@ -17,7 +18,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   profileSubscription: Subscription = Subscription.EMPTY;
   profileImage: string = 'assets/images/blank-profile.png';
   nickname: string = '';
-  address: string = '';
+  addressList: string[] = [];
   addressSubscription: Subscription = Subscription.EMPTY;
   profileFound = false;
   bio: string = '';
@@ -32,12 +33,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   	this.loadingProfile = true;
-  	this.addressSubscription = this.route.paramMap.subscribe({
-	  	next: (params) => {
-	  		this.address = params.get('address')!;
+  	this.addressSubscription = this.route.paramMap.pipe(
+        map((params) => {
+          const address = params.get('address')!;
+          return address;
+        }),
+  			switchMap((address: string) => {
+          return this.loadProfile(address);
+        })
+  		).subscribe({
+	  	next: (profile) => {
 	  		this.loadingProfile = false;
 	  		this.profileFound = true;
-        this.loadVertoProfile(this.address);
 	  	},
 	  	error: (error) => {
 	  		this.loadingProfile = false;
@@ -54,25 +61,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
   	this.addressSubscription.unsubscribe();
   }
 
-  validateAddress(params: ParamMap|Params) {
+  validateAddress(address: string) {
   	// Validate address 
-		const address = params.get('address')!;
 		const arweaveAddressLength = 43;
 
-		if (!address || address.length != arweaveAddressLength) {
-			throw Error('Invalid address');
+		if (address && address.length === arweaveAddressLength) {
+			return true;
 		}
+
+    return false;
   }
 
-  loadVertoProfile(address: string) {
-    this.loadingProfile = true;
+
+  loadProfile(address: string): Observable<UserInterface|undefined> {
     this.profileImage = 'assets/images/blank-profile.png';
     this.nickname = '';
     this.bio = '';
+    this.addressList = [];
 
-    this.profileSubscription = this._verto.getProfile(address).subscribe({
-        next: (profile: UserInterface|undefined) => {
+    return this._verto.getProfile(address).pipe(
+        switchMap((profile: UserInterface|undefined) => {
           if (profile) {
+            this.addressList = profile.addresses;
             if (profile.image) {
               this.profileImage = `${this._arweave.baseURL}${profile.image}`;
             }
@@ -82,14 +92,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
             if (profile.bio) {
               this.bio = profile.bio;
             }
+          } else if (this.validateAddress(address)) {
+            this.addressList.push(address);
+          } else {
+            throw Error('Profile not found/incorrect address');
           }
-          this.loadingProfile = false;
-        },
-        error: (error) => {
-          this.loadingProfile = false;
-          this._utils.message(error, 'error');
-        }
-      });
+          return of(profile);
+        })
+      );
   }
 
 

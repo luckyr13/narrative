@@ -14,7 +14,11 @@
 					class="profile-name"
 					*ngIf="!loadingProfile"
 					[routerLink]="['/', profile ? profile.username : post.owner]">
-					<span *ngIf="profile">{{ profile.username }}</span><small *ngIf="post">@{{ ellipsis(post.owner) }}</small>
+					<span *ngIf="profile">{{ profile.username }}</span>
+					<small *ngIf="post">
+						<app-arweave-address
+							[address]="post.owner" class="address"></app-arweave-address>
+					</small>
 				</h2>
 				<ngx-skeleton-loader
 					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"

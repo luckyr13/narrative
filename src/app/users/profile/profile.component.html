@@ -12,7 +12,9 @@
 			</div>
 			<div class="profile-info">
 				<h2 *ngIf="nickname">{{ nickname }}</h2>
-				<app-arweave-address [address]="address" class="address"></app-arweave-address>
+				<app-arweave-address
+					*ngFor="let address of addressList"
+					[address]="address" class="address"></app-arweave-address>
 			</div>
 		</div>
 		<div class="bio" *ngIf="bio">
