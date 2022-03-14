@@ -7,7 +7,33 @@
   		<span>Settings</span>
 	  </mat-toolbar>
 	</p>
-	<div class="col-body fadeIn">
-		<div class="no-results"> Settings</div>
-	</div>
+	<nav mat-tab-nav-bar backgroundColor="primary" color="accent" [tabPanel]="tabPanel">
+	  <a mat-tab-link 
+	     [routerLink]="['/', 'settings', 'application']"
+	     routerLinkActive="active"
+	     #rlApplication="routerLinkActive"
+	     [active]="rlApplication.isActive"> App Info </a>
+	  <a mat-tab-link 
+	     [routerLink]="['/', 'settings', 'network']"
+	     routerLinkActive="active"
+	     #rlApplication="routerLinkActive"
+	     [active]="rlApplication.isActive"> Network </a>
+	  <a mat-tab-link 
+	     [routerLink]="['/', 'settings', 'user']"
+	     routerLinkActive="active"
+	     #rlUser="routerLinkActive"
+	     [active]="rlUser.isActive"> User </a>
+	  <a mat-tab-link 
+	     [routerLink]="['/', 'settings', 'appearance']"
+	     routerLinkActive="active"
+	     #rlAppearance="routerLinkActive"
+	     [active]="rlAppearance.isActive"> Appearance </a>
+	  <a mat-tab-link 
+	     [routerLink]="['/', 'settings', 'language']"
+	     routerLinkActive="active"
+	     #rlLanguage="routerLinkActive"
+	     [active]="rlLanguage.isActive"> Language </a>
+	  
+	</nav>
+	<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
 </div>
