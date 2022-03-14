@@ -257,6 +257,14 @@ export class ArweaveService {
     }
 
     if (loginMethod === 'arconnect' && window.arweaveWallet && +transaction.data_size <= 120000 ) {
+      if (!(window && window.arweaveWallet)) {
+        throw new Error('ArConnect method not available!');
+      }
+      // Ask for DISPATCH permission
+      const account = await window.arweaveWallet.connect([
+        'DISPATCH'
+      ]);
+
       const dispatchResult = await window.arweaveWallet.dispatch(transaction);
       console.log('Trying dispatch method ...', dispatchResult);
 
