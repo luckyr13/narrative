@@ -62,7 +62,7 @@ export class UserSettingsService {
   	if (dtheme) {
   		this.setTheme(dtheme);
   	} else {
-  		this.setTheme('light-theme');
+  		this.setTheme('dark-blue-gray-theme');
   	}
   	if (dlang) {
   		this.setDefaultLang(dlang);
@@ -107,7 +107,7 @@ export class UserSettingsService {
 
   resetUserSettings() {
   	this._defaultLang = 'EN';
-  	this._defaultTheme = 'light-theme';
+  	this._defaultTheme = 'dark-blue-gray-theme';
   	this._storage.removeItem('defaultTheme');
   	this._storage.removeItem('defaultLang');
 

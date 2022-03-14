@@ -1,11 +1,17 @@
 <div class="info-container fadeIn">
 	<h2>
-		App Info
+		<mat-icon class="header-icon material-icons-outlined">info</mat-icon>
+		<span>App Info</span>
 	</h2>
 	<mat-list>
 		<mat-list-item> Name: {{ appName }} </mat-list-item>
-		<mat-list-item> Version: {{ appVersion }} </mat-list-item>
-		<mat-list-item> Protocol version: {{ appName }} v{{ protocolVersion }} </mat-list-item>
+		<mat-list-item> Platform Version: {{ appVersion }} </mat-list-item>
+		<mat-list-item> Protocol: {{ appName }} v{{ protocolVersion }} </mat-list-item>
 	</mat-list>
-	
+	<h3>
+		Session data
+	</h3>
+	<p>
+		<button (click)="deleteSes()" mat-button color="warn">Delete all session data</button>
+	</p>
 </div>

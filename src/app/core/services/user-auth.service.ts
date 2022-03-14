@@ -191,5 +191,11 @@ export class UserAuthService {
     this.removeAccount();
   }
 
+  public destroySession() {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    window.location.reload();
+  }
+
 
 }

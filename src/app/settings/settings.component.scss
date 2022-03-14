@@ -1,5 +1,21 @@
-
 .active {
   
   opacity: 1;
+}
+
+
+.action-btn-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.action-btn-wrapper div,
+.action-btn-wrapper .mat-icon,
+ {
+  
+}
+.action-btn-wrapper div {
+  font-size: 10px;
+  padding: 4px;
+  font-weight: bold;
+  line-height: 10px;
 }

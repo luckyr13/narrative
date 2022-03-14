@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppSettingsService } from '../../core/services/app-settings.service';
+import { UserAuthService } from '../../core/services/user-auth.service';
 
 @Component({
   selector: 'app-application',
@@ -12,7 +13,8 @@ export class ApplicationComponent implements OnInit {
   protocolVersion = '';
 
   constructor(
-    private _appSettings: AppSettingsService) {
+    private _appSettings: AppSettingsService,
+    private _userAuth: UserAuthService) {
     this.appName = this._appSettings.appName;
     this.appVersion = this._appSettings.appVersion;
     this.protocolVersion = this._appSettings.protocolVersion;
@@ -20,6 +22,10 @@ export class ApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  deleteSes() {
+    this._userAuth.destroySession();
   }
 
 }
