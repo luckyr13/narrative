@@ -1,10 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StoryService } from '../core/services/story.service';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { TransactionMetadata } from '../core/interfaces/transaction-metadata';
 import { UserAuthService } from '../core/services/user-auth.service';
 import { AppSettingsService } from '../core/services/app-settings.service';
 import { UtilsService } from '../core/utils/utils.service';
+import { ArweaveService } from '../core/services/arweave.service';
+import { NetworkInfoInterface } from 'arweave/web/network';
 
 @Component({
   templateUrl: './home.component.html',
@@ -24,7 +27,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _story: StoryService,
     private _auth: UserAuthService,
     private _appSettings: AppSettingsService,
-    private _utils: UtilsService) { }
+    private _utils: UtilsService,
+    private _arweave: ArweaveService) { }
 
   ngOnInit(): void {
     this.loadingPosts = true;
@@ -34,7 +38,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.account = account;
     });
 
-    this._postSubscription = this._story.getLatestPosts([], this.maxPosts).subscribe({
+    this._postSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._story.getLatestPosts([], this.maxPosts, currentHeight);
+      })
+    ).subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;

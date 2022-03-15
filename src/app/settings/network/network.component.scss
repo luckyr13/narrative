@@ -1,6 +1,6 @@
 .info-container h2 {
 	margin-top: 12px;
-	padding: 20px;
+	padding: 20px 0px 0px 20px;
 	display: flex;
 }
 
@@ -26,4 +26,9 @@ h2 span {
 
 .info-container p {
 	padding: 20px;
+}
+
+.loader-net-info {
+	margin: 0 auto;
+	width: 20%;
 }

@@ -15,16 +15,16 @@
 	</mat-list>
 	<mat-divider></mat-divider>
 	<h3>
-		Gateway Status
+		Network Info
 	</h3>
+	<div class="text-center loader-net-info" *ngIf="loadingNetworkInfo">
+		<mat-spinner color="accent" diameter="32"></mat-spinner>
+	</div>
 	<mat-list>
-		<mat-list-item>
-			<strong>Current Block Height:</strong>
-			<span>{{ protocol }}://{{ host }}:{{ port }}</span>
-		</mat-list-item>
-		<mat-list-item>
-			<strong>Base URL:</strong>
-			<span> {{ baseURL }}</span>
+		<mat-list-item *ngFor="let networkData of networkInfo | keyvalue">
+			<strong>{{ networkData.key }}</strong>
+			<span> {{ networkData.value }}</span>
 		</mat-list-item>
 	</mat-list>
+	<mat-divider></mat-divider>
 </div>
