@@ -5,13 +5,13 @@
 	</span>
 	<a 
 		matTooltip="Verified user!"
-		*ngIf="verified">
+		*ngIf="verified && showVerifiedBtn">
 		<mat-icon class="green">verified</mat-icon>
 	</a>
 	<a 
 		matTooltip="Open in Viewblock"
 		target="_blank"
-		*ngIf="isAddress"
+		*ngIf="isAddress && showOpenVieblockBtn"
 		href="https://viewblock.io/arweave/address/{{address}}"
 		(click)="$event.stopPropagation()">
 		<mat-icon>open_in_new</mat-icon>
@@ -19,13 +19,14 @@
 	<a 
 		matTooltip="Open in Viewblock"
 		target="_blank"
-		*ngIf="!isAddress"
+		*ngIf="!isAddress && showOpenVieblockBtn"
 		href="https://viewblock.io/arweave/tx/{{address}}">
 		<mat-icon>open_in_new</mat-icon>
 	</a>
 	<a 
 		matTooltip="Copy address"
 		target="_blank"
+		*ngIf="showCopyBtn"
 		(click)="copyClipboard(address, 'Address copied!', $event)">
 		<mat-icon>content_copy</mat-icon>
 	</a>

@@ -14,6 +14,9 @@ export class ArweaveAddressComponent implements OnInit, OnDestroy {
   public verified: boolean = false
   @Input() address: string = '';
   @Input() isAddress: boolean = true;
+  @Input() showOpenVieblockBtn: boolean = true;
+  @Input() showCopyBtn: boolean = true;
+  @Input() showVerifiedBtn: boolean = true;
   verificationSubscription = Subscription.EMPTY;
 
   constructor(

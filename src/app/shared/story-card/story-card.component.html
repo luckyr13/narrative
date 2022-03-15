@@ -19,7 +19,11 @@
 					<span *ngIf="profile">{{ profile.username }}</span>
 					<small *ngIf="post">
 						<app-arweave-address
-							[address]="post.owner" class="address"></app-arweave-address>
+							[address]="post.owner"
+							[showCopyBtn]="false"
+							[showOpenVieblockBtn]="false"
+							[showVerifiedBtn]="true"
+							class="address"></app-arweave-address>
 					</small>
 				</h2>
 				<ngx-skeleton-loader
