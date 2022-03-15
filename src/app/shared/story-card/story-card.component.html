@@ -1,4 +1,6 @@
-<mat-card class="post-card fadeIn mat-elevation-z0">
+<mat-card
+	class="post-card fadeIn mat-elevation-z0"
+	[routerLink]="['/', profile && profile.username ? profile.username : post.owner, post.id]">
 	<mat-card-content>
 		<div class="card-content">
 			<div class="avatar-container">

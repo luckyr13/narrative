@@ -7,6 +7,8 @@ import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
+import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
+import { NetworkInfoInterface } from 'arweave/web/network';
 
 @Component({
   selector: 'app-profile',
@@ -22,6 +24,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
   addressSubscription: Subscription = Subscription.EMPTY;
   profileFound = false;
   bio: string = '';
+  public posts: TransactionMetadata[] = [];
+  private maxPosts: number = 10;
+  public loadingPosts = false;
+  private _postSubscription: Subscription = Subscription.EMPTY;
+  private _nextResultsSubscription: Subscription = Subscription.EMPTY;
+  moreResultsAvailable = true;
   
   constructor(
   	private route: ActivatedRoute,
@@ -33,6 +41,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   	this.loadingProfile = true;
+
   	this.addressSubscription = this.route.paramMap.pipe(
         map((params) => {
           const address = params.get('address')!;
@@ -43,8 +52,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
         })
   		).subscribe({
 	  	next: (profile) => {
-	  		this.loadingProfile = false;
-	  		this.profileFound = true;
+        this.loadingProfile = false;
+        this.profileFound = true;
+        this.loadPosts(this.addressList[0]);
 	  	},
 	  	error: (error) => {
 	  		this.loadingProfile = false;
@@ -54,6 +64,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	  });
 
 
+  }
+
+  loadPosts(from: string) {
+    this.loadingPosts = true;
+    this._postSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._story.getLatestPosts([from], this.maxPosts, currentHeight);
+      })
+    ).subscribe({
+      next: (posts) => {
+        if (!posts || !posts.length) {
+          this.moreResultsAvailable = false;
+        }
+        this.posts = posts;
+        this.loadingPosts = false;
+      },
+      error: (error) => {
+        this.loadingPosts = false;
+        this.moreResultsAvailable = false;
+        this._utils.message(error, 'error');
+      }
+    })
   }
 
   ngOnDestroy() {
