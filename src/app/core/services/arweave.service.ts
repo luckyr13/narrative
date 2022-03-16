@@ -70,7 +70,8 @@ export class ArweaveService {
         }
         // Get main account
         window.arweaveWallet.connect([
-          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES'
+          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES',
+          'SIGN_TRANSACTION', 'DISPATCH'
         ]).then(async () => {
           const address = await this.arweave.wallets.getAddress();
           subscriber.next(address);
@@ -93,7 +94,7 @@ export class ArweaveService {
         }
         // Get main account
         window.arweaveWallet.connect([
-          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES'
+          'ACCESS_ADDRESS', 'ACCESS_ALL_ADDRESSES', 'SIGN_TRANSACTION'
         ]).then(async () => {
           const address = await this.arweave.wallets.getAddress();
           subscriber.next(address);
@@ -261,10 +262,6 @@ export class ArweaveService {
       if (!(window && window.arweaveWallet)) {
         throw new Error('ArConnect method not available!');
       }
-      // Ask for DISPATCH permission
-      const account = await window.arweaveWallet.connect([
-        'DISPATCH'
-      ]);
 
       const dispatchResult = await window.arweaveWallet.dispatch(transaction);
       console.log('Trying dispatch method ...', dispatchResult);
@@ -274,11 +271,6 @@ export class ArweaveService {
       if (!(window && window.arweaveWallet)) {
         throw new Error('ArConnect method not available!');
       }
-
-      // Ask for SIGN_TRANSACTION permission
-      const account = await window.arweaveWallet.connect([
-        'SIGN_TRANSACTION'
-      ]);
 
       console.log('Signing transaction ...');
 
