@@ -20,7 +20,11 @@ export class ArweaveService {
   public readonly port: number = 443;
   public readonly baseURL: string = `${this.protocol}://${this.host}:${this.port}/`;
   public readonly blockToSeconds: number = 0.5 / 60;
-  public readonly arweaveWebWallet: ArweaveWebWallet;
+  public readonly arweaveWebWallet = new ArweaveWebWallet({
+    name: 'Narrative App',
+    logo: 'https://arweave.net/wJGdli6nMQKCyCdtCewn84ba9-WsJ80-GS-KtKdkCLg'
+  });
+
   public readonly appInfo = { name: 'Narrative', logo: '' };
 
   constructor() {
@@ -30,10 +34,6 @@ export class ArweaveService {
       protocol: this.protocol,
     });
 
-    this.arweaveWebWallet = new ArweaveWebWallet({
-      name: 'Narrative App',
-      logo: 'https://arweave.net/wJGdli6nMQKCyCdtCewn84ba9-WsJ80-GS-KtKdkCLg'
-    })
     this.arweaveWebWallet.setUrl('arweave.app');
   }
 
@@ -342,17 +342,17 @@ export class ArweaveService {
   * @dev Get tx data as string
   */
   getDataAsString(txId: string): Observable<string | Uint8Array> {
-    return from(this.arweave.transactions.getData(txId, {decode: true, string: true})).pipe(
+    return from(fetch(`${this.baseURL}${txId}`)).pipe(
+        switchMap((res: Response) => {
+          if (!res.ok) {
+            throw new Error('Error fetching data from gw ...');
+          }
+          return from(res.text());
+        }),
         catchError((error) => {
-          console.error(error);
-          console.warn(`Fetching ${txId} data from gw cache ...`);
-          return from(fetch(`${this.baseURL}${txId}`)).pipe(
-            switchMap((res: Response) => {
-              if (!res.ok) {
-                return of('');
-              }
-              return from(res.text());
-            })
+          console.warn(`Fetching ${txId} data using method 2 ...`);
+          return from(this.arweave.transactions.getData(txId, {decode: true, string: true})).pipe(
+            // Handle when it fails
           );
         })
       );

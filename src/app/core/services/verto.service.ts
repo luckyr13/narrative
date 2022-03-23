@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Verto from '@verto/js';
 import { Observable, from, tap, of} from 'rxjs';
-import { UserInterface } from '@verto/js/dist/faces';
+import { UserInterface } from '@verto/js/dist/common/faces';
 
 @Injectable({
   providedIn: 'root'

@@ -10,7 +10,7 @@ import { AppSettingsService } from '../core/services/app-settings.service';
 import { Subscription, Observable } from 'rxjs';
 import { VertoService } from '../core/services/verto.service';
 import { ArweaveService } from '../core/services/arweave.service';
-import { UserInterface } from '@verto/js/dist/faces';
+import { UserInterface } from '@verto/js/dist/common/faces';
 import { UtilsService } from '../core/utils/utils.service';
 
 

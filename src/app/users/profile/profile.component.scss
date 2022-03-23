@@ -125,3 +125,23 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
   font-size: 12px;
   text-align: center;
 }
+
+.more-results {
+  font-weight: bold;
+  font-style: italic;
+}
+.more-results-card {
+  cursor: pointer;
+  border-radius: 0px;
+  width: 100%;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.more-results-container {
+  padding-top: 20px;
+}
+
+.mat-spinner {
+  margin: 0 auto;
+}

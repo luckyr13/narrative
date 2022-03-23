@@ -3,7 +3,7 @@ import {
   ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
-import { UserInterface } from '@verto/js/dist/faces';
+import { UserInterface } from '@verto/js/dist/common/faces';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserAuthService } from '../../core/services/user-auth.service';

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
-import { UserInterface } from '@verto/js/dist/faces';
+import { UserInterface } from '@verto/js/dist/common/faces';
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
@@ -133,6 +133,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
           return of(profile);
         })
       );
+  }
+
+  moreResults() {
+    this.loadingPosts = true;
+    this._nextResultsSubscription = this._story.next().subscribe({
+      next: (posts) => {
+        if (!posts || !posts.length) {
+          this.moreResultsAvailable = false;
+        }
+        this.posts = this.posts.concat(posts);
+        this.loadingPosts = false;
+      },
+      error: (error) => {
+        this.loadingPosts = false;
+        this._utils.message(error, 'error');
+      }
+    })
   }
 
 

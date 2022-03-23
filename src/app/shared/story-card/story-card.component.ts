@@ -3,7 +3,7 @@ import { TransactionMetadata } from '../../core/interfaces/transaction-metadata'
 import { VertoService } from '../../core/services/verto.service';
 import { Subscription, Observable } from 'rxjs';
 import { UserAuthService } from '../../core/services/user-auth.service';
-import { UserInterface } from '@verto/js/dist/faces';
+import { UserInterface } from '@verto/js/dist/common/faces';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 import { UtilsService } from '../../core/utils/utils.service';
