@@ -126,6 +126,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
   }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($light-theme-accent, 'default') !important;
+  }
 
   .mat-drawer-container {
     background-color: #FFFFFF;
@@ -143,6 +146,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   @include mat.all-component-colors($dark-theme);
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-theme-primary, 'default') !important;
+  }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($light-theme-primary, 'default') !important;
   }
   .mat-drawer-container {
     background-color: #0f0f0f;
@@ -166,6 +172,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-pink-accent, 'default') !important;
   }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($light-pink-accent, 'default') !important;
+  }
   .mat-drawer-container {
     background-color: #FFFFFF;
   }
@@ -180,6 +189,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   @include mat.all-component-colors($dark-deep-purple-theme);
   .border-color-theme {
     border-color: mat.get-color-from-palette($dark-deep-purple-accent, 'default') !important;
+  }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($dark-deep-purple-accent, 'default') !important;
   }
   .mat-drawer-container {
     background-color: #0f0f0f;
@@ -204,6 +216,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($dark-pink-accent, 'default') !important;
   }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($dark-pink-accent, 'default') !important;
+  }
   .mat-drawer-container {
     background-color: #0f0f0f;
   }
@@ -226,6 +241,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-color-theme {
     border-color: mat.get-color-from-palette($light-blue-accent, 'default') !important;
   }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($light-blue-accent, 'default') !important;
+  }
   .mat-drawer-container {
     background-color: #FFFFFF;
   }
@@ -241,6 +259,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   @include mat.all-component-colors($dark-blue-gray-theme);
   .border-color-theme {
     border-color: mat.get-color-from-palette($dark-blue-gray-accent, 'default') !important;
+  }
+  .color-accent-theme {
+    color: mat.get-color-from-palette($dark-blue-gray-accent, 'default') !important;
   }
   .mat-drawer-container {
     background-color: #000a12;

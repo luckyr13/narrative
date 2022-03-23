@@ -399,4 +399,15 @@ export class ArweaveService {
       method: string): Observable<Transaction> {
     return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method));
   }
+
+  validateAddress(address: string) {
+    // Validate address 
+    const arweaveAddressLength = 43;
+
+    if (address && address.length === arweaveAddressLength) {
+      return true;
+    }
+
+    return false;
+  }
 }

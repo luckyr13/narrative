@@ -9,7 +9,12 @@
 						[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 						appearance="circle"
 						[theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
-			  <img class="avatar" *ngIf="!loadingProfile" [routerLink]="['/', post.owner]" mat-card-avatar [src]="profileImage">
+			  <img
+			  	class="avatar"
+			  	*ngIf="!loadingProfile"
+			  	[routerLink]="['/', profile ? profile.username : post.owner]"
+			  	mat-card-avatar
+			  	[src]="profileImage">
 			</div>
 			<div class="story-container">
 				<h2 

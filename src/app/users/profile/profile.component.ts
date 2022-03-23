@@ -24,12 +24,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   addressSubscription: Subscription = Subscription.EMPTY;
   profileFound = false;
   bio: string = '';
-  public posts: TransactionMetadata[] = [];
-  private maxPosts: number = 10;
-  public loadingPosts = false;
-  private _postSubscription: Subscription = Subscription.EMPTY;
-  private _nextResultsSubscription: Subscription = Subscription.EMPTY;
-  moreResultsAvailable = true;
   
   constructor(
   	private route: ActivatedRoute,
@@ -54,7 +48,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 	  	next: (profile) => {
         this.loadingProfile = false;
         this.profileFound = true;
-        this.loadPosts(this.addressList[0]);
 	  	},
 	  	error: (error) => {
 	  		this.loadingProfile = false;
@@ -66,43 +59,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   }
 
-  loadPosts(from: string) {
-    this.loadingPosts = true;
-    this._postSubscription = this._arweave.getNetworkInfo().pipe(
-      switchMap((info: NetworkInfoInterface) => {
-        const currentHeight = info.height;
-        return this._story.getLatestPosts([from], this.maxPosts, currentHeight);
-      })
-    ).subscribe({
-      next: (posts) => {
-        if (!posts || !posts.length) {
-          this.moreResultsAvailable = false;
-        }
-        this.posts = posts;
-        this.loadingPosts = false;
-      },
-      error: (error) => {
-        this.loadingPosts = false;
-        this.moreResultsAvailable = false;
-        this._utils.message(error, 'error');
-      }
-    })
-  }
+  
 
   ngOnDestroy() {
   	this.profileSubscription.unsubscribe();
   	this.addressSubscription.unsubscribe();
-  }
-
-  validateAddress(address: string) {
-  	// Validate address 
-		const arweaveAddressLength = 43;
-
-		if (address && address.length === arweaveAddressLength) {
-			return true;
-		}
-
-    return false;
   }
 
 
@@ -125,7 +86,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             if (profile.bio) {
               this.bio = profile.bio;
             }
-          } else if (this.validateAddress(address)) {
+          } else if (this._arweave.validateAddress(address)) {
             this.addressList.push(address);
           } else {
             throw Error('Profile not found/incorrect address');
@@ -134,23 +95,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
         })
       );
   }
-
-  moreResults() {
-    this.loadingPosts = true;
-    this._nextResultsSubscription = this._story.next().subscribe({
-      next: (posts) => {
-        if (!posts || !posts.length) {
-          this.moreResultsAvailable = false;
-        }
-        this.posts = this.posts.concat(posts);
-        this.loadingPosts = false;
-      },
-      error: (error) => {
-        this.loadingPosts = false;
-        this._utils.message(error, 'error');
-      }
-    })
-  }
-
 
 }
