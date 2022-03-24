@@ -1,33 +1,21 @@
-<ng-template [ngIf]="loadingProfile">
-	<div  class="fadeIn">
-		<mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
-	</div>
-</ng-template>
-<ng-template [ngIf]="!loadingProfile && profileFound">
-	<div class="fadeIn">
-		<div class="profile-header mat-elevation-z2 pacific-dream"></div>
-		<div class="profile-subheader">
-			<div class="profile-img ">
-				<img class="avatar border-same-as-background mat-elevation-z2" mat-card-avatar [src]="profileImage">
-			</div>
-			<div class="profile-info">
-				<h2 *ngIf="nickname">{{ nickname }}</h2>
-				<app-arweave-address
-					*ngFor="let address of addressList"
-					[address]="address" class="address"></app-arweave-address>
-			</div>
+<div class="fadeIn">
+	<div class="profile-header mat-elevation-z2 pacific-dream"></div>
+	<div class="profile-subheader">
+		<div class="profile-img ">
+			<img class="avatar border-same-as-background mat-elevation-z2" mat-card-avatar [src]="profileImage">
 		</div>
-		<div class="bio" *ngIf="bio">
-			{{ bio }}
-		</div>
-		<div class="col-body">
-			<router-outlet></router-outlet>
+		<div class="profile-info">
+			<h2 *ngIf="name">{{ name }}</h2>
+			<h4 *ngIf="username" class="small-username">@{{ username }}</h4>
+			<app-arweave-address
+				*ngFor="let address of addressList"
+				[address]="address" class="address"></app-arweave-address>
 		</div>
 	</div>
-</ng-template>
-
-<ng-template [ngIf]="!loadingProfile && !profileFound">
-	<div class="fadeIn not-found">
-		<h2><span>😵</span> Profile not found.</h2>
+	<div class="bio" *ngIf="bio">
+		{{ bio }}
 	</div>
-</ng-template>
+	<div class="col-body">
+		<router-outlet></router-outlet>
+	</div>
+</div>

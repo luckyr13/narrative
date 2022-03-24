@@ -1,24 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { InitPlatformGuard } from './core/route-guards/init-platform.guard';
 
 const routes: Routes = [
 	{
 		path: 'home',
-		loadChildren: () => import('./home/home.module').then(m => m.HomeModule), 
-		canActivate: [InitPlatformGuard]
+		loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
 	},
 	{ path: '', pathMatch: 'full', redirectTo: 'home' },
 	{
+		path: 'profile-not-found',
+		loadChildren: () => import('./profile-not-found/profile-not-found.module').then(m => m.ProfileNotFoundModule) },
+	{
 		path: '',
-		loadChildren: () => import('./panel/panel.module').then(m => m.PanelModule),
-		canActivate: [InitPlatformGuard]
+		loadChildren: () => import('./panel/panel.module').then(m => m.PanelModule)
 	},
 	{
 		path: '**',
-		loadChildren: () => import('./page-not-found/page-not-found.module').then(m => m.PageNotFoundModule), 
-		canActivate: [InitPlatformGuard]
+		loadChildren: () => import('./page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
 	},
 ];
 

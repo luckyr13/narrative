@@ -89,5 +89,24 @@ export class StoryService {
     	);
   }
 
+  getPost(from: string[] | string = [], postId: string): Observable<TransactionMetadata> {
+    return this._ardb.searchOneTransaction(from, postId).pipe(
+        map((tx: ArdbTransaction) => {
+          if (!tx) {
+            throw new Error('Tx not found!');
+          }
+          const post: TransactionMetadata = {
+            id: tx.id,
+            owner: tx.owner.address,
+            blockId: tx.block && tx.block.id ? tx.block.id : '',
+            blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+            dataSize: tx.data.size,
+            dataType: tx.data.type,
+          }
+          return post;
+        })
+      );
+  }
+
 
 }

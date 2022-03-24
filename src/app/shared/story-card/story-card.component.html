@@ -12,6 +12,7 @@
 			  <img
 			  	class="avatar"
 			  	*ngIf="!loadingProfile"
+			  	(click)="$event.stopPropagation()"
 			  	[routerLink]="['/', profile ? profile.username : post.owner]"
 			  	mat-card-avatar
 			  	[src]="profileImage">
@@ -20,6 +21,7 @@
 				<h2 
 					class="profile-name"
 					*ngIf="!loadingProfile"
+					(click)="$event.stopPropagation()"
 					[routerLink]="['/', profile ? profile.username : post.owner]">
 					<span *ngIf="profile">{{ profile.username }}</span>
 					<small *ngIf="post">

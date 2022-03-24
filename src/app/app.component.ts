@@ -30,7 +30,9 @@ export class AppComponent implements OnInit, OnDestroy {
 		});
     this.loadAccountSubscription = this._auth.loadAccount().subscribe({
       next: (success) => {
-        this._utils.message(`Welcome back!`, 'success');
+        if (success) {
+          this._utils.message(`Welcome back!`, 'success');
+        }
       },
       error: (error) => {
         if (error == 'Error: LaunchArweaveWebWalletModal') {

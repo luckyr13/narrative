@@ -56,4 +56,25 @@ export class ArdbWrapper {
   next(): Observable<ArdbTransaction[]> {
     return from(<Promise<ArdbTransaction[]>>this.ardb.next());
   }
+
+  /*
+  * @dev Search transaction
+  */
+  searchOneTransaction(
+    from: string[] | string,
+    txId: string): Observable<ArdbTransaction> {
+    const obs = new Observable<ArdbTransaction>((subscriber) => {
+      this.ardb.search('transactions')
+        .id(txId)
+        .from(from).findOne().then((res: ArdbTransaction|ArdbBlock) => {
+          subscriber.next(<ArdbTransaction>res);
+          subscriber.complete();
+        })
+        .catch((error: string) => {
+          subscriber.error(error);
+        });
+    });
+    return obs;
+  }
+
 }

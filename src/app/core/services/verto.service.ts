@@ -20,7 +20,7 @@ export class VertoService {
   	}
     return from(this._verto.user.getUser(address)).pipe(
     	tap((profile) => {
-    		if (profile) {
+    		if (profile !== undefined) {
     			this.profiles[address] = profile;
     		}
     	})

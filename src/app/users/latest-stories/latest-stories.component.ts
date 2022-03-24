@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserInterface } from '@verto/js/dist/common/faces';
@@ -9,20 +9,21 @@ import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { NetworkInfoInterface } from 'arweave/web/network';
+import { ProfileResolverService } from '../../core/route-guards/profile-resolver.service';
+import { UserProfile } from '../../core/interfaces/user-profile';
 
 @Component({
   selector: 'app-latest-stories',
   templateUrl: './latest-stories.component.html',
   styleUrls: ['./latest-stories.component.scss']
 })
-export class LatestStoriesComponent implements OnInit {
+export class LatestStoriesComponent implements OnInit, OnDestroy {
   public posts: TransactionMetadata[] = [];
   private maxPosts: number = 10;
   public loadingPosts = false;
   private _postSubscription: Subscription = Subscription.EMPTY;
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
   public moreResultsAvailable = true;
-  private _addressSubscription: Subscription = Subscription.EMPTY;
   public addressList: string[] = [];
 
   constructor(
@@ -30,35 +31,28 @@ export class LatestStoriesComponent implements OnInit {
     private _verto: VertoService,
     private _arweave: ArweaveService,
     private _story: StoryService,
-    private _utils: UtilsService) { }
+    private _utils: UtilsService,
+    private _profileResolver: ProfileResolverService) { }
 
   ngOnInit(): void {
-    this._addressSubscription = this.route.paramMap.pipe(
-        map((params) => {
-          const address = params.get('address')!;
-          return address;
-        }),
-        switchMap((address: string) => {
-          return this.loadUserAddresses(address);
-        })
-      ).subscribe({
-      next: (userAddressList) => {
+    this.route.data
+      .subscribe(data => {
+        const profile: UserProfile = data['profile'];
+        const userAddressList = profile.profile ?
+          profile.profile.addresses :
+          [profile.address];
         this.loadPosts(userAddressList);
-      },
-      error: (error) => {
-        this._utils.message(error, 'error');
-      }
-    });
+      });
   }
 
   ngOnDestroy() {
     this._postSubscription.unsubscribe();
     this._nextResultsSubscription.unsubscribe();
-    this._addressSubscription.unsubscribe();
   }
 
   loadPosts(from: string|string[]) {
     this.loadingPosts = true;
+    this.posts = [];
     this._postSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
@@ -96,22 +90,6 @@ export class LatestStoriesComponent implements OnInit {
         this._utils.message(error, 'error');
       }
     })
-  }
-
-  loadUserAddresses(address: string): Observable<string[]> {
-    let addressList: string[] = [];
-    return this._verto.getProfile(address).pipe(
-      switchMap((profile: UserInterface|undefined) => {
-        if (profile) {
-          addressList = profile.addresses;
-        } else if (this._arweave.validateAddress(address)) {
-          addressList.push(address);
-        } else {
-          throw Error('Profile not found/incorrect address');
-        }
-        return of(addressList);
-      })
-    );
   }
 
 }

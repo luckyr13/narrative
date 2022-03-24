@@ -64,7 +64,9 @@ export class UserAuthService {
          
       } else if (method === 'arweavewebwallet')  {
         throw new Error('LaunchArweaveWebWalletModal');
-        
+      } else {
+        subscriber.next(false);
+        subscriber.complete();
       }
 
     });

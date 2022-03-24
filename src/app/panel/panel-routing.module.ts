@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LogoutComponent } from './logout/logout.component';
-import { InitPlatformAuthGuard } from '../core/route-guards/init-platform-auth.guard';
 
 const routes: Routes = [
 	{
@@ -10,7 +9,6 @@ const routes: Routes = [
 	},
 	{
 		path: '',
-		canActivateChild: [InitPlatformAuthGuard],
 		children: [
 			{ path: 'stories', loadChildren: () => import('../stories/stories.module').then(m => m.StoriesModule) },
 			{ path: 'notifications', loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsModule) },
