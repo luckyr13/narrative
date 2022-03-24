@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class AppSettingsService {
 	appName = 'Narrative';
-	appVersion = '0.0.2';
+	appVersion = '0.0.3';
 	protocolVersion = '0.0-dev';
 
   constructor() { }
