@@ -54,6 +54,23 @@
       <mat-icon *ngIf="!profileImage">person</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
+      <mat-list class="user-info-container">
+        <mat-list-item>
+          <img matListAvatar [src]="profileImage" alt="...">
+          <h3 matLine *ngIf="profile && profile.name" class="big-username"> {{ profile.name }} </h3>
+          <p matLine>
+            <span *ngIf="profile && profile.username" class="small-username-2">
+              @{{ profile.username }}
+            </span>
+            <app-arweave-address
+              [address]="account" class="small-username-2"></app-arweave-address>
+          </p>
+        </mat-list-item>
+      </mat-list>
+      <button mat-menu-item [routerLink]="[account]">
+        <mat-icon>person</mat-icon>
+        <span>Profile</span>
+      </button>
       <button mat-menu-item [routerLink]="['logout']">
         <mat-icon>logout</mat-icon>
         <span>Log Out</span>

@@ -26,7 +26,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   appName = this._appSettings.appName;
   profileSubscription: Subscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
-  profileImage: string = '';
+  profileImage: string = 'assets/images/blank-profile.png';
 
   constructor(
     private _userSettings: UserSettingsService,
@@ -48,12 +48,13 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
         this.profileSubscription = this._verto.getProfile(this.account).subscribe({
           next: (profile: UserInterface|undefined) => {
             if (profile) {
+              this.profile = profile;
               if (profile.image) {
                 this.profileImage = `${this._arweave.baseURL}${profile.image}`;
               }
             } else {
               this.profile = null;
-              this.profileImage = '';
+              this.profileImage = 'assets/images/blank-profile.png';
             }
           },
           error: (error) => {
@@ -98,6 +99,10 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
     sheet.afterDismissed().subscribe((address) => {
       // this.account = address;
     });
+  }
+
+  ellipsis(s: string) {
+    return this._utils.ellipsis(s);
   }
 
 
