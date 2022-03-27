@@ -10,7 +10,7 @@
           *ngIf="username" class="small-username user-link">@{{ username }}</a>
 			<app-arweave-address
 				*ngFor="let address of addressList"
-				[address]="address" class="small-username"></app-arweave-address>
+				[address]="address" class="small-username address"></app-arweave-address>
 		</div>
 	</div>
 	<div class="bio" *ngIf="bio">

@@ -11,7 +11,7 @@ export class ApplicationComponent implements OnInit {
   appName = '';
   appVersion = '';
   protocolVersion = '';
-  mainAddress = this._userAuth.account$;
+  mainAddress = '';
   sessionData = this._userAuth.getSessionData();
 
   constructor(
@@ -23,7 +23,10 @@ export class ApplicationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    this.mainAddress = this._userAuth.getMainAddressSnapshot();
+    this._userAuth.account$.subscribe((address) => {
+      this.mainAddress = address;
+    });
   }
 
   deleteSes() {

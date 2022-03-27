@@ -113,10 +113,12 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 }
 
 .bio {
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
 }
 
 .user-link {
   text-decoration: none;
+  margin-bottom: 6px;
+  display: block;
 }
