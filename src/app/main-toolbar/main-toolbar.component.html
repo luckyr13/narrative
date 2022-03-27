@@ -75,7 +75,7 @@
       </button>
       <button mat-menu-item [routerLink]="['logout']">
         <mat-icon>logout</mat-icon>
-        <span>Log Out</span>
+        <span>Log Out</span><span> @{{ ellipsis(account) }}</span>
       </button>
     </mat-menu>
   </mat-toolbar>
