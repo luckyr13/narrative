@@ -141,6 +141,13 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .border-same-as-background {
     border-color: #FFFFFF !important;
   }
+
+  .small-username {
+    color: rgb(20, 20, 20, 0.8);
+  }
+  .small-username-2 {
+    color: rgb(20, 20, 20, 0.8);
+  }
 }
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
@@ -183,6 +190,12 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   }
   .border-same-as-background {
     border-color: #FFFFFF !important;
+  }
+  .small-username {
+    color: rgb(20, 20, 20, 0.8);
+  }
+  .small-username-2 {
+    color: rgb(20, 20, 20, 0.8);
   }
 }
 .dark-deep-purple-theme {
@@ -252,6 +265,12 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   }
   .border-same-as-background {
     border-color: #FFFFFF !important;
+  }
+  .small-username {
+    color: rgb(20, 20, 20, 0.8);
+  }
+  .small-username-2 {
+    color: rgb(20, 20, 20, 0.8);
   }
 }
 
@@ -508,10 +527,15 @@ a {
 .small-username {
   font-size: 14px;
   margin-bottom: 6px;
-  color: rgb(220, 220, 220, 0.5);
 }
 .small-username-2 {
   font-size: 12px;
   margin-bottom: 6px;
-  color: rgb(220, 220, 220, 0.5);
+}
+
+.small-username {
+  color: rgb(220, 220, 220, 0.8);
+}
+.small-username-2 {
+  color: rgb(220, 220, 220, 0.8);
 }
