@@ -18,10 +18,8 @@
 		Session data
 	</h3>
 	<p>
-		<a 
-			[routerLink]="['/', 'logout']"
-			mat-button color="accent"
-			*ngIf="mainAddress">Log out</a>
-		<button (click)="deleteSes()" mat-button color="warn">Delete Session</button>
+		<button (click)="deleteSes()" mat-button color="warn">
+			<mat-icon>delete</mat-icon>Delete Session
+		</button>
 	</p>
 </div>

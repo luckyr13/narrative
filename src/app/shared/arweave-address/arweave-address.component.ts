@@ -17,6 +17,7 @@ export class ArweaveAddressComponent implements OnInit, OnDestroy {
   @Input() showOpenVieblockBtn: boolean = true;
   @Input() showCopyBtn: boolean = true;
   @Input() showVerifiedBtn: boolean = true;
+  @Input() ellipsis: boolean = true;
   verificationSubscription = Subscription.EMPTY;
 
   constructor(
@@ -49,7 +50,7 @@ export class ArweaveAddressComponent implements OnInit, OnDestroy {
     this.verificationSubscription.unsubscribe();
   }
   
-  ellipsis(s: string) {
+  applyEllipsis(s: string) {
     return this._utils.ellipsis(s);
   }
 
