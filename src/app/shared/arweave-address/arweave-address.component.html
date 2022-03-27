@@ -1,7 +1,7 @@
 <div class="address-container">
 	<span class="address-tx ellipsis">
 		<strong><ng-content></ng-content></strong>
-		<span>{{ isAddress ? '@' : '' }}</span>{{ ellipsis ? applyEllipsis(address) : address }} 
+		<span>{{ prependSymbol ? prependSymbol : '' }}</span>{{ ellipsis ? applyEllipsis(address) : address }} 
 	</span>
 	<a 
 		matTooltip="Verified user!"

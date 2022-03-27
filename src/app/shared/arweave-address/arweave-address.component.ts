@@ -18,6 +18,7 @@ export class ArweaveAddressComponent implements OnInit, OnDestroy {
   @Input() showCopyBtn: boolean = true;
   @Input() showVerifiedBtn: boolean = true;
   @Input() ellipsis: boolean = true;
+  @Input() prependSymbol: string = '@';
   verificationSubscription = Subscription.EMPTY;
 
   constructor(
