@@ -29,6 +29,8 @@ import {RouterModule} from '@angular/router';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { ArweaveAddressComponent } from './arweave-address/arweave-address.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { ArweaveAddressComponent } from './arweave-address/arweave-address.compo
     EmojisComponent,
     CreateStoryCardComponent,
     StoryCardComponent,
-    ArweaveAddressComponent
+    ArweaveAddressComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +62,8 @@ import { ArweaveAddressComponent } from './arweave-address/arweave-address.compo
     RouterModule,
     MatTabsModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDialogModule
   ],
   exports: [
   	MatToolbarModule,
@@ -87,7 +91,8 @@ import { ArweaveAddressComponent } from './arweave-address/arweave-address.compo
     StoryCardComponent,
     MatTabsModule,
     MatTooltipModule,
-    ArweaveAddressComponent
+    ArweaveAddressComponent,
+    MatDialogModule
   ]
 })
 export class SharedModule { }

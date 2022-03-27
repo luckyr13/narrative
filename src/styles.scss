@@ -510,19 +510,19 @@ a {
 }
 
 .pink-hover:hover {
-  color: rgb(255,1,93);
+  color: rgb(255,1,93) !important;
 }
 .blue-hover:hover {
-  color: #00a6f2;
+  color: #00a6f2 !important;
 }
 .green {
-  color: rgb(80,203,130);
+  color: rgb(80,203,130) !important;
 }
 .green-hover:hover {
-  color: rgb(80,203,130);
+  color: rgb(80,203,130) !important;
 }
 .orange-hover:hover {
-  color: #ffa72b;
+  color: #ffa72b !important;
 }
 .small-username {
   font-size: 14px;
@@ -533,6 +533,9 @@ a {
   margin-bottom: 6px;
 }
 
+/*
+* Default colors
+*/
 .small-username {
   color: rgb(220, 220, 220, 0.8);
 }

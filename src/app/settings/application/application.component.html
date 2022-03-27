@@ -17,7 +17,12 @@
 	<h3>
 		Session data
 	</h3>
+	<pre class="session-data">{{ sessionData | json }}</pre>
 	<p>
-		<button (click)="deleteSes()" mat-button color="warn">Clear Session</button>
+		<a 
+			[routerLink]="['/', 'logout']"
+			mat-button color="accent"
+			*ngIf="mainAddress | async">Log out</a>
+		<button (click)="deleteSes()" mat-button color="warn">Delete Session</button>
 	</p>
 </div>

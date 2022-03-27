@@ -11,6 +11,8 @@ export class ApplicationComponent implements OnInit {
   appName = '';
   appVersion = '';
   protocolVersion = '';
+  mainAddress = this._userAuth.account$;
+  sessionData = this._userAuth.getSessionData();
 
   constructor(
     private _appSettings: AppSettingsService,

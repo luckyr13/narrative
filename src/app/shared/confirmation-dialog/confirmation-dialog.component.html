@@ -1,0 +1,16 @@
+<h2 mat-dialog-title *ngIf="data.title">{{ data.title }}</h2>
+<mat-dialog-content>
+  <p class="content">
+  	{{ data.content }}
+  </p>
+</mat-dialog-content>
+<mat-dialog-actions align="start">
+  <button mat-button [color]="data.closeColor" (click)="close(false)">{{ data.closeLabel }}</button>
+  <div class="spacer"></div>
+  <button
+  	mat-flat-button
+  	cdkFocusInitial
+  	class="green"
+  	(click)="close(true)"
+  	[color]="data.confirmColor ? data.confirmColor : ''">{{ data.confirmLabel }}</button>
+</mat-dialog-actions>

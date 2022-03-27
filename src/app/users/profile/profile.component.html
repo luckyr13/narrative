@@ -6,7 +6,8 @@
 		</div>
 		<div class="profile-info">
 			<h2 *ngIf="name">{{ name }}</h2>
-			<h4 *ngIf="username" class="small-username">@{{ username }}</h4>
+			<a [routerLink]="['/', username]" 
+          *ngIf="username" class="small-username user-link">@{{ username }}</a>
 			<app-arweave-address
 				*ngFor="let address of addressList"
 				[address]="address" class="small-username"></app-arweave-address>

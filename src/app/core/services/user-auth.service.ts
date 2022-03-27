@@ -199,5 +199,18 @@ export class UserAuthService {
     window.location.reload();
   }
 
+  public getSessionData() {
+    return {
+      localStorage: window.localStorage,
+      sessionStorage: window.sessionStorage
+    }
+  }
+
+  public getStayLoggedIn() {
+    const stayLoggedIn = !!window.sessionStorage.getItem('STAY_LOGGED_IN')
+        || !!window.localStorage.getItem('STAY_LOGGED_IN');
+    return stayLoggedIn;
+  }
+
 
 }
