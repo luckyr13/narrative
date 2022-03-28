@@ -27,9 +27,20 @@ export class HistoryComponent implements OnInit {
     private _auth: UserAuthService) { }
 
   ngOnInit(): void {
-    this.loadingPosts = true;
     this.account = this._auth.getMainAddressSnapshot();
+    if (this.account) {
+      this.loadResults();
+    }
 
+    this._auth.account$.subscribe((_account) => {
+      this.account = _account;
+      this.loadResults();
+    });
+
+  }
+
+  loadResults() {
+    this.loadingPosts = true;
     this._postSubscription = this._story.getLatestPosts([this.account], this.maxPosts).subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
@@ -44,11 +55,6 @@ export class HistoryComponent implements OnInit {
         this._utils.message(error, 'error');
       }
     })
-
-    this._auth.account$.subscribe((_account) => {
-      this.account = _account;
-    });
-
   }
 
   moreResults() {

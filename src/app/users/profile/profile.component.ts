@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserProfile } from '../../core/interfaces/user-profile';
 import { ArweaveService } from '../../core/services/arweave.service';
+import { UserAuthService } from '../../core/services/user-auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,10 +15,13 @@ export class ProfileComponent implements OnInit {
   addressList: string[] = [];
   bio: string = '';
   name: string = '';
+  addressRouteParam = '';
+  editProfileFlag = false;
   
   constructor(
     private _route: ActivatedRoute,
-    private _arweave: ArweaveService) { }
+    private _arweave: ArweaveService,
+    private _auth: UserAuthService) { }
 
   ngOnInit(): void {
     // Profile already loaded
@@ -42,6 +46,20 @@ export class ProfileComponent implements OnInit {
         this.addressList = [profile.address];
       }
       
+    });
+
+
+    this._route.paramMap.subscribe((params) => {
+      this.addressRouteParam = params.get('address')!;
+    });
+
+    this._auth.account$.subscribe((currentAddress) => {
+      this.editProfileFlag = false;
+      // Validate current user
+      if (this.addressList.indexOf(currentAddress) >= 0) {
+        this.editProfileFlag = true;
+      }
+
     });
 
   }

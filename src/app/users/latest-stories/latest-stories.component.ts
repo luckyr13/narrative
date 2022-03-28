@@ -8,7 +8,6 @@ import { switchMap, map } from 'rxjs/operators';
 import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
-import { NetworkInfoInterface } from 'arweave/web/network';
 import { ProfileResolverService } from '../../core/route-guards/profile-resolver.service';
 import { UserProfile } from '../../core/interfaces/user-profile';
 
@@ -53,13 +52,7 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
   loadPosts(from: string|string[]) {
     this.loadingPosts = true;
     this.posts = [];
-    this._postSubscription = this._arweave.getNetworkInfo().pipe(
-      switchMap((info: NetworkInfoInterface) => {
-        const currentHeight = info.height;
-        const tmpFrom = typeof from === 'string' ? [from] : from;
-        return this._story.getLatestPosts(tmpFrom, this.maxPosts, currentHeight);
-      })
-    ).subscribe({
+    this._postSubscription = this._story.getLatestPosts(from, this.maxPosts).subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;

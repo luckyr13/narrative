@@ -109,4 +109,19 @@ export class StoryService {
   }
 
 
+  getPendingPosts(
+    from: string[] | string = [], limit?: number, maxHeight?: number
+  ): Observable<TransactionMetadata[]> {
+   
+    return this.getLatestPosts(from, limit, maxHeight).pipe(
+        map((_posts: TransactionMetadata[]) => {
+          const res = _posts.filter((post) => {
+            return !!!post.blockId;
+          })
+          return res;
+        })
+      );
+  }
+
+
 }

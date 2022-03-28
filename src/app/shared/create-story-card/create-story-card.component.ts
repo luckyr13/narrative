@@ -66,7 +66,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.loadingData = true;
     this.profileImage = 'assets/images/blank-profile.png';
     this.nickname = '';
-    this.codemirrorWrapper.updatePlaceholder(`What\'s on your mind?`);
+    const accountEllipsis = this._utils.ellipsis(account);
+    this.codemirrorWrapper.updatePlaceholder(`What\'s on your mind ${accountEllipsis}?`);
 
     this.profileSubscription = this._verto.getProfile(account).subscribe({
         next: (profile: UserInterface|undefined) => {

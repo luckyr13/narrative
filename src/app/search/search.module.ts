@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { StoriesRoutingModule } from './stories-routing.module';
-import { StoriesComponent } from './stories.component';
+import { SearchRoutingModule } from './search-routing.module';
+import { SearchComponent } from './search.component';
 import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
   declarations: [
-    StoriesComponent
+    SearchComponent
   ],
   imports: [
     CommonModule,
-    StoriesRoutingModule,
+    SearchRoutingModule,
     SharedModule
   ]
 })
-export class StoriesModule { }
+export class SearchModule { }

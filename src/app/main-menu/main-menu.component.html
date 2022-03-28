@@ -13,14 +13,14 @@
   </a>
   <a mat-list-item
     matRipple
-    [routerLink]="['stories']" 
+    [routerLink]="['search']" 
     [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
     #rlaSearch="routerLinkActive">
     <mat-icon 
       mat-list-icon
       [class]="{ 'material-icons-outlined': !rlaSearch.isActive }" 
       [color]="rlaSearch.isActive ? 'accent' : 'default'">search</mat-icon>
-    <div mat-line>Stories</div>
+    <div mat-line>Search</div>
   </a>
   <a mat-list-item
     matRipple

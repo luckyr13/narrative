@@ -1,7 +1,8 @@
 .col-body {
   width: 100%;
-  min-height: 100%;
+  min-height: 620px;
   padding-bottom: 40px;
+  margin-top: 20px;
 }
 
 
@@ -79,7 +80,15 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 .profile-info h2 {
   margin-bottom: 6px;
 }
-
+.profile-actions {
+  width: 100%;
+  text-align: center;
+  padding-top: 4px;
+}
+.profile-actions .mat-stroked-button,
+.profile-actions .mat-flat-button {
+  margin-left: 10px;
+}
 .avatar {
   width: 160px;
   height: 160px;
@@ -95,10 +104,15 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
   }
   .profile-info {
     float: left;
-    width: 80%;
+    width: 50%;
     text-align: left;
     padding-top: 60px;
     padding-left: 10px;
+  }
+  .profile-actions {
+    width: 30%;
+    float: left;
+    padding-top: 60px;
   }
   .address {
     justify-content: left !important;
@@ -115,10 +129,15 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 .bio {
   font-size: 14px;
   text-align: center;
+  padding-top: 12px;
 }
 
 .user-link {
   text-decoration: none;
   margin-bottom: 6px;
   display: block;
+}
+
+.active {
+  opacity: 1;
 }

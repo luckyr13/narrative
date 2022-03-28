@@ -12,11 +12,40 @@
 				*ngFor="let address of addressList"
 				[address]="address" class="small-username address"></app-arweave-address>
 		</div>
+		<div class="profile-actions" *ngIf="editProfileFlag">
+	    <button mat-stroked-button color="accent"><mat-icon>edit</mat-icon> Edit Profile</button>
+		</div>
+		<div class="profile-actions" *ngIf="!editProfileFlag">
+	    <button mat-stroked-button color="accent">Follow</button>
+	    <button mat-flat-button color="accent"><mat-icon>people_alt</mat-icon> Add</button>
+		</div>
 	</div>
 	<div class="bio" *ngIf="bio">
 		{{ bio }}
 	</div>
 	<div class="col-body">
-		<router-outlet></router-outlet>
+		<nav 
+			mat-tab-nav-bar
+			class="mat-elevation-z1"
+			backgroundColor="primary"
+			color="accent" [tabPanel]="tabPanel">
+		  <a mat-tab-link 
+		     [routerLink]="['/', addressRouteParam]"
+		     [routerLinkActiveOptions]="{exact: true}"
+		     routerLinkActive="active"
+		     #rlStories="routerLinkActive"
+		     [active]="rlStories.isActive"> Stories</a>
+		  <a mat-tab-link 
+		     #rlReply="routerLinkActive"
+		     routerLinkActive="active"
+		     [active]="rlReply.isActive"
+		     [routerLink]="['replies']"> Replies </a>
+		  <a mat-tab-link 
+		     #rlLike="routerLinkActive"
+		     routerLinkActive="active"
+		     [active]="rlLike.isActive"
+		     [routerLink]="['likes']"> Likes </a>
+		</nav>
+		<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
 	</div>
 </div>
