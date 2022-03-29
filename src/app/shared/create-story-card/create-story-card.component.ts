@@ -1,6 +1,6 @@
 import { 
   Component, OnInit, ElementRef, OnDestroy, AfterViewInit,
-  ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
+  ViewChild, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
 import { UserInterface } from '@verto/js/dist/common/faces';
@@ -32,6 +32,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   isDarkTheme = false;
   themeSubscription = Subscription.EMPTY;
   @Input('account') account!: string;
+  @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
 
   constructor(
     private _verto: VertoService,
@@ -125,8 +126,12 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         this.loadingCreatePost = false;
         this.codemirrorWrapper.resetEditor();
         this.codemirrorWrapper.editable(true);
+        if (!tx || !tx.id) {
+          this._utils.message('Error creating tx!', 'error');
+          return;
+        }
         this._utils.message('Success!', 'success');
-    
+        this.newStoryEvent.emit(tx.id);    
       },
       error: (error) => {
         this._utils.message(error, 'error');

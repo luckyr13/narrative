@@ -86,5 +86,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     this._nextResultsSubscription.unsubscribe();
   }
 
+  newStoryCreated(tx: string) {
+    const txMeta: TransactionMetadata = {
+      id: tx,
+      owner: this.account
+    };
+    window.setTimeout(() => {
+      this.posts.unshift(txMeta);
+    }, 500);
+  }
+
 
 }

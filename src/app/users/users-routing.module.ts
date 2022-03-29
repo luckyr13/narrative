@@ -6,6 +6,7 @@ import { LatestStoriesComponent } from './latest-stories/latest-stories.componen
 import { ProfileResolverService } from '../core/route-guards/profile-resolver.service';
 import { RepliesComponent } from './replies/replies.component';
 import { LikesComponent } from './likes/likes.component';
+import { PendingComponent } from './pending/pending.component';
 
 const routes: Routes = [
 	{
@@ -20,6 +21,9 @@ const routes: Routes = [
 			},
 			{
 				path: 'likes', component: LikesComponent, resolve: {profile: ProfileResolverService}
+			},
+			{
+				path: 'pending', component: PendingComponent, resolve: {profile: ProfileResolverService}
 			},
 			{
 				path: ':storyId', component: StoryComponent, resolve: {profile: ProfileResolverService}

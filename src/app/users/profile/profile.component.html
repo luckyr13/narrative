@@ -35,6 +35,11 @@
 		     #rlStories="routerLinkActive"
 		     [active]="rlStories.isActive"> Stories</a>
 		  <a mat-tab-link 
+		     #rlPending="routerLinkActive"
+		     routerLinkActive="active"
+		     [active]="rlPending.isActive"
+		     [routerLink]="['pending']"> Pending </a>
+		  <a mat-tab-link 
 		     #rlReply="routerLinkActive"
 		     routerLinkActive="active"
 		     [active]="rlReply.isActive"
@@ -44,6 +49,7 @@
 		     routerLinkActive="active"
 		     [active]="rlLike.isActive"
 		     [routerLink]="['likes']"> Likes </a>
+		  
 		</nav>
 		<mat-tab-nav-panel #tabPanel><router-outlet></router-outlet></mat-tab-nav-panel>
 	</div>

@@ -13,11 +13,11 @@ import { UserProfile } from '../../core/interfaces/user-profile';
 import { NetworkInfoInterface } from 'arweave/web/network';
 
 @Component({
-  selector: 'app-latest-stories',
-  templateUrl: './latest-stories.component.html',
-  styleUrls: ['./latest-stories.component.scss']
+  selector: 'app-pending',
+  templateUrl: './pending.component.html',
+  styleUrls: ['./pending.component.scss']
 })
-export class LatestStoriesComponent implements OnInit, OnDestroy {
+export class PendingComponent implements OnInit, OnDestroy {
   public posts: TransactionMetadata[] = [];
   private maxPosts: number = 10;
   public loadingPosts = false;
@@ -53,13 +53,7 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
   loadPosts(from: string|string[]) {
     this.loadingPosts = true;
     this.posts = [];
-    this._postSubscription = this._arweave.getNetworkInfo().pipe(
-      switchMap((info: NetworkInfoInterface) => {
-        const currentHeight = info.height;
-        const tmpFrom = typeof from === 'string' ? [from] : from;
-        return this._story.getLatestPosts(tmpFrom, this.maxPosts, currentHeight);
-      })
-    ).subscribe({
+    this._postSubscription = this._story.getPendingPosts(from).subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;
