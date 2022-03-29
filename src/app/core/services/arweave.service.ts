@@ -246,7 +246,7 @@ export class ArweaveService {
     contentType: string,
     key: JWKInterface | "use_wallet",
     tags: {name: string, value: string}[],
-    loginMethod: string ): Promise<Transaction> {
+    loginMethod: string ): Promise<Transaction|{id: string, type: string}> {
     // Create transaction
     let transaction = await this.arweave.createTransaction({
         data: fileBin,
@@ -265,6 +265,8 @@ export class ArweaveService {
 
       const dispatchResult = await window.arweaveWallet.dispatch(transaction);
       console.log('Trying dispatch method ...', dispatchResult);
+      // Return Dispatch result
+      return dispatchResult;
 
     } // Else, try ArConnect Sign method
     else if (loginMethod === 'arconnect') {
@@ -396,7 +398,7 @@ export class ArweaveService {
       contentType: string,
       key:  JWKInterface | "use_wallet",
       tags: {name: string, value: string}[],
-      method: string): Observable<Transaction> {
+      method: string): Observable<Transaction | {id: string, type: string}> {
     return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method));
   }
 
