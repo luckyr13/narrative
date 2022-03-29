@@ -11,7 +11,6 @@ const routes: Routes = [
 		path: '',
 		children: [
 			{ path: 'search', loadChildren: () => import('../search/search.module').then(m => m.SearchModule) },
-	{ path: 'notifications', loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsModule) },
 			{ path: 'friends', loadChildren: () => import('../friends/friends.module').then(m => m.FriendsModule) },
 			{
 				path: 'logout', component: LogoutComponent

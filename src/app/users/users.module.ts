@@ -6,13 +6,17 @@ import { SharedModule } from '../shared/shared.module';
 import { ProfileComponent } from './profile/profile.component';
 import { StoryComponent } from './story/story.component';
 import { LatestStoriesComponent } from './latest-stories/latest-stories.component';
+import { RepliesComponent } from './replies/replies.component';
+import { LikesComponent } from './likes/likes.component';
 
 
 @NgModule({
   declarations: [
     ProfileComponent,
     StoryComponent,
-    LatestStoriesComponent
+    LatestStoriesComponent,
+    RepliesComponent,
+    LikesComponent
   ],
   imports: [
     CommonModule,

@@ -24,17 +24,6 @@
   </a>
   <a mat-list-item
     matRipple
-    [routerLink]="['notifications']" 
-    [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
-    #rlaNotifications="routerLinkActive">
-    <mat-icon
-      mat-list-icon
-      [class]="{ 'material-icons-outlined': !rlaNotifications.isActive }" 
-      [color]="rlaNotifications.isActive ? 'accent' : 'default'">notifications</mat-icon>
-    <div mat-line>Notifications</div>
-  </a>
-  <a mat-list-item
-    matRipple
     [routerLink]="account" 
     [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
     #rlaProfile="routerLinkActive">

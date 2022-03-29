@@ -4,6 +4,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { StoryComponent } from './story/story.component';
 import { LatestStoriesComponent } from './latest-stories/latest-stories.component';
 import { ProfileResolverService } from '../core/route-guards/profile-resolver.service';
+import { RepliesComponent } from './replies/replies.component';
+import { LikesComponent } from './likes/likes.component';
 
 const routes: Routes = [
 	{
@@ -13,6 +15,12 @@ const routes: Routes = [
 			profile: ProfileResolverService
 		},
 		children: [
+			{
+				path: 'replies', component: RepliesComponent, resolve: {profile: ProfileResolverService}
+			},
+			{
+				path: 'likes', component: LikesComponent, resolve: {profile: ProfileResolverService}
+			},
 			{
 				path: ':storyId', component: StoryComponent, resolve: {profile: ProfileResolverService}
 			},
