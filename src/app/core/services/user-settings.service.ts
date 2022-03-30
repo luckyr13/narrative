@@ -136,5 +136,19 @@ export class UserSettingsService {
   isDarkTheme(theme: string) {
     return this.themes[theme].dark;
   }
+
+  scrollPageToTop() {
+    const container = document.getElementById('ww-mat-sidenav-main-content');
+    if (container) {
+      container.scrollTop = 0;
+    }
+  }
+
+  scrollTo(to_id: string, offset: number = 0) {
+    const container = document.getElementById('ww-mat-sidenav-main-content');
+    const to = document.getElementById(to_id);
+    const toData = to.getBoundingClientRect();
+    container.scrollTop += toData.top + offset;
+  }
   
 }
