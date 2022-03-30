@@ -1,6 +1,6 @@
 import { 
   Component, OnInit, OnDestroy,
-  ViewChild, ElementRef, AfterViewInit, NgZone } from '@angular/core';
+  ViewChild, ElementRef, NgZone } from '@angular/core';
 import { StoryService } from '../core/services/story.service';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -24,7 +24,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: string = '';
   version = this._appSettings.appVersion;
   moreResultsAvailable = true;
-  scrollTop: number = 0;
   @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
   constructor(
@@ -115,11 +114,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     window.setTimeout(() => {
       this.posts.unshift(txMeta);
     }, 500);
-  }
-
-  ngAfterViewInit() {
-   
-
   }
 
 }

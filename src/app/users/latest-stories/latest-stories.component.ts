@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { 
+  Component, OnInit, OnDestroy, Input,
+  ViewChild, ElementRef, NgZone } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserInterface } from '@verto/js/dist/common/faces';
@@ -11,6 +13,7 @@ import { TransactionMetadata } from '../../core/interfaces/transaction-metadata'
 import { ProfileResolverService } from '../../core/route-guards/profile-resolver.service';
 import { UserProfile } from '../../core/interfaces/user-profile';
 import { NetworkInfoInterface } from 'arweave/web/network';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-latest-stories',
@@ -25,6 +28,7 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
   public moreResultsAvailable = true;
   public addressList: string[] = [];
+  @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +36,9 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
     private _arweave: ArweaveService,
     private _story: StoryService,
     private _utils: UtilsService,
-    private _profileResolver: ProfileResolverService) { }
+    private _profileResolver: ProfileResolverService,
+    private _appSettings: AppSettingsService,
+    private _ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.route.data
@@ -43,6 +49,20 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
           [profile.address];
         this.loadPosts(userAddressList);
       });
+
+    this._appSettings.scrollTopStream.subscribe((scroll) => {
+      this._ngZone.run(() => {
+        const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
+          this.moreResultsCard.nativeElement.scrollTop;
+        const padding = 500;
+        if ((scroll > moreResultsPos - padding) && 
+            !this.loadingPosts &&
+            this.moreResultsAvailable) {
+          this.moreResults();
+        }
+      });
+      
+    })
   }
 
   ngOnDestroy() {

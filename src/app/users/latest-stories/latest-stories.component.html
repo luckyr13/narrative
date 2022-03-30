@@ -7,9 +7,15 @@
 	<div class="no-results" *ngIf="!posts.length && !loadingPosts">
 		There are no Stories yet!
 	</div>
-	<mat-card class="more-results-card mat-elevation-z0" matRipple *ngIf="!loadingPosts && moreResultsAvailable" (click)="moreResults()" >
+	<mat-card 
+		#moreResultsCard 
+		[style.visibility]="!loadingPosts && moreResultsAvailable ? 'visible' : 'hidden'"
+		class="more-results-card mat-elevation-z0"
+		matRipple
+		(click)="moreResults()" >
 	  <mat-card-content class="more-results text-center">
 			Show older posts
 	  </mat-card-content>
 	</mat-card>
+
 </div>
