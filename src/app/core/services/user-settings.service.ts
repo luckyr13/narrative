@@ -9,10 +9,6 @@ declare const document: any;
 export class UserSettingsService {
 	private _defaultTheme: string = '';
 	private _defaultLang: string = '';
-  private _loadingPlatform: Subject<boolean> = new Subject<boolean>();
-  public loadingPlatform$ = this._loadingPlatform.asObservable();
-  private _showMainToolbar: Subject<boolean> = new Subject<boolean>();
-  public showMainToolbar$ = this._showMainToolbar.asObservable();
   private _storage = window.localStorage;
   public themes: Record<string, {id: string, dark: boolean}> = {
     'light-theme': {
@@ -55,8 +51,6 @@ export class UserSettingsService {
   constructor() {
   	const dtheme = this._storage.getItem('defaultTheme');
   	const dlang = this._storage.getItem('defaultLang');
-    this.setLoadingPlatform(false);
-    this.setShowMainToolbar(false);
 
   	// Default settings
   	if (dtheme) {
@@ -67,14 +61,6 @@ export class UserSettingsService {
   	if (dlang) {
   		this.setDefaultLang(dlang);
   	}
-  }
-
-  setLoadingPlatform(_isLoading: boolean) {
-    this._loadingPlatform.next(_isLoading);
-  }
-
-  setShowMainToolbar(_show: boolean) {
-    this._showMainToolbar.next(_show);
   }
 
   getDefaultTheme(): string {
@@ -135,20 +121,6 @@ export class UserSettingsService {
 
   isDarkTheme(theme: string) {
     return this.themes[theme].dark;
-  }
-
-  scrollPageToTop() {
-    const container = document.getElementById('ww-mat-sidenav-main-content');
-    if (container) {
-      container.scrollTop = 0;
-    }
-  }
-
-  scrollTo(to_id: string, offset: number = 0) {
-    const container = document.getElementById('ww-mat-sidenav-main-content');
-    const to = document.getElementById(to_id);
-    const toData = to.getBoundingClientRect();
-    container.scrollTop += toData.top + offset;
   }
   
 }

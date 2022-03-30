@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { 
+  Component, OnInit, OnDestroy,
+  ViewChild, ElementRef, AfterViewInit, NgZone } from '@angular/core';
 import { StoryService } from '../core/services/story.service';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -22,13 +24,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: string = '';
   version = this._appSettings.appVersion;
   moreResultsAvailable = true;
+  scrollTop: number = 0;
+  @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
   constructor(
     private _story: StoryService,
     private _auth: UserAuthService,
     private _appSettings: AppSettingsService,
     private _utils: UtilsService,
-    private _arweave: ArweaveService) { }
+    private _arweave: ArweaveService,
+    private _ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.loadingPosts = true;
@@ -62,6 +67,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.account = _account;
     });
 
+
+    this._appSettings.scrollTopStream.subscribe((scroll) => {
+      this._ngZone.run(() => {
+        const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
+          this.moreResultsCard.nativeElement.scrollTop;
+        const padding = 500;
+        if ((scroll > moreResultsPos - padding) && 
+            !this.loadingPosts &&
+            this.moreResultsAvailable) {
+          this.moreResults();
+        }
+      });
+      
+    })
+
+    
   }
 
   moreResults() {
@@ -96,5 +117,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }, 500);
   }
 
+  ngAfterViewInit() {
+   
+
+  }
 
 }

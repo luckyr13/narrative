@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserSettingsService } from './core/services/user-settings.service';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { AppSettingsService } from './core/services/app-settings.service';
 import { Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { UserAuthService } from './core/services/user-auth.service';
@@ -8,21 +8,22 @@ import { MatDialog } from '@angular/material/dialog';
 import { 
   ConfirmationDialogComponent 
 } from './shared/confirmation-dialog/confirmation-dialog.component';
+import { MatSidenavContainer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   opened = true;
-  platformLoading$ = this._userSettings.loadingPlatform$;
-  openerSubscription: Subscription = Subscription.EMPTY;
+  platformLoading$ = this._appSettings.loadingPlatform$;
   loadAccountSubscription: Subscription = Subscription.EMPTY;
   loginSubscription: Subscription = Subscription.EMPTY;
+  @ViewChild(MatSidenavContainer) sidenavContainer!: MatSidenavContainer;
 
   constructor(
-    private _userSettings: UserSettingsService,
+    private _appSettings: AppSettingsService,
     private _auth: UserAuthService,
     private _utils: UtilsService,
     public dialog: MatDialog
@@ -31,9 +32,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-		this.openerSubscription = this._userSettings.showMainToolbar$.subscribe((show) => {
-			this.opened = show;
-		});
     this.loadAccountSubscription = this._auth.loadAccount().subscribe({
       next: (success) => {
         if (success) {
@@ -50,10 +48,11 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     });
+    this.consoleWelcomeMessage();
   }
 
   ngOnDestroy() {
-  	this.openerSubscription.unsubscribe();
+    this.loadAccountSubscription.unsubscribe();
   }
 
   toggle(val: boolean) {
@@ -92,6 +91,18 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit() {
+    this.sidenavContainer.scrollable.elementScrolled().subscribe((ev) => {
+      const target: any = ev.target;
+      const scroll: number = target.scrollTop;
+      this._appSettings.updateScrollTop(scroll);
+    });
+  }
+
+  consoleWelcomeMessage() {
+    console.log('%cWelcome to Narrative!', 'background: #FBD6D2; color: #000; font-size: 32px; padding: 10px; margin-bottom: 20px;');
+  
+  }
 
   
 }
