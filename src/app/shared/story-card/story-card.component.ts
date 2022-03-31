@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { VertoService } from '../../core/services/verto.service';
 import { Subscription, Observable } from 'rxjs';
@@ -25,6 +25,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   content: string = '';
   isDarkTheme = false;
   themeSubscription = Subscription.EMPTY;
+  @ViewChild('contentContainer') contentContainer!: ElementRef;
 
   constructor(
     private _verto: VertoService,
@@ -65,10 +66,18 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     this.loadingContent = true;
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
-        this.content = this._utils.sanitize(`${data}`);
         this.loadingContent = false;
+        this.content = this._utils.sanitize(`${data}`);
+        window.setTimeout(() => {
+          const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
+            this.contentContainer.nativeElement.getElementsByTagName('a') : [];
+          for (const anchor of aTags) {
+            anchor.addEventListener('click', (event: MouseEvent) => {
+              event.stopPropagation();
+            });
+          }
+        }, 400);
       },
-
       error: (error) => {
         this.loadingContent = false;
         this._utils.message(error, 'error');

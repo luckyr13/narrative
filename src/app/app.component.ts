@@ -100,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   consoleWelcomeMessage() {
-    console.log('%cWelcome to Narrative!', 'background: #FBD6D2; color: #000; font-size: 32px; padding: 10px; margin-bottom: 20px;');
+    console.log('%c👋 Welcome to Narrative!', 'background: #FBD6D2; color: #330c62; font-size: 32px; padding: 10px; margin-bottom: 20px;');
   
   }
 

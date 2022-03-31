@@ -13,6 +13,7 @@
 				[address]="address" class="small-username address"></app-arweave-address>
 		</div>
 		<div class="profile-actions" *ngIf="editProfileFlag">
+	    <button [routerLink]="['/', 'logout']" mat-stroked-button color="warn"><mat-icon>logout</mat-icon> Log out</button>
 	    <button mat-stroked-button color="accent"><mat-icon>edit</mat-icon> Edit Profile</button>
 		</div>
 		<div class="profile-actions" *ngIf="!editProfileFlag">

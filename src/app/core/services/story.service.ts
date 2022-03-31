@@ -27,6 +27,7 @@ export class StoryService {
       { name: 'App-Name', value: this._appSettings.appName },
       { name: 'Version', value: this._appSettings.protocolVersion },
       { name: 'Type', value: 'Story' },
+      { name: 'Network', value: 'Koii' }
     ];
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod );
   }
@@ -49,6 +50,13 @@ export class StoryService {
         name: "Type",
         values: ["Story"]
       },
+      /*
+      // Koii filter
+      {
+        name: "Network",
+        values: ["Koii"]
+      },
+      */
   	];
   	return this._ardb.searchTransactions(from, limit, maxHeight, tags).pipe(
         map((_posts: ArdbTransaction[]) => {

@@ -23,7 +23,7 @@
 					*ngIf="!loadingProfile"
 					(click)="$event.stopPropagation()"
 					[routerLink]="['/', profile ? profile.username : post.owner]">
-					<span *ngIf="profile">{{ profile.username }}</span>
+					<span *ngIf="profile" class="ellipsis nowrap">{{ profile.username }}</span>
 					<small *ngIf="post">
 						<app-arweave-address
 							[address]="post.owner"
@@ -36,6 +36,31 @@
 						· {{ post.blockTimestamp }}
 					</small>
 				</h2>
+				<div class="profile-secondary-actions text-right">
+					<button
+						mat-icon-button
+						(click)="$event.stopPropagation()"
+						color="accent"
+						aria-label="More options"
+						[matMenuTriggerFor]="moreOptionsMenu">
+	          <mat-icon>more_horiz</mat-icon>
+	        </button>
+	        <mat-menu #moreOptionsMenu="matMenu">
+	        	<mat-list class="tx-info-container">
+			        <mat-list-item>
+			        	<h3 matLine>
+			            TX Info
+			          </h3>
+			          <div matLine>
+			            <app-arweave-address
+			              [address]="post.id"
+			              [isAddress]="false"
+			              class="small-username-2">Id: </app-arweave-address>
+			          </div>
+			        </mat-list-item>
+			      </mat-list>
+					</mat-menu>
+				</div>
 				<ngx-skeleton-loader
 					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
 			  	appearance="line" 
@@ -58,7 +83,8 @@
 			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 20, 'marginTop.px': 0, 'width': '90%' }"></ngx-skeleton-loader>
 			  <div 
 			  	*ngIf="!loadingContent && content"
-			  	class="content fadeIn" (click)="$event.stopPropagation()" [innerHTML]="content">
+			  	#contentContainer
+			  	class="content fadeIn" [innerHTML]="content">
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
