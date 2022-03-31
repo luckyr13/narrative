@@ -7,6 +7,7 @@ import { defaultHighlightStyle } from "@codemirror/highlight";
 import { bracketMatching } from "@codemirror/matchbrackets";
 import { closeBrackets, closeBracketsKeymap } from "@codemirror/closebrackets";
 import { linkExtension } from '../utils/codemirror/link-extension';
+import { dataCounter } from '../utils/codemirror/word-counter-extension';
 
 export class CodeMirrorWrapper {
   editorState: EditorState|null = null;
@@ -41,7 +42,8 @@ export class CodeMirrorWrapper {
               defaultHighlightStyle.fallback,
               EditorView.lineWrapping,
               linkExtension(),
-              this.editableCompartment.of(EditorView.editable.of(true))
+              this.editableCompartment.of(EditorView.editable.of(true)),
+              dataCounter()
             ]
           });
 
@@ -102,6 +104,5 @@ export class CodeMirrorWrapper {
     const transaction = this.editorView!.state.replaceSelection(s);
     this.editorView!.dispatch(transaction);
   }
-  
 
 }

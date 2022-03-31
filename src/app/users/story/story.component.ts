@@ -30,7 +30,6 @@ export class StoryComponent implements OnInit {
     private _utils: UtilsService) { }
 
   ngOnInit(): void {
-    
     this.route.data
       .subscribe(data => {
         const storyId = this.route.snapshot.paramMap.get('storyId')!;

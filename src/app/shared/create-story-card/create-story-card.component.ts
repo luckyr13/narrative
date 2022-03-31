@@ -93,7 +93,9 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngAfterViewInit() {
     this.loading = true;
-    this.loadEditorSubscription = this.codemirrorWrapper.init(this.postMessage.nativeElement).subscribe({
+    this.loadEditorSubscription = this.codemirrorWrapper.init(
+      this.postMessage.nativeElement
+    ).subscribe({
       next: (res) => {
         // Done
         this.loading = false;

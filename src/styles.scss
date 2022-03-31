@@ -421,9 +421,9 @@ body {
   border-bottom: 1px solid;
 }
 
-.message .cm-editor.cm-focused {
+.message .cm-editor.cm-focused, .message .cm-editor:hover {
   outline-color: transparent;
-  border-bottom: 1px solid;
+  border-bottom: 0px solid;
   border-color: inherit;
 }
 .message .cm-content {

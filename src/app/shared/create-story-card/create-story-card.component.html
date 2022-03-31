@@ -65,7 +65,8 @@
 			[disabled]="!messageContent || loadingCreatePost"
 			class="post-btn"
 			(click)="submit()"
-			mat-raised-button color="accent"><span class="hide-sm">Post</span><mat-icon>send</mat-icon></button>
+			mat-raised-button color="accent">
+			<span class="hide-sm">Post</span><mat-icon>send</mat-icon></button>
 	</mat-card-actions>
 	
 	<mat-card-footer *ngIf="loadingData || loadingCreatePost" class="fadeIn">
