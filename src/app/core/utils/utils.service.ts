@@ -86,7 +86,9 @@ export class UtilsService {
 
   sanitize(s: string): string {
     const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
-    return DOMPurify.sanitize(linkifyStr(sanitizedContent, this.options), {ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['target', 'href']});
+    const htmlWithLinks = linkifyStr(sanitizedContent, this.options);
+    const htmlWithBreakLines = htmlWithLinks.replace(/\n|\r\n/g, '<br>')
+    return DOMPurify.sanitize(htmlWithBreakLines, {ALLOWED_TAGS: ['a', 'br'], ALLOWED_ATTR: ['target', 'href']});
   }
 
   sanitizeFull(s: string): string {
@@ -94,17 +96,4 @@ export class UtilsService {
     return sanitizedContent;
   }
 
-  async _getPageContentHelper(url: string) {
-    const page = await fetch(url, {
-    });
-    if (!page.ok) {
-      console.log(page)
-      throw new Error('Error!!');
-    }
-    return await page.text();
-  }
-
-  getPageContent(url: string): Observable<string> {
-    return from(this._getPageContentHelper(url));
-  }
 }
