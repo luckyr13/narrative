@@ -12,10 +12,14 @@
       <mat-icon>format_color_fill</mat-icon>
     </button>
     <mat-menu #themeMenu="matMenu">
+      <mat-list class="tx-info-container">
+        <mat-list-item>
+          <span class="theme-menu-title">
+            Current theme:
+          </span>
+        </mat-list-item>
+      </mat-list>
       <mat-radio-group aria-label="Select an option" [formControl]="theme" (change)="updateTheme(theme.value)">
-        <div mat-menu-item >
-          <span class="theme-info"><strong>Current theme:</strong></span>
-        </div>
         <div mat-menu-item>
           <mat-radio-button [value]="theme.value">{{ getTheme(theme.value).label }}</mat-radio-button>
         </div>
