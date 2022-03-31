@@ -86,8 +86,8 @@
 			  	#contentContainer
 			  	class="content fadeIn" [innerHTML]="content">
 			  </div>
-			  <div *ngIf="detectedLinks.length">
-			  	<app-story-player [links]="detectedLinks"></app-story-player>
+			  <div *ngIf="false">
+			  	<app-story-player [substories]="[]"></app-story-player>
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "

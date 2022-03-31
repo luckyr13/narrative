@@ -5,6 +5,7 @@ import linkifyStr from 'linkify-string';
 import 'linkify-plugin-hashtag';
 import 'linkify-plugin-mention';
 import DOMPurify from 'dompurify';
+import { Observable, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -91,5 +92,19 @@ export class UtilsService {
   sanitizeFull(s: string): string {
     const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
     return sanitizedContent;
+  }
+
+  async _getPageContentHelper(url: string) {
+    const page = await fetch(url, {
+    });
+    if (!page.ok) {
+      console.log(page)
+      throw new Error('Error!!');
+    }
+    return await page.text();
+  }
+
+  getPageContent(url: string): Observable<string> {
+    return from(this._getPageContentHelper(url));
   }
 }

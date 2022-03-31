@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./story-player.component.scss']
 })
 export class StoryPlayerComponent implements OnInit {
-  @Input('links') links!: string[];
+  @Input('substories') substories!: string[];
 
   constructor() { }
 
