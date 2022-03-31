@@ -86,17 +86,20 @@
 			  	#contentContainer
 			  	class="content fadeIn" [innerHTML]="content">
 			  </div>
+			  <div *ngIf="detectedLinks.length">
+			  	<app-story-player [links]="detectedLinks"></app-story-player>
+			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
 			  	class="fadeIn pending">
 			  	<span>Pending TX</span>
 			  	<mat-spinner class="" color="accent" diameter="26"></mat-spinner>
 			  </div>
+				
 			</div>
-
 		</div>
 		 <div 
-		  	*ngIf="!loadingContent"
+		  	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0))"
 		  	class="fadeIn story-actions">
 		  	<div class="action-btn-wrapper">
 	        <button 
@@ -117,7 +120,6 @@
 		        <mat-icon class="material-icons-outlined">repeat</mat-icon>
 		        <div>Repost</div>
 		      </button>
-	        
 		  	</div>
 	      <div class="action-btn-wrapper">
 	      	<button

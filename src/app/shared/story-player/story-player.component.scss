@@ -1,0 +1,37 @@
+.player-container {
+	width: 100%;
+	margin: 0px 0px 20px 0px;
+	height: 320px;
+	position: relative;
+	cursor: default;
+}
+
+.player-container .left-arrow {
+	float: left;
+	width: 10%;
+	height: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+
+.player-container .right-arrow {
+	float: left;
+	width: 10%;
+	height: 100%;
+	text-align: center;
+	cursor: pointer;
+}
+
+.player-container .content {
+	float: left;
+	width: 80%;
+	height: 100%;
+	position: relative;
+	text-align: center;
+}
+
+.vcenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

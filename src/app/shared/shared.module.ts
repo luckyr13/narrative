@@ -32,6 +32,8 @@ import { ArweaveAddressComponent } from './arweave-address/arweave-address.compo
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-share.component';
+import { StoryPlayerComponent } from './story-player/story-player.component';
+import { StoryPlayerLinkComponent } from './story-player-link/story-player-link.component';
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-sha
     StoryCardComponent,
     ArweaveAddressComponent,
     ConfirmationDialogComponent,
-    BottomSheetShareComponent
+    BottomSheetShareComponent,
+    StoryPlayerComponent,
+    StoryPlayerLinkComponent
   ],
   imports: [
     CommonModule,

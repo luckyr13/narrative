@@ -77,6 +77,12 @@ export class UtilsService {
     return s.length < minLength ? s : `${s.substring(0, sliceLength)}...${s.substring(s.length - sliceLength, s.length)}`;
   }
 
+  getLinks(s: string) {
+    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const links = linkify.find(sanitizedContent, 'url');
+    return links;
+  }
+
   sanitize(s: string): string {
     const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
     return DOMPurify.sanitize(linkifyStr(sanitizedContent, this.options), {ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['target', 'href']});

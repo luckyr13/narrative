@@ -114,5 +114,11 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
     return this._userSettings.getThemeObj(theme);
   }
 
+  getThemesList() {
+    return this._userSettings.themeNamesList.slice(
+      0, (this._userSettings.themeNamesList.length / 2) + 1
+    );
+  }
+
 
 }

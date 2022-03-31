@@ -28,6 +28,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   isDarkTheme = false;
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
+  detectedLinks: string[] = [];
 
   constructor(
     private _verto: VertoService,
@@ -71,6 +72,11 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       next: (data: string|Uint8Array) => {
         this.loadingContent = false;
         this.content = this._utils.sanitize(`${data}`);
+        const links = this._utils.getLinks(`${data}`);
+        this.detectedLinks = links.map((val) => {
+          return val.href;
+        });
+        
         window.setTimeout(() => {
           const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
             this.contentContainer.nativeElement.getElementsByTagName('a') : [];
