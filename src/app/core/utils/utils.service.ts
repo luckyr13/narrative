@@ -90,14 +90,14 @@ export class UtilsService {
   }
 
   sanitize(s: string): string {
-    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const sanitizedContent = DOMPurify.sanitize(s.trim(), {ALLOWED_TAGS: []});
     const htmlWithLinks = linkifyStr(sanitizedContent, this.options);
     const htmlWithBreakLines = htmlWithLinks.replace(/\n|\r\n/g, '<br>')
     return DOMPurify.sanitize(htmlWithBreakLines, {ALLOWED_TAGS: ['a', 'br'], ALLOWED_ATTR: ['target', 'href']});
   }
 
   sanitizeFull(s: string): string {
-    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const sanitizedContent = DOMPurify.sanitize(s.trim(), {ALLOWED_TAGS: []});
     return sanitizedContent;
   }
 
