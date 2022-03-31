@@ -117,7 +117,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       }
       return `${month} ${date}, ${year}`;
     } else if (hours) {
-      return `${days}h`;
+      return `${hours}h`;
     } else if (minutes) {
       return `${minutes}m`;
     } else if (seconds) {
@@ -126,6 +126,22 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
 
     return ``;
+  }
+
+  comment(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  repost(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  like(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
+  share(event: MouseEvent) {
+    event.stopPropagation();
   }
 
 }

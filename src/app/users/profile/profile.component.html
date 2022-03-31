@@ -16,7 +16,14 @@
 	    <button mat-stroked-button color="accent"><mat-icon>edit</mat-icon> Edit Profile</button>
 		</div>
 		<div class="profile-actions" *ngIf="!editProfileFlag">
-	    <button mat-stroked-button color="accent">Follow</button>
+	    <button mat-stroked-button color="accent">
+	    	<mat-icon>person_add_alt</mat-icon>
+	    	Follow
+	    </button>
+	    <button mat-stroked-button color="accent">
+	    	<mat-icon class="material-icons-outlined">monetization_on</mat-icon>
+	    	Donate
+	    </button>
 	    <button mat-flat-button color="accent"><mat-icon>people_alt</mat-icon> Add</button>
 		</div>
 	</div>
