@@ -48,11 +48,15 @@ export class ProfileComponent implements OnInit {
       
     });
 
-
     this._route.paramMap.subscribe((params) => {
       this.addressRouteParam = params.get('address')!;
     });
 
+    // Validate current user
+    const currentAddress = this._auth.getMainAddressSnapshot();
+    if (this.addressList.indexOf(currentAddress) >= 0) {
+      this.editProfileFlag = true;
+    }
     this._auth.account$.subscribe((currentAddress) => {
       this.editProfileFlag = false;
       // Validate current user
