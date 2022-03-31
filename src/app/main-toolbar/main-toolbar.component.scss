@@ -82,6 +82,14 @@ mat-toolbar {
 	font-size: 10px;
 }
 .theme-menu-title {
-	font-size: 12px;
-	font-weight: bold;
+	font-size: 10px !important;
+	font-weight: bold !important;
+}
+.theme-menu-subtitle {
+	font-size: 10px !important;
+
+}
+
+.mat-list-base .mat-list-item.mat-2-line, .mat-list-base .mat-list-option.mat-2-line {
+	height: 42px;
 }

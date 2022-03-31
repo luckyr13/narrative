@@ -12,19 +12,23 @@
       <mat-icon>format_color_fill</mat-icon>
     </button>
     <mat-menu #themeMenu="matMenu">
-      <mat-list class="tx-info-container">
+      <mat-list>
         <mat-list-item>
-          <span class="theme-menu-title">
-            Current theme:
+          <span matLine class="theme-menu-title">
+            Current theme
+          </span>
+          <span matLine class="theme-menu-subtitle">
+            {{ getTheme(theme.value).label }}
           </span>
         </mat-list-item>
       </mat-list>
+      
       <mat-radio-group aria-label="Select an option" [formControl]="theme" (change)="updateTheme(theme.value)">
         <div mat-menu-item *ngFor="let th of getThemesList()">
           <mat-radio-button [value]="th">{{ getTheme(th).label }}</mat-radio-button>
         </div>
         <div mat-menu-item [routerLink]="['/', 'settings', 'appearance']">
-          <span><mat-icon>palette</mat-icon> More themes</span>
+          <span><mat-icon>palette</mat-icon> Themes</span>
         </div>
       </mat-radio-group>
     </mat-menu>
