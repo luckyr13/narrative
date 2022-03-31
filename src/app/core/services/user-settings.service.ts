@@ -10,33 +10,40 @@ export class UserSettingsService {
 	private _defaultTheme: string = '';
 	private _defaultLang: string = '';
   private _storage = window.localStorage;
-  public themes: Record<string, {id: string, dark: boolean}> = {
+  public themes: Record<string, {id: string, label: string, dark: boolean}> = {
     'light-theme': {
       id: 'light-theme',
+      label: 'Light',
       dark: false
     },
     'dark-theme': {
       id: 'dark-theme',
+      label: 'Dark',
       dark: true
     },
     'light-pink-theme': {
       id: 'light-pink-theme',
+      label: 'Light Pink',
       dark: false
     },
     'dark-pink-theme': {
       id: 'dark-pink-theme',
+      label: 'Dark Pink',
       dark: true
     },
     'light-blue-theme': {
       id: 'light-blue-theme',
+      label: 'Light Blue',
       dark: false
     },
     'dark-deep-purple-theme': {
       id: 'dark-deep-purple-theme',
+      label: 'Deep Purple',
       dark: true
     },
     'dark-blue-gray-theme': {
       id: 'dark-blue-gray-theme',
+      label: 'Dark Blue',
       dark: true
     },
   };
@@ -67,7 +74,7 @@ export class UserSettingsService {
   	return this._defaultTheme;
   }
 
-  getThemeObj(theme: string): {id: string, dark: boolean} {
+  getThemeObj(theme: string): {id: string, label: string, dark: boolean} {
     return this.themes[theme];
   }
 

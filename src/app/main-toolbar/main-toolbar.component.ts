@@ -42,6 +42,10 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.theme.setValue(this._userSettings.getDefaultTheme());
+    this._userSettings.currentThemeStream.subscribe((theme: string) => {
+      this.theme.setValue(theme);
+    });
+
     this._auth.account$.subscribe((address) => {
       if (address != this.account) {
         this.account = address;
@@ -104,6 +108,10 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
 
   ellipsis(s: string) {
     return this._utils.ellipsis(s);
+  }
+
+  getTheme(theme: string) {
+    return this._userSettings.getThemeObj(theme);
   }
 
 
