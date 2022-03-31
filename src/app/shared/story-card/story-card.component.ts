@@ -161,13 +161,17 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     let direction: Direction = defLangWritingSystem === 'LTR' ? 
       'ltr' : 'rtl';
     const tmpContent = this._utils.sanitizeFull(this.content);
-    const limit = 150;
+    const limit = 200;
+    const user = this.profile && this.profile.username ? 
+      this.profile.username :
+      this.post.owner;
 
     this._bottomSheetShare.open(BottomSheetShareComponent, {
       data: {
         title: 'Story from Narrative!',
         content: this._utils.sanitizeFull(`${tmpContent} ...`.substr(0, limit)),
-        img: ''
+        img: '',
+        fullURL: `${window.location.origin}/#/${user}/${this.post.id}`
       },
       direction: direction,
       ariaLabel: 'Share on social media'

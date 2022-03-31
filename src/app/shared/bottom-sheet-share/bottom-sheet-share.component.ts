@@ -10,21 +10,21 @@ declare const window: any;
   styleUrls: ['./bottom-sheet-share.component.scss']
 })
 export class BottomSheetShareComponent implements OnInit {
-  fullURL: string = '';
   windowObjectReference: any;
   previousURL: string = '';
 
   constructor(
-    @Inject(MAT_BOTTOM_SHEET_DATA) public data: {title: string, img: string, content: string},
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: {
+      title: string, img: string, content: string, fullURL: string
+    },
     private _clipboard: Clipboard,
     private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.fullURL = `${window.location.href}`;
   }
 
   private _copyLinkToClipboard() {
-    this._clipboard.copy(this.fullURL);
+    this._clipboard.copy(this.data.fullURL);
     this.message('Copied to clipboard!', 'success', 'top');
   }
 
@@ -41,10 +41,10 @@ export class BottomSheetShareComponent implements OnInit {
   }
 
   shareInSocialMedia(_socialMediaOption: string) {
-    const urlencodeddesc = encodeURIComponent(`${this.data.title}: ${this.data.content} Read full article: ${this.fullURL}`);
+    const urlencodeddesc = encodeURIComponent(`${this.data.title}: ${this.data.content} Read full article: ${this.data.fullURL}`);
     const urlencodedimg = encodeURIComponent(`${this.data.img}`);
     const urlencodedtitle = encodeURIComponent(`${this.data.title}`);
-    const urlencodedurl = encodeURIComponent(`${this.fullURL}`);
+    const urlencodedurl = encodeURIComponent(`${this.data.fullURL}`);
     switch (_socialMediaOption) {
       case 'facebook':
         const facebookURL = `https://www.facebook.com/share.php?u=${urlencodedurl}&quote=${urlencodeddesc}&picture=${urlencodedimg}`;
