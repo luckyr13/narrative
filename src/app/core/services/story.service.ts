@@ -61,6 +61,7 @@ export class StoryService {
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data.size,
               dataType: tx.data.type,
+              blockTimestamp: tx.block.timestamp
             }
             return post;
           });
@@ -81,6 +82,7 @@ export class StoryService {
               blockHeight: tx.block.height,
               dataSize: tx.data.size,
               dataType: tx.data.type,
+              blockTimestamp: tx.block.timestamp
             }
             return post;
           }) : [];
@@ -102,6 +104,7 @@ export class StoryService {
             blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
             dataSize: tx.data.size,
             dataType: tx.data.type,
+            blockTimestamp: tx.block.timestamp
           }
           return post;
         })

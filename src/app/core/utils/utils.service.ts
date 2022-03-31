@@ -15,7 +15,14 @@ export class UtilsService {
   // build fitting regex
   regex = RegExp('^(' + this.allowlist.join('|') + '):', 'gim');
   // Options for linkify
-  options = { defaultProtocol: 'https', target: '_blank' };
+  options = {
+    defaultProtocol: 'https',
+    target: '_blank',
+    formatHref: {
+      hashtag: (href: string) => '/#/hashtag/' + href.substr(1),
+      mention: (href: string) => '/#/' + href.substr(1)
+    }
+  };
 
   constructor(
     private _snackBar: MatSnackBar) {

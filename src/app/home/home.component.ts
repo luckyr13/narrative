@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this._ngZone.run(() => {
         const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
           this.moreResultsCard.nativeElement.scrollTop;
-        const padding = 500;
+        const padding = 600;
         if ((scroll > moreResultsPos - padding) && 
             !this.loadingPosts &&
             this.moreResultsAvailable) {

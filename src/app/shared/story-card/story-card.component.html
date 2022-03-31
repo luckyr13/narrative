@@ -32,6 +32,9 @@
 							[showVerifiedBtn]="true"
 							class="address"></app-arweave-address>
 					</small>
+					<small *ngIf="post && post.blockTimestamp">
+						· {{ post.blockTimestamp }}
+					</small>
 				</h2>
 				<ngx-skeleton-loader
 					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
