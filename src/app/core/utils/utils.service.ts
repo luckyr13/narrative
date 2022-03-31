@@ -18,7 +18,12 @@ export class UtilsService {
   // Options for linkify
   options = {
     defaultProtocol: 'https',
-    target: '_blank',
+    target: (href: string, type: string) => {
+      if (type === 'mention' || type === 'hashtag') {
+        return '_self';
+      }
+      return '_blank';
+    },
     formatHref: {
       hashtag: (href: string) => '/#/search/' + href.substr(1),
       mention: (href: string) => '/#/' + href.substr(1)
