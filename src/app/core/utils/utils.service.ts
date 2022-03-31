@@ -81,4 +81,9 @@ export class UtilsService {
     const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
     return DOMPurify.sanitize(linkifyStr(sanitizedContent, this.options), {ALLOWED_TAGS: ['a'], ALLOWED_ATTR: ['target', 'href']});
   }
+
+  sanitizeFull(s: string): string {
+    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    return sanitizedContent;
+  }
 }

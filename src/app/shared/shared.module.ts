@@ -31,6 +31,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { ArweaveAddressComponent } from './arweave-address/arweave-address.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-share.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     CreateStoryCardComponent,
     StoryCardComponent,
     ArweaveAddressComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    BottomSheetShareComponent
   ],
   imports: [
     CommonModule,

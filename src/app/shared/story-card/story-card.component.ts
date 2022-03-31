@@ -7,7 +7,9 @@ import { UserInterface } from '@verto/js/dist/common/faces';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 import { UtilsService } from '../../core/utils/utils.service';
-
+import {MatBottomSheet} from '@angular/material/bottom-sheet';
+import { BottomSheetShareComponent } from '../bottom-sheet-share/bottom-sheet-share.component';
+import { Direction } from '@angular/cdk/bidi';
 
 @Component({
   selector: 'app-story-card',
@@ -32,7 +34,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     private _auth: UserAuthService,
     private _arweave: ArweaveService,
     private _userSettings: UserSettingsService,
-    private _utils: UtilsService) { }
+    private _utils: UtilsService,
+    private _bottomSheetShare: MatBottomSheet) { }
 
   ngOnInit(): void {
     this.loadVertoProfile();
@@ -149,8 +152,27 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
+
   share(event: MouseEvent) {
     event.stopPropagation();
+    const defLang = this._userSettings.getDefaultLang();
+    // defLang.writing_system
+    const defLangWritingSystem = 'LTR';
+    let direction: Direction = defLangWritingSystem === 'LTR' ? 
+      'ltr' : 'rtl';
+    const tmpContent = this._utils.sanitizeFull(this.content);
+    const limit = 150;
+
+    this._bottomSheetShare.open(BottomSheetShareComponent, {
+      data: {
+        title: 'Story from Narrative!',
+        content: this._utils.sanitizeFull(`${tmpContent} ...`.substr(0, limit)),
+        img: ''
+      },
+      direction: direction,
+      ariaLabel: 'Share on social media'
+    });
+
   }
 
 }
