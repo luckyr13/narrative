@@ -19,7 +19,7 @@ export class UtilsService {
     defaultProtocol: 'https',
     target: '_blank',
     formatHref: {
-      hashtag: (href: string) => '/#/hashtag/' + href.substr(1),
+      hashtag: (href: string) => '/#/search/' + href.substr(1),
       mention: (href: string) => '/#/' + href.substr(1)
     }
   };

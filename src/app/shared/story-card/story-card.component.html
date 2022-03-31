@@ -58,7 +58,7 @@
 			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 20, 'marginTop.px': 0, 'width': '90%' }"></ngx-skeleton-loader>
 			  <div 
 			  	*ngIf="!loadingContent && content"
-			  	class="content fadeIn" [innerHTML]="content">
+			  	class="content fadeIn" (click)="$event.stopPropagation()" [innerHTML]="content">
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "

@@ -55,9 +55,11 @@ mat-card-header {
 }
 
 .story-container .content {
-	min-height: 100px;
+	min-height: 60px;
 	clear: both;
 	margin-bottom: 32px;
+	margin-top: 6px;
+	cursor: default;
 }
 
 .mat-card-actions {
