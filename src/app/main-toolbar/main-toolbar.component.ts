@@ -23,6 +23,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
 	theme = new FormControl('');
   @Output() toggleEvent = new EventEmitter<boolean>();
   account = '';
+  method = '';
   appName = this._appSettings.appName;
   profileSubscription: Subscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
@@ -44,7 +45,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
     this._auth.account$.subscribe((address) => {
       if (address != this.account) {
         this.account = address;
-
+        this.method = this._auth.loginMethod;
         this.profileSubscription = this._verto.getProfile(this.account).subscribe({
           next: (profile: UserInterface|undefined) => {
             if (profile) {

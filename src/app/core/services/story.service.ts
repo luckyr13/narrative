@@ -59,9 +59,9 @@ export class StoryService {
               owner: tx.owner.address,
               blockId: tx.block && tx.block.id ? tx.block.id : '',
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
-              dataSize: tx.data.size,
-              dataType: tx.data.type,
-              blockTimestamp: tx.block.timestamp
+              dataSize: tx.data ? tx.data.size : undefined,
+              dataType: tx.data ? tx.data.type : undefined,
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
             }
             return post;
           });
@@ -78,11 +78,11 @@ export class StoryService {
             const post: TransactionMetadata = {
               id: tx.id,
               owner: tx.owner.address,
-              blockId: tx.block.id,
-              blockHeight: tx.block.height,
-              dataSize: tx.data.size,
-              dataType: tx.data.type,
-              blockTimestamp: tx.block.timestamp
+              blockId: tx.block && tx.block.id ? tx.block.id : '',
+              blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+              dataSize: tx.data ? tx.data.size : undefined,
+              dataType: tx.data ? tx.data.type : undefined,
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
             }
             return post;
           }) : [];
@@ -102,9 +102,9 @@ export class StoryService {
             owner: tx.owner.address,
             blockId: tx.block && tx.block.id ? tx.block.id : '',
             blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
-            dataSize: tx.data.size,
-            dataType: tx.data.type,
-            blockTimestamp: tx.block.timestamp
+            dataSize: tx.data ? tx.data.size : undefined,
+            dataType: tx.data ? tx.data.type : undefined,
+            blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
           }
           return post;
         })

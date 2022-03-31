@@ -57,6 +57,8 @@ mat-toolbar {
 
 .user-info-container {
 	width: 280px !important;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .big-username {
@@ -67,4 +69,9 @@ mat-toolbar {
 
 .user-link {
 	text-decoration: none;
+}
+
+.login-method-span {
+	margin-top: -6px;
+	font-size: 10px;
 }
