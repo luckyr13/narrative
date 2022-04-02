@@ -17,6 +17,7 @@ export class ProfileComponent implements OnInit {
   name: string = '';
   addressRouteParam = '';
   editProfileFlag = false;
+  isLoggedIn = false;
   
   constructor(
     private _route: ActivatedRoute,
@@ -45,6 +46,11 @@ export class ProfileComponent implements OnInit {
       } else if (profile.address) {
         this.addressList = [profile.address];
       }
+
+      // Validate current user
+      const currentAddress = this._auth.getMainAddressSnapshot();
+      this.isLoggedIn = !!currentAddress;
+      this.validateCurrentAddress(currentAddress);
       
     });
 
@@ -52,20 +58,18 @@ export class ProfileComponent implements OnInit {
       this.addressRouteParam = params.get('address')!;
     });
 
-    // Validate current user
-    const currentAddress = this._auth.getMainAddressSnapshot();
+    this._auth.account$.subscribe((currentAddress) => {
+      this.isLoggedIn = !!currentAddress;
+      this.validateCurrentAddress(currentAddress);
+    });
+
+  }
+
+  validateCurrentAddress(currentAddress: string) {
+    this.editProfileFlag = false;
     if (this.addressList.indexOf(currentAddress) >= 0) {
       this.editProfileFlag = true;
     }
-    this._auth.account$.subscribe((currentAddress) => {
-      this.editProfileFlag = false;
-      // Validate current user
-      if (this.addressList.indexOf(currentAddress) >= 0) {
-        this.editProfileFlag = true;
-      }
-
-    });
-
   }
 
   
