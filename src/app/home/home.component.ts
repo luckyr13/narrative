@@ -2,14 +2,15 @@ import {
   Component, OnInit, OnDestroy,
   ViewChild, ElementRef, NgZone } from '@angular/core';
 import { StoryService } from '../core/services/story.service';
-import { Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subscription, of, map } from 'rxjs';
+import { switchMap, mergeMap, tap } from 'rxjs/operators';
 import { TransactionMetadata } from '../core/interfaces/transaction-metadata';
 import { UserAuthService } from '../core/services/user-auth.service';
 import { AppSettingsService } from '../core/services/app-settings.service';
 import { UtilsService } from '../core/utils/utils.service';
 import { ArweaveService } from '../core/services/arweave.service';
 import { NetworkInfoInterface } from 'arweave/web/network';
+import { PendingStoriesService } from '../core/services/pending-stories.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -18,6 +19,7 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 export class HomeComponent implements OnInit, OnDestroy {
   private _postSubscription: Subscription = Subscription.EMPTY;
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
+  private _pendingPostsSubscription: Subscription = Subscription.EMPTY;
   public posts: TransactionMetadata[] = [];
   private maxPosts: number = 10;
   public loadingPosts = false;
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _story: StoryService,
+    private _pendingStories: PendingStoriesService,
     private _auth: UserAuthService,
     private _appSettings: AppSettingsService,
     private _utils: UtilsService,
@@ -40,19 +43,55 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this._auth.account$.subscribe((account) => {
       this.account = account;
+
+      this._pendingPostsSubscription = this._pendingStories.getPendingPosts(
+        [this.account], undefined, undefined
+      ).subscribe((pendingPosts) => {
+        const res = Array.isArray(pendingPosts) && pendingPosts.length ? 
+          pendingPosts.filter((v) => {
+            for (const p of this.posts) {
+              if (p.id == v.id) {
+                return false;
+              }
+            }
+            return true;
+          }) : [];
+        this.posts.unshift(...res);
+      })
     });
 
     this._postSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
         return this._story.getLatestPosts([], this.maxPosts, currentHeight);
+      }),
+      mergeMap((latestPosts) => {
+        if (!this.account) {
+          return of(latestPosts);
+        }
+        return this._pendingStories.getPendingPosts(
+          [this.account], undefined, undefined
+        ).pipe(
+          map((pendingPosts) => {
+            const res = pendingPosts.filter((v) => {
+              for (const p of this.posts) {
+                if (p.id == v.id) {
+                  return false;
+                }
+              }
+              return true;
+            });
+            console.log(res, latestPosts, this.account, pendingPosts)
+            return res.concat(latestPosts);
+          })
+        );
       })
     ).subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;
         }
-        this.posts = posts;
+        this.posts.push(...posts);
         this.loadingPosts = false;
       },
       error: (error) => {
@@ -81,6 +120,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       
     })
 
+
+
     
   }
 
@@ -104,6 +145,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._postSubscription.unsubscribe();
     this._nextResultsSubscription.unsubscribe();
+    this._pendingPostsSubscription.unsubscribe();
   }
 
   newStoryCreated(tx: string) {

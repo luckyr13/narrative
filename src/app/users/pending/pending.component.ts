@@ -5,7 +5,7 @@ import { UserInterface } from '@verto/js/dist/common/faces';
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { StoryService } from '../../core/services/story.service';
+import { PendingStoriesService } from '../../core/services/pending-stories.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { ProfileResolverService } from '../../core/route-guards/profile-resolver.service';
@@ -30,7 +30,7 @@ export class PendingComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private _verto: VertoService,
     private _arweave: ArweaveService,
-    private _story: StoryService,
+    private _story: PendingStoriesService,
     private _utils: UtilsService,
     private _profileResolver: ProfileResolverService) { }
 
