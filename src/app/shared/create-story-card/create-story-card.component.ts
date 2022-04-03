@@ -10,6 +10,12 @@ import { UserAuthService } from '../../core/services/user-auth.service';
 import { StoryService } from '../../core/services/story.service';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 import { UtilsService } from '../../core/utils/utils.service';
+import {MatDialog} from '@angular/material/dialog';
+import {MatMenuTrigger} from '@angular/material/menu';
+import {MatButton} from '@angular/material/button';
+import { NewStoryDialogComponent } from '../new-story-dialog/new-story-dialog.component'; 
+import { SearchStoryDialogComponent } from '../search-story-dialog/search-story-dialog.component';
+import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-dialog.component'; 
 
 @Component({
   selector: 'app-create-story-card',
@@ -33,6 +39,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   themeSubscription = Subscription.EMPTY;
   @Input('account') account!: string;
   @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
+  @ViewChild('matMenuSubstoryTrigger') matMenuSubstoryTrigger!: MatMenuTrigger;
+  @ViewChild('matButtonImage') matButtonImage!: MatButton;
 
   constructor(
     private _verto: VertoService,
@@ -40,7 +48,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     private _auth: UserAuthService,
     private _story: StoryService,
     private _userSettings: UserSettingsService,
-    private _utils: UtilsService) {
+    private _utils: UtilsService,
+    private _dialog: MatDialog) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
 
@@ -52,15 +61,6 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {
       this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
-  }
-
-
-  openEmojiMenu() {
-    
-  }
-
-  closeEmojiMenu() {
-    
   }
 
   loadVertoProfile(account: string) {
@@ -156,4 +156,24 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     }
   }
 
+  addImage() {
+    const dialogRef = this._dialog.open(FileManagerDialogComponent, {restoreFocus: false});
+
+    // Manually restore focus to the menu trigger
+    dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());
+  }
+
+  addStory() {
+    const dialogRef = this._dialog.open(NewStoryDialogComponent, {restoreFocus: false});
+
+    // Manually restore focus to the menu trigger
+    dialogRef.afterClosed().subscribe(() => this.matMenuSubstoryTrigger.focus());
+  }
+
+  searchStory() {
+    const dialogRef = this._dialog.open(SearchStoryDialogComponent, {restoreFocus: false});
+
+    // Manually restore focus to the menu trigger
+    dialogRef.afterClosed().subscribe(() => this.matMenuSubstoryTrigger.focus());
+  }
 }

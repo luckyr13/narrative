@@ -34,6 +34,9 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-share.component';
 import { StoryPlayerComponent } from './story-player/story-player.component';
 import { StoryPlayerLinkComponent } from './story-player-link/story-player-link.component';
+import { NewStoryDialogComponent } from './new-story-dialog/new-story-dialog.component';
+import { SearchStoryDialogComponent } from './search-story-dialog/search-story-dialog.component';
+import { FileManagerDialogComponent } from './file-manager-dialog/file-manager-dialog.component';
 
 
 @NgModule({
@@ -46,7 +49,10 @@ import { StoryPlayerLinkComponent } from './story-player-link/story-player-link.
     ConfirmationDialogComponent,
     BottomSheetShareComponent,
     StoryPlayerComponent,
-    StoryPlayerLinkComponent
+    StoryPlayerLinkComponent,
+    NewStoryDialogComponent,
+    SearchStoryDialogComponent,
+    FileManagerDialogComponent
   ],
   imports: [
     CommonModule,

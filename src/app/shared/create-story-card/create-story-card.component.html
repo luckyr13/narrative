@@ -27,19 +27,35 @@
 				color="accent"
 				[matMenuTriggerFor]="matMenuEmojis"
 				[disabled]="loadingCreatePost">
-			<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
-			</button>
-			<button 
-				matTooltip="Add Substory"
-				mat-icon-button color="accent" [disabled]="loadingCreatePost">
-				<mat-icon class="material-icons-outlined">post_add</mat-icon>
+				<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
 			</button>
 			<mat-menu #matMenuEmojis="matMenu">
 			  <app-emojis (emojiSelectedEvent)="emojiSelected($event)"></app-emojis>
 			</mat-menu>
+			<button 
+				matTooltip="Add Substory"
+				mat-icon-button color="accent"
+				[matMenuTriggerFor]="matMenuSubstory"
+				[disabled]="loadingCreatePost"
+				#matMenuSubstoryTrigger>
+				<mat-icon class="material-icons-outlined">post_add</mat-icon>
+			</button>
+			<mat-menu #matMenuSubstory="matMenu">
+			  <button mat-menu-item (click)="addStory()">
+			    <mat-icon>add</mat-icon>
+			    <span>Create new story</span>
+			  </button>
+			  <button mat-menu-item (click)="searchStory()">
+			    <mat-icon>search</mat-icon>
+			    <span>Search story</span>
+			  </button>
+			</mat-menu>
 			<button
 				matTooltip="Add Image"
-				mat-icon-button color="accent" [disabled]="loadingCreatePost">
+				(click)="addImage()"
+				mat-icon-button color="accent"
+				[disabled]="loadingCreatePost"
+				#matButtonImage>
 				<mat-icon class="material-icons-outlined">image</mat-icon>
 			</button>
 			<button
