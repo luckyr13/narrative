@@ -8,7 +8,7 @@ declare const document: any;
 })
 export class AppSettingsService {
 	appName = 'Narrative';
-	appVersion = '0.0.4';
+	appVersion = '0.0.5';
 	protocolVersion = '0.0-dev';
   private _loadingPlatform: Subject<boolean> = new Subject<boolean>();
   public loadingPlatform$ = this._loadingPlatform.asObservable();
