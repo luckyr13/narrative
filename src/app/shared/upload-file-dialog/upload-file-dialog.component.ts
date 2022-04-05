@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy, NgZone } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-declare const dataTransfer: any;
 
 /*
 *  Based on Drag and Drop tutorial:
@@ -16,6 +15,24 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
   errorMessage01: string = '';
   dragFileActive = false;
   enterCounter = 0;
+  supportedFiles: Record<string, string[]> = {
+    'image': [
+      'image/gif', 'image/png',
+      'image/jpeg', 'image/bmp',
+      'image/webp'
+    ],
+    'audio': [
+      'audio/midi', 'audio/mpeg',
+      'audio/webm', 'audio/ogg',
+      'audio/wav'
+    ],
+    'video': [
+      'video/webm', 'video/ogg', 'video/mp4'
+    ],
+    'text': [
+      'text/plain'
+    ],
+  };
 
   constructor(
     private _dialogRef: MatDialogRef<UploadFileDialogComponent>,
@@ -48,8 +65,8 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
       }
     } else {
       // Usar la interfaz DataTransfer para acceder a el/los archivos
-      for (var i = 0; i < dataTransfer.files.length; i++) {
-        console.log('... file[' + i + '].name = ' + dataTransfer.files[i].name);
+      for (var i = 0; i < dataTransferApi.files.length; i++) {
+        console.log('... file[' + i + '].name = ' + dataTransferApi.files[i].name);
       }
     }
 
@@ -91,6 +108,10 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
       this.dragFileActive = false;
       this.enterCounter = 0;
     }
+  }
+
+  hasOwnProperty(obj: any, key: string) {
+    return Object.prototype.hasOwnProperty.call(obj, key);
   }
 
 }

@@ -1,5 +1,8 @@
-<h2 mat-dialog-title class="title-text" >
-	Upload file
+<h2 mat-dialog-title class="title-text" *ngIf="!data.type">
+	Upload files
+</h2>
+<h2 mat-dialog-title class="title-text" *ngIf="data.type === 'image'">
+	Upload images
 </h2>
 <div class="title-buttons">
 	<button
@@ -28,9 +31,14 @@
 		<p class="text-secondary-fup">
    	 <strong>Drag and drop your files to upload.</strong>
     </p>
-    <p class="text-secondary-fup">
-   	 Supported files: All
-    </p>
+    <div class="text-secondary-fup supported-text">
+   		Supported files: <span *ngIf="data.type && !hasOwnProperty(supportedFiles, data.type)">All</span>
+   		<div *ngIf="data.type && hasOwnProperty(supportedFiles, data.type)">
+   			<span *ngFor="let sp of supportedFiles[data.type]">
+   				{{ sp }}
+   			</span>
+   		</div>
+    </div>
     <p class="text-secondary-fup">
 	   	<button 
 	  		mat-flat-button color="accent">

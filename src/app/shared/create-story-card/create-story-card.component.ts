@@ -170,7 +170,10 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
       {
         restoreFocus: false,
         autoFocus: false,
-        disableClose: true
+        disableClose: true,
+        data: {
+          type: 'image'
+        }
       }
     );
 
