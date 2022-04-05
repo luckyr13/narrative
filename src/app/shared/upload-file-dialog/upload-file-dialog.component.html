@@ -1,0 +1,53 @@
+<h2 mat-dialog-title class="title-text" >
+	Upload file
+</h2>
+<div class="title-buttons">
+	<button
+		mat-icon-button
+		aria-label="Close window"
+		(click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="clear-both"></div>
+<mat-dialog-content
+	class="content border-right-special"
+	(drop)="dropFile($event);"
+	(dragover)="dragOverFile($event);"
+	(dragenter)="dragEnterFile($event)"
+	(dragleave)="dragLeaveFile($event)">
+  <div
+  	class="file-upload-zone"
+  	[ngClass]="{ 'file-upload-zone-active': dragFileActive }">
+  	<button 
+  		class="btn-upload"
+  		mat-fab color="primary"
+  		aria-label="Upload file">
+      <mat-icon>upload</mat-icon>
+    </button>
+		<p class="text-secondary-fup">
+   	 <strong>Drag and drop your files to upload.</strong>
+    </p>
+    <p class="text-secondary-fup">
+   	 Supported files: All
+    </p>
+    <p class="text-secondary-fup">
+	   	<button 
+	  		mat-flat-button color="accent">
+	      SELECT FILES
+	    </button>
+    </p>
+    <p 
+    	class="text-secondary-fup fup-error" 
+    	*ngIf="errorMessage01">
+   		<mat-icon color="warn" aria-hidden="false" aria-label="Error">warning</mat-icon>
+			<span>{{ errorMessage01 }}</span>
+    </p>
+  </div>
+  <p class="footer-text">
+		You are about to upload a file to the Arweave permaweb. Make sure you don't infringe other people's copyrights, privacy rights or any kind of legal right.
+	</p>
+	<p class="footer-text">
+		Using this tool implies that you agree to Narrative's Terms of Service and Community Guidelines. 
+	</p>
+</mat-dialog-content>

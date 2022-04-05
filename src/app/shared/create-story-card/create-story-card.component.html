@@ -42,8 +42,8 @@
 			</button>
 			<mat-menu #matMenuSubstory="matMenu">
 			  <button mat-menu-item (click)="addStory()">
-			    <mat-icon>add</mat-icon>
-			    <span>Create new story</span>
+			    <mat-icon>post_add</mat-icon>
+			    <span>Create substory</span>
 			  </button>
 			  <button mat-menu-item (click)="searchStory()">
 			    <mat-icon>search</mat-icon>
@@ -52,12 +52,22 @@
 			</mat-menu>
 			<button
 				matTooltip="Add Image"
-				(click)="addImage()"
 				mat-icon-button color="accent"
 				[disabled]="loadingCreatePost"
-				#matButtonImage>
+				#matButtonImage
+				[matMenuTriggerFor]="matMenuImage">
 				<mat-icon class="material-icons-outlined">image</mat-icon>
 			</button>
+			<mat-menu #matMenuImage="matMenu">
+			  <button mat-menu-item (click)="uploadFile('image')">
+			    <mat-icon>cloud_upload</mat-icon>
+			    <span>Upload file</span>
+			  </button>
+			  <button mat-menu-item (click)="fileManager('image')">
+			    <mat-icon>perm_media</mat-icon>
+			    <span>File Manager</span>
+			  </button>
+			</mat-menu>
 			<button
 				matTooltip="Add Video"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">

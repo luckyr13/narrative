@@ -81,7 +81,6 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
               return true;
             });
-            console.log(res, latestPosts, this.account, pendingPosts)
             return res.concat(latestPosts);
           })
         );

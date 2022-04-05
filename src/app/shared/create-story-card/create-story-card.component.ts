@@ -16,6 +16,7 @@ import {MatButton} from '@angular/material/button';
 import { NewStoryDialogComponent } from '../new-story-dialog/new-story-dialog.component'; 
 import { SearchStoryDialogComponent } from '../search-story-dialog/search-story-dialog.component';
 import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-dialog.component'; 
+import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component'; 
 
 @Component({
   selector: 'app-create-story-card',
@@ -156,8 +157,22 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     }
   }
 
-  addImage() {
+  fileManager(type: string) {
     const dialogRef = this._dialog.open(FileManagerDialogComponent, {restoreFocus: false});
+
+    // Manually restore focus to the menu trigger
+    dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());
+  }
+
+  uploadFile(type: string) {
+    const dialogRef = this._dialog.open(
+      UploadFileDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true
+      }
+    );
 
     // Manually restore focus to the menu trigger
     dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());
