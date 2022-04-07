@@ -3,6 +3,7 @@ import {
   ElementRef, AfterViewInit, OnDestroy,
   Output, EventEmitter
 } from '@angular/core';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-emojis',
@@ -12,6 +13,7 @@ import {
 export class EmojisComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('emojiContainer') emojiContainer!: ElementRef;
   @Output('emojiSelectedEvent') emojiSelectedEvent: EventEmitter<string> = new EventEmitter();
+  @ViewChild('tabsGroupContainer') tabsGroupContainer!: MatTabGroup;
 
 	emojis: string[] = [
 		'😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃',
@@ -61,7 +63,11 @@ export class EmojisComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    (<HTMLElement>this.emojiContainer.nativeElement).addEventListener('click', (event) => { this.onClickEvent(event); }, false);
+    (<HTMLElement>this.emojiContainer.nativeElement).addEventListener('click',
+      (event) => { this.onClickEvent(event); },
+      false
+    );
+   this.tabsGroupContainer.selectedIndex = 0;
   }
 
   onClickEvent(event: MouseEvent): any {

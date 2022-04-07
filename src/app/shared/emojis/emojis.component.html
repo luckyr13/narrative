@@ -1,30 +1,36 @@
 <mat-card class="post-card mat-elevation-z0" >
 	<div class="fadeIn">
 		<mat-card-content class="emoji-container" #emojiContainer>
-			<mat-tab-group color="accent"  mat-align-tabs="center" selectedIndex="0">
+			<mat-tab-group color="accent"  mat-align-tabs="start" #tabsGroupContainer>
 			  <mat-tab>
 			  	<ng-template mat-tab-label>
 					  <mat-icon>sentiment_satisfied_alt</mat-icon>
 					</ng-template>
-			  	<div class="emoji" *ngFor="let e of emojis">
-						{{ e }}
-					</div>
+					<ng-template matTabContent>
+				  	<div class="emoji" *ngFor="let e of emojis">
+							{{ e }}
+						</div>
+					</ng-template>
 			  </mat-tab>
 			  <mat-tab>
 			  	<ng-template mat-tab-label>
 					  <mat-icon>emoji_nature</mat-icon>
 					</ng-template>
-			  	<div class="emoji" *ngFor="let e of emojis2">
-						{{ e }}
-					</div>
+			  	<ng-template matTabContent>
+			  		<div class="emoji" *ngFor="let e of emojis2">
+							{{ e }}
+						</div>
+					</ng-template>
 			  </mat-tab>
 			  <mat-tab>
 			  	<ng-template mat-tab-label>
 					  <mat-icon>emoji_objects</mat-icon>
 					</ng-template>
-			  	<div class="emoji" *ngFor="let e of emojis3">
-						{{ e }}
-					</div>
+			  	<ng-template matTabContent>
+				  	<div class="emoji" *ngFor="let e of emojis3">
+							{{ e }}
+						</div>
+					</ng-template>
 			  </mat-tab>
 
 

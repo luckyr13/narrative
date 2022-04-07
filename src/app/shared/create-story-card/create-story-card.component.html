@@ -30,7 +30,10 @@
 				<mat-icon class="material-icons-outlined">emoji_emotions</mat-icon>
 			</button>
 			<mat-menu #matMenuEmojis="matMenu">
-			  <app-emojis (emojiSelectedEvent)="emojiSelected($event)"></app-emojis>
+				<ng-template matMenuContent>
+					<app-emojis (emojiSelectedEvent)="emojiSelected($event)"></app-emojis>
+				</ng-template>
+		  	
 			</mat-menu>
 			<button 
 				matTooltip="Add Substory"
