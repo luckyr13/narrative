@@ -158,7 +158,16 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   fileManager(type: string) {
-    const dialogRef = this._dialog.open(FileManagerDialogComponent, {restoreFocus: false});
+    const dialogRef = this._dialog.open(
+      FileManagerDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          type: 'image'
+        }
+      });
 
     // Manually restore focus to the menu trigger
     dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());

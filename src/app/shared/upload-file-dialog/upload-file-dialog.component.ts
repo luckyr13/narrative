@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, NgZone } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 /*
@@ -38,8 +38,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     private _dialogRef: MatDialogRef<UploadFileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       type: string,
-    },
-    private _ngZone: NgZone) { }
+    }) { }
 
 
   ngOnInit(): void {

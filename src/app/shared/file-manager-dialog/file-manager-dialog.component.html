@@ -1,1 +1,18 @@
-<p>file-manager-dialog works!</p>
+<h2 mat-dialog-title class="title-text">
+	File Manager
+</h2>
+<div class="title-buttons">
+	<button
+		mat-icon-button
+		aria-label="Close window"
+		(click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="clear-both"></div>
+<mat-dialog-content
+	class="content border-right-special">
+	<p class="footer-text">
+		Files
+	</p>
+</mat-dialog-content>

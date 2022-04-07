@@ -1,6 +1,6 @@
 .content {
 	padding: 20px;
-	min-height: 420px;
+	min-height: 428px;
 	max-width: 880px;
 }
 
@@ -37,7 +37,7 @@
 	padding: 10px;
 	border: 2px dashed;
 	border-color: transparent;
-	margin-bottom: 12px;
+	margin-bottom: 32px;
 }
 .file-upload-zone-active {
 	border-color: #09f;
@@ -75,12 +75,10 @@
 	.file-upload-zone {
 		min-height: 300px;
 		padding: 40px;
+		margin-bottom: 12px;
 	}
-	.btn-upload {
-		margin-top: 20px;
-	}
-	.text-secondary-fup {
-		margin-top: 20px;
+	.content {
+		min-height: 438px;
 	}
 
 }
@@ -90,10 +88,7 @@
 	.file-upload-zone {
 		min-height: 330px;
 		padding: 40px;
-	}
-
-	.btn-upload {
-		margin-top: 20px;
+		margin-bottom: 12px;
 	}
 
 	.btn-upload.mat-fab .mat-icon {
@@ -107,9 +102,6 @@
 		width: 118px;
 		height: 118px;
 	}
-	.text-secondary-fup {
-		margin-top: 20px;
-	}
 }
 
 .supported-text {
@@ -117,4 +109,8 @@
 }
 .supported-text span {
 	margin-left: 6px;
+}
+
+.btn-upload-txt {
+	margin-top: 12px;
 }
