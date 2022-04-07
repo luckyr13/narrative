@@ -1,9 +1,7 @@
-<h2 mat-dialog-title class="title-text" *ngIf="!data.type">
-	Upload files
+<h2 mat-dialog-title class="title-text">
+	Upload files <small *ngIf="data.type === 'image'">(Type: Image)</small>
 </h2>
-<h2 mat-dialog-title class="title-text" *ngIf="data.type === 'image'">
-	Upload images
-</h2>
+
 <div class="title-buttons">
 	<button
 		mat-icon-button
@@ -23,6 +21,7 @@
   	class="file-upload-zone"
   	[ngClass]="{ 'file-upload-zone-active': dragFileActive }">
   	<button 
+   		cdkFocusInitial
   		class="btn-upload"
   		mat-fab color="primary"
   		aria-label="Upload file">
@@ -54,7 +53,7 @@
     </p>
   </div>
   <p class="footer-text">
-		You are about to upload a file to the Arweave permaweb. Make sure you don't infringe other people's copyrights, privacy rights or any kind of legal right.
+		You are about to upload a file to the Arweave blockchain. Make sure you don't infringe other people's copyrights, privacy rights or any kind of legal right.
 	</p>
 	<p class="footer-text">
 		Using this tool implies that you agree to Narrative's Terms of Service and Community Guidelines. 

@@ -178,7 +178,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
       UploadFileDialogComponent,
       {
         restoreFocus: false,
-        autoFocus: false,
+        autoFocus: true,
         disableClose: true,
         data: {
           type: 'image'
@@ -191,14 +191,34 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   addStory() {
-    const dialogRef = this._dialog.open(NewStoryDialogComponent, {restoreFocus: false});
+    const dialogRef = this._dialog.open(
+      NewStoryDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          type: 'image'
+        }
+      }
+    );
 
     // Manually restore focus to the menu trigger
     dialogRef.afterClosed().subscribe(() => this.matMenuSubstoryTrigger.focus());
   }
 
   searchStory() {
-    const dialogRef = this._dialog.open(SearchStoryDialogComponent, {restoreFocus: false});
+    const dialogRef = this._dialog.open(
+      SearchStoryDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          type: 'image'
+        }
+      }
+    );
 
     // Manually restore focus to the menu trigger
     dialogRef.afterClosed().subscribe(() => this.matMenuSubstoryTrigger.focus());
