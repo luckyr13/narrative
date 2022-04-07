@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NotificationsService } from './notifications.service';
+import { FileExplorerService } from './file-explorer.service';
 
-describe('NotificationsService', () => {
-  let service: NotificationsService;
+describe('FileExplorerService', () => {
+  let service: FileExplorerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NotificationsService);
+    service = TestBed.inject(FileExplorerService);
   });
 
   it('should be created', () => {

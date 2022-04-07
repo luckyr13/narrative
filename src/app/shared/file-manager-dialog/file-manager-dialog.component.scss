@@ -3,6 +3,7 @@
 	min-height: 428px;
 	max-width: 880px;
 	min-width: 200px;
+	overflow-y: auto;
 }
 
 .title-text {
@@ -24,15 +25,43 @@
 
 .mat-dialog-content {
 	border-top: 1px solid;
+	display: flex;
+  flex-direction: column;
 }
 
+.title-text small {
+	font-size: 12px;
+}
+.user-address {
+	height: 24px;
+}
+.user-address small {
+	font-weight: normal;
+}
+.user-address app-arweave-address {
+	font-size: 12px;
+	justify-content: right;
+}
+.images-grid {
+	width: 100%;
+	flex: 1;
+}
+
+.images-grid .mat-card-container {
+	float: left;
+	width: 50%;
+	padding: 20px;
+}
+
+.images-grid .mat-card {
+	cursor: pointer;
+}
 
 @media (min-width: 420px) {
 	.content {
 		max-width: 880px;
 		min-width: 400px;
 	}
-
 }
 
 
@@ -40,5 +69,8 @@
 	.content {
 		max-width: 880px;
 		min-width: 800px;
+	}
+	.images-grid .mat-card-container {
+		width: 20%;
 	}
 }

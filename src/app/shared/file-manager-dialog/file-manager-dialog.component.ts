@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { UtilsService } from '../../core/utils/utils.service';
 
 @Component({
   selector: 'app-file-manager-dialog',
@@ -30,7 +31,9 @@ export class FileManagerDialogComponent implements OnInit, OnDestroy {
     private _dialogRef: MatDialogRef<FileManagerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       type: string,
-    }) { }
+      address: string,
+    },
+    private _utils: UtilsService) { }
 
 
   ngOnInit(): void {
@@ -50,4 +53,7 @@ export class FileManagerDialogComponent implements OnInit, OnDestroy {
     return Object.prototype.hasOwnProperty.call(obj, key);
   }
 
+  ellipsis(s: string) {
+    return this._utils.ellipsis(s);
+  }
 }
