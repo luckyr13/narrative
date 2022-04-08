@@ -20,8 +20,24 @@
 		<div class="mat-card-container fadeIn" *ngFor="let file of files">
 			<mat-card>
 			  <img mat-card-image [src]="getFileUrl(file.id)" alt="Img">
-			  <app-arweave-address [address]="file.id">Tx: </app-arweave-address>
+			  <app-arweave-address [address]="file.id" [isAddress]="false">Tx: </app-arweave-address>
 			  <p class="ellipsis nowrap"><strong>Created:</strong> {{ dateFormat(file.blockTimestamp) }}</p>
+			</mat-card>
+		</div>
+		<div class="more-results-container clear-both">
+			<mat-spinner *ngIf="loadingMore" color="accent" diameter="32"></mat-spinner>
+			<div class="no-results" *ngIf="!files.length && !loadingMore && !loadingFiles ">
+				You have no files yet!
+			</div>
+			<mat-card 
+				#moreResultsCard 
+				[style.visibility]="!loadingMore && !loadingFiles && moreResultsAvailable ? 'visible' : 'hidden'"
+				class="more-results-card mat-elevation-z0"
+				matRipple
+				(click)="moreResults()" >
+			  <mat-card-content class="more-results text-center">
+					Show more
+			  </mat-card-content>
 			</mat-card>
 		</div>
 	</div>

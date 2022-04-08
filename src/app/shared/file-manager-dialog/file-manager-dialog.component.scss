@@ -58,6 +58,38 @@
 	cursor: pointer;
 }
 
+
+.loader {
+	margin: 0 auto;
+	margin-top: 40px;
+}
+
+.more-results {
+  font-weight: bold;
+  font-style: italic;
+}
+.more-results-card {
+  cursor: pointer;
+  border-radius: 0px;
+  width: 100%;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.more-results-container {
+  padding-top: 20px;
+}
+
+.mat-spinner {
+  margin: 0 auto;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  font-style: italic;
+}
+
 @media (min-width: 420px) {
 	.content {
 		max-width: 880px;
@@ -74,9 +106,4 @@
 	.images-grid .mat-card-container {
 		width: 25%;
 	}
-}
-
-.loader {
-	margin: 0 auto;
-	margin-top: 40px;
 }
