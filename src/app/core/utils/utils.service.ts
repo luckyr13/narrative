@@ -80,7 +80,11 @@ export class UtilsService {
     const minLength = 12;
     const sliceLength = 5;
 
-    return s.length < minLength ? s : `${s.substring(0, sliceLength)}...${s.substring(s.length - sliceLength, s.length)}`;
+    if (!s || typeof(s) !== 'string') {
+      return '';
+    }
+
+    return s && s.length < minLength ? s : `${s.substring(0, sliceLength)}...${s.substring(s.length - sliceLength, s.length)}`;
   }
 
   getLinks(s: string) {

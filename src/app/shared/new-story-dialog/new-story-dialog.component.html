@@ -12,7 +12,8 @@
 <div class="clear-both"></div>
 <mat-dialog-content
 	class="content border-right-special">
-	<p class="footer-text">
-		--
-	</p>
+	<app-create-story-card
+		[isSubstory]="true"
+		[account]="data.address"
+		(newStoryEvent)="newStoryCreated($event)"></app-create-story-card>
 </mat-dialog-content>

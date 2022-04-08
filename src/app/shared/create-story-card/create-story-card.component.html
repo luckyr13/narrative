@@ -1,4 +1,4 @@
-<mat-card class="create-post-card fadeIn mat-elevation-z0">
+<mat-card class="create-post-card fadeIn mat-elevation-z0" [style.display]="!account ? 'none' : ''">
 	<mat-card-content class="card-content">
 		<div class="avatar-container" *ngIf="loading">
 			<ngx-skeleton-loader
@@ -36,6 +36,7 @@
 		  	
 			</mat-menu>
 			<button 
+				*ngIf="!isSubstory"
 				matTooltip="Add Substory"
 				mat-icon-button color="accent"
 				[matMenuTriggerFor]="matMenuSubstory"
@@ -54,6 +55,7 @@
 			  </button>
 			</mat-menu>
 			<button
+				*ngIf="!isSubstory"
 				matTooltip="Add Image"
 				mat-icon-button color="accent"
 				[disabled]="loadingCreatePost"
@@ -72,11 +74,13 @@
 			  </button>
 			</mat-menu>
 			<button
+				*ngIf="!isSubstory"
 				matTooltip="Add Video"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">videocam</mat-icon>
 			</button>
 			<button
+				*ngIf="!isSubstory"
 				matTooltip="Add Audio"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">mic</mat-icon>
@@ -102,3 +106,7 @@
     <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
   </mat-card-footer>
 </mat-card>
+
+<div *ngIf="!account">
+	Error loading account.
+</div>

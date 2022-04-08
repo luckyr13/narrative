@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 
 @Component({
   selector: 'app-new-story-dialog',
@@ -12,6 +13,7 @@ export class NewStoryDialogComponent implements OnInit, OnDestroy {
     private _dialogRef: MatDialogRef<NewStoryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       type: string,
+      address: string
     }) { }
 
 
@@ -30,6 +32,17 @@ export class NewStoryDialogComponent implements OnInit, OnDestroy {
 
   hasOwnProperty(obj: any, key: string) {
     return Object.prototype.hasOwnProperty.call(obj, key);
+  }
+
+
+  newStoryCreated(tx: string) {
+    const txMeta: TransactionMetadata = {
+      id: tx,
+      owner: this.data.address
+    };
+    window.setTimeout(() => {
+      // TODO
+    }, 500);
   }
 
 }

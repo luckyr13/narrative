@@ -42,6 +42,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
   @ViewChild('matMenuSubstoryTrigger') matMenuSubstoryTrigger!: MatMenuTrigger;
   @ViewChild('matButtonImage') matButtonImage!: MatButton;
+  @Input('isSubstory') isSubstory!: boolean;
 
   constructor(
     private _verto: VertoService,
@@ -121,6 +122,14 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   submit() {
+
+    if (this.isSubstory) {
+      this.loadingCreatePost = false;
+      this.codemirrorWrapper.editable(true);
+      alert('Substories are not available yet :)');
+      return;
+    }
+
     this.loadingCreatePost = true;
     this.codemirrorWrapper.editable(false);
 
@@ -182,7 +191,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: true,
         disableClose: true,
         data: {
-          type: 'image'
+          type: 'image',
+          address: this.account
         }
       }
     );
@@ -199,7 +209,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: false,
         disableClose: true,
         data: {
-          type: 'image'
+          type: 'image',
+          address: this.account
         }
       }
     );
@@ -216,7 +227,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: false,
         disableClose: true,
         data: {
-          type: 'image'
+          type: 'image',
+          address: this.account
         }
       }
     );
