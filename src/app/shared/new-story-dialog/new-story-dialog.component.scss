@@ -1,7 +1,7 @@
 .content {
 	padding: 20px;
-	min-height: 228px;
-	max-width: 880px;
+	min-height: 200px;
+	max-width: 680px;
 	min-width: 200px;
 }
 
@@ -29,7 +29,6 @@
 
 @media (min-width: 420px) {
 	.content {
-		max-width: 880px;
 		min-width: 400px;
 	}
 
@@ -38,7 +37,6 @@
 
 @media (min-width: 820px) {
 	.content {
-		max-width: 880px;
-		min-width: 800px;
+		min-width: 680px;
 	}
 }

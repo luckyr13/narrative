@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
   private _pendingPostsSubscription: Subscription = Subscription.EMPTY;
   public posts: TransactionMetadata[] = [];
-  private maxPosts: number = 20;
+  private maxPosts: number = 10;
   public loadingPosts = false;
   account: string = '';
   version = this._appSettings.appVersion;
@@ -126,6 +126,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   moreResults() {
     this.loadingPosts = true;
+    console.log('next!')
     this._nextResultsSubscription = this._story.next().subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {

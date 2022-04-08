@@ -22,7 +22,7 @@ import { AppSettingsService } from '../../core/services/app-settings.service';
 })
 export class LatestStoriesComponent implements OnInit, OnDestroy {
   public posts: TransactionMetadata[] = [];
-  private maxPosts: number = 20;
+  private maxPosts: number = 10;
   public loadingPosts = false;
   private _postSubscription: Subscription = Subscription.EMPTY;
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;

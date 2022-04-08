@@ -1,4 +1,7 @@
-<mat-card class="create-post-card fadeIn mat-elevation-z0" [style.display]="!account ? 'none' : ''">
+<mat-card 
+	class="create-post-card fadeIn mat-elevation-z0" 
+	[ngClass]="{ 'create-post-card-sub': isSubstory }"
+	[style.display]="!account ? 'none' : ''">
 	<mat-card-content class="card-content">
 		<div class="avatar-container" *ngIf="loading">
 			<ngx-skeleton-loader
@@ -33,7 +36,6 @@
 				<ng-template matMenuContent>
 					<app-emojis (emojiSelectedEvent)="emojiSelected($event)"></app-emojis>
 				</ng-template>
-		  	
 			</mat-menu>
 			<button 
 				*ngIf="!isSubstory"

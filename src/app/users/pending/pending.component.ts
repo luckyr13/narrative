@@ -19,7 +19,7 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 })
 export class PendingComponent implements OnInit, OnDestroy {
   public posts: TransactionMetadata[] = [];
-  private maxPosts: number = 20;
+  private maxPosts: number = 10;
   public loadingPosts = false;
   private _postSubscription: Subscription = Subscription.EMPTY;
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
@@ -71,6 +71,7 @@ export class PendingComponent implements OnInit, OnDestroy {
 
   moreResults() {
     this.loadingPosts = true;
+    console.log('next!')
     this._nextResultsSubscription = this._story.next().subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
