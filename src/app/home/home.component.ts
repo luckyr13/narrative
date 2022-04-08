@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
   private _pendingPostsSubscription: Subscription = Subscription.EMPTY;
   public posts: TransactionMetadata[] = [];
-  private maxPosts: number = 10;
+  private maxPosts: number = 20;
   public loadingPosts = false;
   account: string = '';
   version = this._appSettings.appVersion;
@@ -136,6 +136,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         this.loadingPosts = false;
+        this.moreResultsAvailable = false;
         this._utils.message(error, 'error');
       }
     })

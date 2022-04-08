@@ -19,7 +19,7 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 })
 export class PendingComponent implements OnInit, OnDestroy {
   public posts: TransactionMetadata[] = [];
-  private maxPosts: number = 10;
+  private maxPosts: number = 20;
   public loadingPosts = false;
   private _postSubscription: Subscription = Subscription.EMPTY;
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
