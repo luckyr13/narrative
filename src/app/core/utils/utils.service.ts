@@ -101,4 +101,41 @@ export class UtilsService {
     return sanitizedContent;
   }
 
+  dateFormat(d: number|string){
+    if (!d) {
+      return '';
+    }
+    const prev = new Date(+d * 1000);
+    const current = new Date();
+    const millisecondsEllapsed = current.getTime() - prev.getTime(); 
+    const seconds = Math.floor(millisecondsEllapsed / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    if (days) {
+      const month = months[prev.getMonth()];
+      const date = prev.getDate();
+      const year = prev.getFullYear();
+      const currentYear = current.getFullYear();
+      if (currentYear === year) {
+        return `${month} ${date}`;
+      }
+      return `${month} ${date}, ${year}`;
+    } else if (hours) {
+      return `${hours}h`;
+    } else if (minutes) {
+      return `${minutes}m`;
+    } else if (seconds) {
+      return `${seconds}s`;
+    }
+
+
+    return ``;
+  }
+
 }

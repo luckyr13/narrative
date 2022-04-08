@@ -16,13 +16,12 @@
 		<app-arweave-address [address]="data.address">User: </app-arweave-address>
 	</div>
 	<div class="images-grid">
-		<div class="mat-card-container">
+		<mat-spinner class="loader" color="accent" mode="indeterminate" *ngIf="loadingFiles"></mat-spinner>
+		<div class="mat-card-container fadeIn" *ngFor="let file of files">
 			<mat-card>
-			  <img mat-card-image src="assets/images/blank-profile.png" alt="Img">
-			  <p>Image info</p>
-			  <mat-card-footer>
-			    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
-			  </mat-card-footer>
+			  <img mat-card-image [src]="getFileUrl(file.id)" alt="Img">
+			  <app-arweave-address [address]="file.id">Tx: </app-arweave-address>
+			  <p class="ellipsis nowrap"><strong>Created:</strong> {{ dateFormat(file.blockTimestamp) }}</p>
 			</mat-card>
 		</div>
 	</div>
