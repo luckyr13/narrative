@@ -20,8 +20,8 @@ export class NewStoryDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  close(confirm: boolean = false) {
-    this._dialogRef.close(confirm);
+  close(msg: string = '') {
+    this._dialogRef.close(msg);
   }
 
 
@@ -35,14 +35,10 @@ export class NewStoryDialogComponent implements OnInit, OnDestroy {
   }
 
 
-  newStoryCreated(tx: string) {
-    const txMeta: TransactionMetadata = {
-      id: tx,
-      owner: this.data.address
-    };
+  newStoryCreated(storyContent: string) {
     window.setTimeout(() => {
-      // TODO
-    }, 500);
+      this.close(storyContent);
+    }, 300);
   }
 
 }

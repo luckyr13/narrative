@@ -1,7 +1,8 @@
 <mat-card 
-	class="create-post-card fadeIn mat-elevation-z0" 
+	class="create-post-card mat-elevation-z0 " 
 	[ngClass]="{ 'create-post-card-sub': isSubstory }"
-	[style.display]="!account ? 'none' : ''">
+	[style.display]="!account ? 'none' : ''"
+	>
 	<mat-card-content class="card-content">
 		<div class="avatar-container" *ngIf="loading">
 			<ngx-skeleton-loader
@@ -15,11 +16,22 @@
 		  	appearance="line" 
 		  	[theme]="{ 'height.px': 66, 'marginBottom.px': 0, 'marginTop.px': 0 }"></ngx-skeleton-loader>
 		</div>
-		<div class="avatar-container" *ngIf="!loading">
+		<div class="avatar-container fadeIn" *ngIf="!loading">
 		  <img class="avatar" mat-card-avatar [src]="profileImage">
 		</div>
-		<div class="message-container" [ngClass]="{ 'hide': loading }">
-		  <div class="message fadeIn border-color-theme" #postMessage></div>
+		<div class="message-container fadeIn" [ngClass]="{ 'hide': loading }">
+		  <div class="message border-color-theme" #postMessage></div>
+		</div>
+		<div class="substories clear-both">
+			<mat-list>
+				<mat-list-item
+					*ngFor="let substory of substories">
+					<h3 matLine *ngIf="substory.id"> {{substory.id}} </h3>
+			    <p matLine>
+			      <span *ngIf="substory.content"> {{substory.content}} </span>
+			    </p>
+			  </mat-list-item>
+			</mat-list>
 		</div>
 	</mat-card-content>
 	<mat-card-actions align="end">
@@ -47,7 +59,7 @@
 				<mat-icon class="material-icons-outlined">post_add</mat-icon>
 			</button>
 			<mat-menu #matMenuSubstory="matMenu">
-			  <button mat-menu-item (click)="addStory()">
+			  <button mat-menu-item (click)="addSubstory()">
 			    <mat-icon>post_add</mat-icon>
 			    <span>Create substory</span>
 			  </button>

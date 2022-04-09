@@ -68,8 +68,8 @@ export class FileManagerDialogComponent implements OnInit, OnDestroy {
     })
   }
 
-  close(confirm: boolean = false) {
-    this._dialogRef.close(confirm);
+  close(tx: string = '') {
+    this._dialogRef.close(tx);
   }
 
   moreResults() {

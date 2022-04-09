@@ -43,6 +43,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   @ViewChild('matMenuSubstoryTrigger') matMenuSubstoryTrigger!: MatMenuTrigger;
   @ViewChild('matButtonImage') matButtonImage!: MatButton;
   @Input('isSubstory') isSubstory!: boolean;
+  substories: any[] = [];
 
   constructor(
     private _verto: VertoService,
@@ -121,12 +122,16 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.codemirrorWrapper.destroy();
   }
 
-  submit() {
+  submitSubstory() {
+    this.loadingCreatePost = true;
+    window.setTimeout(() => {
+      this.newStoryEvent.emit(this.messageContent);
+    }, 300);
+  }
 
+  submit() {
     if (this.isSubstory) {
-      this.loadingCreatePost = false;
-      this.codemirrorWrapper.editable(true);
-      alert('Substories are not available yet :)');
+      this.submitSubstory();
       return;
     }
 
@@ -143,7 +148,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
           return;
         }
         this._utils.message('Success!', 'success');
-        this.newStoryEvent.emit(tx.id);    
+        this.newStoryEvent.emit(tx.id);
       },
       error: (error) => {
         this._utils.message(error, 'error');
@@ -174,13 +179,21 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: false,
         disableClose: true,
         data: {
-          type: 'image',
+          type: type,
           address: this.account
         }
       });
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());
+    dialogRef.afterClosed().subscribe((tx: string) => { 
+      this.matButtonImage.focus();
+      if (tx) {
+        this.substories.push({
+          id: tx,
+          type: 'image'
+        });
+      }
+    });
   }
 
   uploadFile(type: string) {
@@ -191,7 +204,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: true,
         disableClose: true,
         data: {
-          type: 'image',
+          type: type,
           address: this.account
         }
       }
@@ -201,7 +214,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());
   }
 
-  addStory() {
+  addSubstory() {
     const dialogRef = this._dialog.open(
       NewStoryDialogComponent,
       {
@@ -209,14 +222,22 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: false,
         disableClose: true,
         data: {
-          type: 'image',
           address: this.account
         }
       }
     );
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe(() => this.matMenuSubstoryTrigger.focus());
+    dialogRef.afterClosed().subscribe((content: string) => {
+      this.matMenuSubstoryTrigger.focus();
+      if (content) {
+        this.substories.push({
+          id: '',
+          content: content,
+          type: 'text'
+        });
+      }
+    });
   }
 
   searchStory() {
