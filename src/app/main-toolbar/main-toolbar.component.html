@@ -27,9 +27,6 @@
         <div mat-menu-item *ngFor="let th of getThemesList()">
           <mat-radio-button [value]="th">{{ getTheme(th).label }}</mat-radio-button>
         </div>
-        <div mat-menu-item [routerLink]="['/', 'settings', 'appearance']">
-          <span><mat-icon>palette</mat-icon> More themes</span>
-        </div>
       </mat-radio-group>
     </mat-menu>
     <button
