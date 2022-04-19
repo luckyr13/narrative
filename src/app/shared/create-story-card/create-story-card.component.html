@@ -22,16 +22,31 @@
 		<div class="message-container fadeIn" [ngClass]="{ 'hide': loading }">
 		  <div class="message border-color-theme" #postMessage></div>
 		</div>
-		<div class="substories clear-both">
-			<mat-list>
+		<div class="substories clear-both" *ngIf="substories && substories.length">
+			<mat-list dense>
 				<mat-list-item
-					*ngFor="let substory of substories">
-					<h3 matLine *ngIf="substory.id"> {{substory.id}} </h3>
-			    <p matLine>
-			      <span *ngIf="substory.content"> {{substory.content}} </span>
+					class="fadeIn substory-text"
+					*ngFor="let substory of getSubstoriesFiltered('text')">
+					<img matListAvatar [src]="profileImage">
+			    <p matLine *ngIf="substory.content">
+			      <span> {{substory.content}} </span>
 			    </p>
+			    <button
+			    	mat-icon-button
+			    	color="warn"
+			    	(click)="deleteSubstory(substory.id)"
+			    	aria-label="Delete substory">
+		        <mat-icon>clear</mat-icon>
+		      </button>
 			  </mat-list-item>
 			</mat-list>
+			<div class="substory-image-grid">
+				<img
+					class="substory-image"
+					*ngFor="let substory of getSubstoriesFiltered('image')"
+					[src]="getImgUrlFromTx(substory.id)">
+					
+			</div>
 		</div>
 	</mat-card-content>
 	<mat-card-actions align="end">
@@ -53,21 +68,23 @@
 				*ngIf="!isSubstory"
 				matTooltip="Add Substory"
 				mat-icon-button color="accent"
-				[matMenuTriggerFor]="matMenuSubstory"
 				[disabled]="loadingCreatePost"
-				#matMenuSubstoryTrigger>
+				(click)="addSubstory()">
 				<mat-icon class="material-icons-outlined">post_add</mat-icon>
 			</button>
-			<mat-menu #matMenuSubstory="matMenu">
-			  <button mat-menu-item (click)="addSubstory()">
-			    <mat-icon>post_add</mat-icon>
-			    <span>Create substory</span>
-			  </button>
-			  <button mat-menu-item (click)="searchStory()">
-			    <mat-icon>search</mat-icon>
-			    <span>Search story</span>
-			  </button>
-			</mat-menu>
+
+		  <!--
+				<mat-menu #matMenuSubstory="matMenu">
+				  <button mat-menu-item (click)="addSubstory()">
+				    <mat-icon>post_add</mat-icon>
+				    <span>Create substory</span>
+				  </button>
+					  <button mat-menu-item (click)="searchStory()">
+					    <mat-icon>search</mat-icon>
+					    <span>Search story</span>
+					  </button>
+				</mat-menu>
+			-->
 			<button
 				*ngIf="!isSubstory"
 				matTooltip="Add Image"

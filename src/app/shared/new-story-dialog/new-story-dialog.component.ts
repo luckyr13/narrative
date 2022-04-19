@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 
 @Component({
   selector: 'app-new-story-dialog',
@@ -36,9 +35,7 @@ export class NewStoryDialogComponent implements OnInit, OnDestroy {
 
 
   newStoryCreated(storyContent: string) {
-    window.setTimeout(() => {
-      this.close(storyContent);
-    }, 300);
+    this.close(storyContent);
   }
 
 }

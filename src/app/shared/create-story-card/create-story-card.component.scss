@@ -76,11 +76,45 @@ mat-card-header {
 	.create-post-card {
 		width: 80%;
 	}
-	.post-btn mat-icon {
+	.post-btn .mat-icon {
 		margin-left: 10px;
 	}
 }
 
 .create-post-card-sub {
 	width: 100% !important;
+}
+
+
+.substories {
+	margin-top: 6px;
+}
+
+.substories .mat-list-base .mat-list-item {
+	font-size: 12px !important;
+}
+
+
+.substory-image-grid {
+	margin-top: 16px;
+}
+
+.substory-image {
+	height: 100px;
+	width: 100px;
+	object-fit: cover;
+	flex-shrink: 0;
+	vertical-align: middle;
+	align-self: start;
+	margin-right: 12px;
+	margin-bottom: 6px;
+}
+
+.substory-image-address {
+	width: calc(100% - 100px);
+}
+
+.substory-text {
+	margin-top: 6px;
+	margin-bottom: 6px;
 }

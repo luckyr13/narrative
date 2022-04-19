@@ -16,7 +16,8 @@ import {MatButton} from '@angular/material/button';
 import { NewStoryDialogComponent } from '../new-story-dialog/new-story-dialog.component'; 
 import { SearchStoryDialogComponent } from '../search-story-dialog/search-story-dialog.component';
 import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-dialog.component'; 
-import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component'; 
+import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component';
+import Transaction from 'arweave/web/lib/transaction';
 
 @Component({
   selector: 'app-create-story-card',
@@ -40,10 +41,10 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
   themeSubscription = Subscription.EMPTY;
   @Input('account') account!: string;
   @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
-  @ViewChild('matMenuSubstoryTrigger') matMenuSubstoryTrigger!: MatMenuTrigger;
   @ViewChild('matButtonImage') matButtonImage!: MatButton;
   @Input('isSubstory') isSubstory!: boolean;
   substories: any[] = [];
+  unsignedTxSubscription = Subscription.EMPTY;
 
   constructor(
     private _verto: VertoService,
@@ -120,6 +121,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.contentSubscription.unsubscribe();
     this.createPostSubscription.unsubscribe();
     this.codemirrorWrapper.destroy();
+    this.unsignedTxSubscription.unsubscribe();
   }
 
   submitSubstory() {
@@ -227,14 +229,23 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
       }
     );
 
-    // Manually restore focus to the menu trigger
     dialogRef.afterClosed().subscribe((content: string) => {
-      this.matMenuSubstoryTrigger.focus();
       if (content) {
-        this.substories.push({
-          id: '',
-          content: content,
-          type: 'text'
+        this.loadingCreatePost = true;
+        this.unsignedTxSubscription = this._story.createSignedTXPost(content).subscribe({
+          next: (tx) => {
+            this.substories.push({
+              id: tx.id,
+              content: content,
+              type: 'text',
+              tx: tx
+            });
+            this.loadingCreatePost = false;
+          },
+          error: (err) => {
+            this._utils.message(err, 'error');
+            this.loadingCreatePost = false;
+          }
         });
       }
     });
@@ -255,6 +266,29 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     );
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe(() => this.matMenuSubstoryTrigger.focus());
+    dialogRef.afterClosed().subscribe(() => {});
   }
+
+  getImgUrlFromTx(tx: string) {
+    return `${this._arweave.baseURL}${tx}`;
+  }
+
+  getSubstoriesFiltered(filter: string) {
+    return this.substories.filter((s) => {
+      return s.type === filter;
+    });
+  }
+
+  deleteSubstory(txId: string) {
+    const i = this.substories.findIndex((s) => {
+      return s.id === txId;
+    });
+
+    if (i === undefined) {
+      return;
+    }
+
+    this.substories.splice(i, 1);
+  }
+
 }

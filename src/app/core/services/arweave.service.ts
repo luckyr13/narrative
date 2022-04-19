@@ -414,4 +414,34 @@ export class ArweaveService {
 
     return false;
   }
+
+  private async _generateSignedTx(
+    fileBin: any,
+    contentType: string,
+    key:  JWKInterface | "use_wallet",
+    tags: {name: string, value: string}[] = []
+  ): Promise<Transaction> {
+    // Create transaction
+    let transaction = await this.arweave.createTransaction({
+        data: fileBin,
+    }, key);
+
+    transaction.addTag('Content-Type', contentType);
+    for (const t of tags) {
+      transaction.addTag(t.name, t.value);
+    }
+
+    await this.arweave.transactions.sign(transaction, key);
+
+    return transaction;
+  }
+
+  public generateSignedTx(
+    fileBin: any,
+    contentType: string,
+    key:  JWKInterface | "use_wallet",
+    tags: {name: string, value: string}[] = []
+  ): Observable<Transaction> {
+    return from(this._generateSignedTx(fileBin, contentType, key, tags));
+  }
 }

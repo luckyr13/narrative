@@ -119,4 +119,16 @@ export class StoryService {
       );
   }
 
+  createSignedTXPost(msg: string) {
+    const key = this._userAuth.getPrivateKey();
+    const loginMethod = this._userAuth.loginMethod;
+    const tags: {name: string, value: string}[] = [
+      { name: 'App-Name', value: this._appSettings.appName },
+      { name: 'Version', value: this._appSettings.protocolVersion },
+      { name: 'Type', value: 'Story' },
+      { name: 'Network', value: 'Koii' }
+    ];
+    return this._arweave.generateSignedTx(msg, 'text/plain', key, tags);
+  }
+
 }

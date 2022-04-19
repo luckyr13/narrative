@@ -1,8 +1,8 @@
-<div class="address-container">
-	<span class="address-tx ellipsis nowrap">
+<div class="address-container nowrap">
+	<div class="address-tx ellipsis">
 		<strong><ng-content></ng-content></strong>
 		<span>{{ prependSymbol && isAddress ? prependSymbol : '' }}</span>{{ ellipsis ? applyEllipsis(address) : address }} 
-	</span>
+	</div>
 	<a 
 		matTooltip="Verified user!"
 		*ngIf="verified && showVerifiedBtn">
