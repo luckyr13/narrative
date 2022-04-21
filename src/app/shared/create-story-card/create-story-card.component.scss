@@ -97,17 +97,22 @@ mat-card-header {
 
 .substory-image-grid {
 	margin-top: 16px;
+	width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  position:relative;
 }
 
 .substory-image {
-	height: 100px;
-	width: 100px;
+	height: 100%;
+	width: 100%;
 	object-fit: cover;
 	flex-shrink: 0;
 	vertical-align: middle;
 	align-self: start;
-	margin-right: 12px;
-	margin-bottom: 6px;
+  position: absolute;
+	z-index: 0;
 }
 
 .substory-image-address {
@@ -117,4 +122,18 @@ mat-card-header {
 .substory-text {
 	margin-top: 6px;
 	margin-bottom: 6px;
+}
+
+.substory-image-card {
+	height: 100px;
+	width: 100px;
+	margin-right: 12px;
+	margin-bottom: 6px;
+	position:relative;
+}
+
+.substory-image-btn {
+	position: absolute;
+	z-index: 10;
+	right: 0;
 }

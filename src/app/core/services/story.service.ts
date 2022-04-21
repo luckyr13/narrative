@@ -20,7 +20,7 @@ export class StoryService {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
   }
 
-  createPost(msg: string) {
+  createPost(msg: string, disableDispatch: boolean) {
     const key = this._userAuth.getPrivateKey();
     const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
@@ -29,7 +29,7 @@ export class StoryService {
       { name: 'Type', value: 'Story' },
       { name: 'Network', value: 'Koii' }
     ];
-    return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod );
+    return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod, disableDispatch);
   }
 
   getLatestPosts(from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {

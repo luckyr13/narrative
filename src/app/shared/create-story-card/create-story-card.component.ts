@@ -17,6 +17,7 @@ import { NewStoryDialogComponent } from '../new-story-dialog/new-story-dialog.co
 import { SearchStoryDialogComponent } from '../search-story-dialog/search-story-dialog.component';
 import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-dialog.component'; 
 import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component';
+import { SubmitStoryDialogComponent } from '../submit-story-dialog/submit-story-dialog.component';
 import Transaction from 'arweave/web/lib/transaction';
 
 @Component({
@@ -128,6 +129,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.loadingCreatePost = true;
     window.setTimeout(() => {
       this.newStoryEvent.emit(this.messageContent);
+      this.substories = [];
     }, 300);
   }
 
@@ -140,25 +142,49 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     this.loadingCreatePost = true;
     this.codemirrorWrapper.editable(false);
 
-    this.createPostSubscription = this._story.createPost(this.messageContent).subscribe({
-      next: (tx) => {
-        this.loadingCreatePost = false;
-        this.codemirrorWrapper.resetEditor();
-        this.codemirrorWrapper.editable(true);
-        if (!tx || !tx.id) {
-          this._utils.message('Error creating tx!', 'error');
-          return;
+
+    const dialogRef = this._dialog.open(
+      SubmitStoryDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          address: this.account
         }
-        this._utils.message('Success!', 'success');
-        this.newStoryEvent.emit(tx.id);
-      },
-      error: (error) => {
-        this._utils.message(error, 'error');
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((content: string) => {
+      if (content) {
+        const disablePatch = true;
+
+        this.createPostSubscription = this._story.createPost(this.messageContent, disablePatch).subscribe({
+          next: (tx) => {
+            this.loadingCreatePost = false;
+            this.codemirrorWrapper.resetEditor();
+            this.codemirrorWrapper.editable(true);
+            if (!tx || !tx.id) {
+              this._utils.message('Error creating tx!', 'error');
+              return;
+            }
+            this._utils.message('Success!', 'success');
+            this.newStoryEvent.emit(tx.id);
+            this.substories = [];
+          },
+          error: (error) => {
+            this._utils.message(error, 'error');
+            this.loadingCreatePost = false;
+            this.codemirrorWrapper.editable(true);
+          }
+        });
+      } else {
         this.loadingCreatePost = false;
         this.codemirrorWrapper.editable(true);
-    
       }
     });
+
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -190,9 +216,14 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     dialogRef.afterClosed().subscribe((tx: string) => { 
       this.matButtonImage.focus();
       if (tx) {
-        this.substories.push({
+        const ids = this.substories.map((v) => {
+          return v.arrId;
+        });
+        const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
+        const newId = this.substories.push({
           id: tx,
-          type: 'image'
+          type: 'image',
+          arrId: maxId
         });
       }
     });
@@ -231,21 +262,15 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
 
     dialogRef.afterClosed().subscribe((content: string) => {
       if (content) {
-        this.loadingCreatePost = true;
-        this.unsignedTxSubscription = this._story.createSignedTXPost(content).subscribe({
-          next: (tx) => {
-            this.substories.push({
-              id: tx.id,
-              content: content,
-              type: 'text',
-              tx: tx
-            });
-            this.loadingCreatePost = false;
-          },
-          error: (err) => {
-            this._utils.message(err, 'error');
-            this.loadingCreatePost = false;
-          }
+        const ids = this.substories.map((v) => {
+          return v.arrId;
+        });
+        const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
+        this.substories.push({
+          id: '',
+          content: content,
+          type: 'text',
+          arrId: maxId
         });
       }
     });
@@ -279,9 +304,9 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     });
   }
 
-  deleteSubstory(txId: string) {
+  deleteSubstory(arrId: string) {
     const i = this.substories.findIndex((s) => {
-      return s.id === txId;
+      return s.arrId === arrId;
     });
 
     if (i === undefined) {

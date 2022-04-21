@@ -65,9 +65,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
         title: '',
         content: 'Resume Arweave Web Wallet session?',
         confirmLabel: 'Resume Session',
-        closeLabel: 'Dismiss',
-        confirmColor: '',
-        closeColor: 'accent'
+        closeLabel: 'Dismiss'
       },
       disableClose: true
     });

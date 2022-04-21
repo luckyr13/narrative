@@ -29,23 +29,33 @@
 					*ngFor="let substory of getSubstoriesFiltered('text')">
 					<img matListAvatar [src]="profileImage">
 			    <p matLine *ngIf="substory.content">
-			      <span> {{substory.content}} </span>
+			      <span>{{substory.content}}</span>
 			    </p>
 			    <button
 			    	mat-icon-button
 			    	color="warn"
-			    	(click)="deleteSubstory(substory.id)"
+			    	(click)="deleteSubstory(substory.arrId)"
 			    	aria-label="Delete substory">
 		        <mat-icon>clear</mat-icon>
 		      </button>
 			  </mat-list-item>
 			</mat-list>
 			<div class="substory-image-grid">
-				<img
-					class="substory-image"
-					*ngFor="let substory of getSubstoriesFiltered('image')"
-					[src]="getImgUrlFromTx(substory.id)">
-					
+				<div
+					class="substory-image-card"
+					*ngFor="let substory of getSubstoriesFiltered('image')">
+					<img
+						class="substory-image"
+						[src]="getImgUrlFromTx(substory.id)">
+					<button
+						class="substory-image-btn"
+			    	mat-icon-button
+			    	color="warn"
+			    	(click)="deleteSubstory(substory.arrId)"
+			    	aria-label="Delete substory">
+		        <mat-icon>clear</mat-icon>
+		       </button>
+				</div>
 			</div>
 		</div>
 	</mat-card-content>

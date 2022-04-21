@@ -246,7 +246,8 @@ export class ArweaveService {
     contentType: string,
     key: JWKInterface | "use_wallet",
     tags: {name: string, value: string}[],
-    loginMethod: string ): Promise<Transaction|{id: string, type: string}> {
+    loginMethod: string,
+    disableDispatch: boolean): Promise<Transaction|{id: string, type: string}> {
     // Create transaction
     let transaction = await this.arweave.createTransaction({
         data: fileBin,
@@ -259,7 +260,6 @@ export class ArweaveService {
 
     // If ArConnect try Dispatch first
     // Limit: 120kb
-    const disableDispatch = true;
     if (loginMethod === 'arconnect' && +transaction.data_size < 122880 && !disableDispatch) {
       if (!(window && window.arweaveWallet)) {
         throw new Error('ArConnect method not available!');
@@ -286,6 +286,16 @@ export class ArweaveService {
         await uploader.uploadChunk();
         console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
       }
+    } else if (loginMethod === 'arweavewebwallet' && +transaction.data_size < 122880 && !disableDispatch) {
+      if (!(window && window.arweaveWallet)) {
+        throw new Error('Arweave Wallet method not available!');
+      }
+
+      const dispatchResult = await window.arweaveWallet.dispatch(transaction);
+      console.log('Trying dispatch method ...', dispatchResult);
+      // Return Dispatch result
+      return dispatchResult;
+
     } else {
       console.log('Signing transaction ...');
 
@@ -400,8 +410,9 @@ export class ArweaveService {
       contentType: string,
       key:  JWKInterface | "use_wallet",
       tags: {name: string, value: string}[],
-      method: string): Observable<Transaction | {id: string, type: string}> {
-    return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method));
+      method: string,
+      disableDispatch: boolean): Observable<Transaction | {id: string, type: string}> {
+    return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method, disableDispatch));
   }
 
   validateAddress(address: string) {

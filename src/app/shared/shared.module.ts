@@ -38,6 +38,7 @@ import { NewStoryDialogComponent } from './new-story-dialog/new-story-dialog.com
 import { SearchStoryDialogComponent } from './search-story-dialog/search-story-dialog.component';
 import { FileManagerDialogComponent } from './file-manager-dialog/file-manager-dialog.component';
 import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dialog.component';
+import { SubmitStoryDialogComponent } from './submit-story-dialog/submit-story-dialog.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dial
     NewStoryDialogComponent,
     SearchStoryDialogComponent,
     FileManagerDialogComponent,
-    UploadFileDialogComponent
+    UploadFileDialogComponent,
+    SubmitStoryDialogComponent
   ],
   imports: [
     CommonModule,

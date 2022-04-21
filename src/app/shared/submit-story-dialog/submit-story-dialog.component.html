@@ -1,0 +1,26 @@
+<h2 mat-dialog-title class="title-text">
+	Post story
+</h2>
+<div class="title-buttons">
+	<button
+		mat-icon-button
+		aria-label="Close window"
+		(click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="clear-both"></div>
+<mat-dialog-content
+	class="content border-right-special">
+	test
+</mat-dialog-content>
+
+<mat-dialog-actions align="start">
+  <button mat-button (click)="close()">Close</button>
+  <div class="spacer"></div>
+  <button
+  	mat-flat-button
+  	cdkFocusInitial
+  	(click)="close()"
+  	color="accent">Post Story now</button>
+</mat-dialog-actions>

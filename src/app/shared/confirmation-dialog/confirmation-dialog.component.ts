@@ -14,8 +14,6 @@ export class ConfirmationDialogComponent implements OnInit {
     content: string,
     confirmLabel: string,
     closeLabel: string,
-    confirmColor: string,
-    closeColor: string
   }) { }
 
   ngOnInit(): void {
