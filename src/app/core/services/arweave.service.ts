@@ -259,8 +259,9 @@ export class ArweaveService {
     }
 
     // If ArConnect try Dispatch first
-    // Limit: 120kb
-    if (loginMethod === 'arconnect' && +transaction.data_size < 122880 && !disableDispatch) {
+    // Limit: 100kb
+    const dataSizeLimitDispatch = 100000;
+    if (loginMethod === 'arconnect' && +transaction.data_size < dataSizeLimitDispatch && !disableDispatch) {
       if (!(window && window.arweaveWallet)) {
         throw new Error('ArConnect method not available!');
       }
@@ -286,7 +287,7 @@ export class ArweaveService {
         await uploader.uploadChunk();
         console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
       }
-    } else if (loginMethod === 'arweavewebwallet' && +transaction.data_size < 122880 && !disableDispatch) {
+    } else if (loginMethod === 'arweavewebwallet' && +transaction.data_size < dataSizeLimitDispatch && !disableDispatch) {
       if (!(window && window.arweaveWallet)) {
         throw new Error('Arweave Wallet method not available!');
       }

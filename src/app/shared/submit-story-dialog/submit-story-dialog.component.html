@@ -12,7 +12,23 @@
 <div class="clear-both"></div>
 <mat-dialog-content
 	class="content border-right-special">
-	test
+	<div *ngIf="!loadingPostingSubstories && !loadingPostingMainStory">
+		<p>Do you want to post this Story?</p>
+		<p class="text-center substories" *ngIf="data.substories && data.substories.length">
+			+ {{ data.substories.length }} substor{{ data.substories.length === 1 ? 'y' : 'ies'}} detected!
+		</p>
+		<p class="text-right">
+			<mat-checkbox class="dispatch-chk" [formControl]="useDispatch">
+				Post for FREE (Dispatch method)
+			</mat-checkbox>
+		</p>
+	</div>
+	<div *ngIf="loadingPostingSubstories">
+		<p>Posting substories ...</p>
+	</div>	
+	<div *ngIf="loadingPostingMainStory">
+		<p>Posting main story ...</p>
+	</div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="start">
@@ -21,6 +37,6 @@
   <button
   	mat-flat-button
   	cdkFocusInitial
-  	(click)="close()"
-  	color="accent">Post Story now</button>
+  	(click)="submit()"
+  	color="accent">Yes, post story now!</button>
 </mat-dialog-actions>

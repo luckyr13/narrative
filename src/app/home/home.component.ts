@@ -126,7 +126,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   moreResults() {
     this.loadingPosts = true;
-    console.log('next!')
     this._nextResultsSubscription = this._story.next().subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {

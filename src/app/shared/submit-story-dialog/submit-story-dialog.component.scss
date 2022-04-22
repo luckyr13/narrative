@@ -5,6 +5,10 @@
 	min-width: 200px;
 }
 
+.content p {
+	padding: 6px;
+}
+
 .title-text {
 	float: left;
 	width: 70%;
@@ -39,4 +43,12 @@
 	.content {
 		min-width: 680px;
 	}
+}
+
+.substories {
+	font-size: 12px;
+}
+
+.dispatch-chk {
+	font-size: 12px;
 }

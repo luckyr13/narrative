@@ -20,14 +20,19 @@ export class StoryService {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
   }
 
-  createPost(msg: string, disableDispatch: boolean) {
+  createPost(
+    msg: string,
+    disableDispatch: boolean,
+    extraTags: {name: string, value: string}[] = [],
+    isSubstory: boolean = false) {
     const key = this._userAuth.getPrivateKey();
     const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
       { name: 'App-Name', value: this._appSettings.appName },
       { name: 'Version', value: this._appSettings.protocolVersion },
-      { name: 'Type', value: 'Story' },
-      { name: 'Network', value: 'Koii' }
+      { name: 'Type', value: isSubstory ? 'Substory' : 'Story' },
+      { name: 'Network', value: 'Koii' },
+      ...extraTags
     ];
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod, disableDispatch);
   }

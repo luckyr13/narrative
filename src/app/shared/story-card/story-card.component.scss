@@ -72,17 +72,20 @@ mat-card-header {
 		padding-left: 80px;
 		padding-right: 80px;
 	}
-	.profile-name span {
-		margin-right: 20px;
+	.profile-username {
+		margin-right: 12px;
+		margin-left: 6px;
+		line-height: 32px !important;
 	}
-	.profile-name small, .profile-name span {
+	.profile-address, .profile-name, .profile-username {
 		min-width: 5%;
 		float: left;
 	}
-	.profile-name small {
+	.profile-address {
 		margin-top: 0px;
+		line-height: 20px !important;
 	}
-	.profile-name {
+	.profile-name-container {
 		height: 32px;
 		width: 90%;
 	}
@@ -106,7 +109,7 @@ h2 {
 	margin-bottom: 20px;
 }
 
-.profile-name {
+.profile-name-container {
 	cursor: pointer;
 	float: left;
 	width: 80%;
@@ -115,15 +118,20 @@ h2 {
 	float: left;
 	width: 20%;
 }
-.profile-name:hover span {
+.profile-name:hover {
 	text-decoration: underline;
 }
-.profile-name small, .profile-name span {
+.profile-address, .profile-name, .profile-username {
 	display: block;
 }
-
-.profile-name small {
+.profile-username {
+	line-height: 16px;
+	opacity: 0.8;
+}
+.profile-address {
 	margin-top: 6px;
+	line-height: 10px;
+	opacity: 0.8;
 }
 
 .tx {

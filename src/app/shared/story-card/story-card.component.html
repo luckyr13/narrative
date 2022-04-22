@@ -19,12 +19,15 @@
 			</div>
 			<div class="story-container">
 				<h2 
-					class="profile-name"
+					class="profile-name-container"
 					*ngIf="!loadingProfile"
 					(click)="$event.stopPropagation()"
 					[routerLink]="['/', profile ? profile.username : post.owner]">
-					<span *ngIf="profile" class="ellipsis nowrap">{{ profile.username }}</span>
-					<small *ngIf="post">
+					<span *ngIf="profile && profile.name" class="ellipsis nowrap profile-name">{{ profile.name }}</span>
+					<small *ngIf="profile && profile.username" class="profile-username">
+						@{{ profile.username }}
+					</small>
+					<small *ngIf="post" class="profile-address">
 						<app-arweave-address
 							[address]="post.owner"
 							[showCopyBtn]="false"

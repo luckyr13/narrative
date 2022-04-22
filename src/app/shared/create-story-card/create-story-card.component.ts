@@ -19,6 +19,7 @@ import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-
 import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component';
 import { SubmitStoryDialogComponent } from '../submit-story-dialog/submit-story-dialog.component';
 import Transaction from 'arweave/web/lib/transaction';
+import { ArbundlesService } from '../../core/services/arbundles.service';
 
 @Component({
   selector: 'app-create-story-card',
@@ -54,7 +55,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
     private _story: StoryService,
     private _userSettings: UserSettingsService,
     private _utils: UtilsService,
-    private _dialog: MatDialog) {
+    private _dialog: MatDialog,
+    private _arbundles: ArbundlesService) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
 
@@ -150,34 +152,21 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         autoFocus: false,
         disableClose: true,
         data: {
-          address: this.account
+          address: this.account,
+          substories: this.substories,
+          mainStory: this.messageContent
         }
       }
     );
 
-    dialogRef.afterClosed().subscribe((content: string) => {
-      if (content) {
-        const disablePatch = true;
-
-        this.createPostSubscription = this._story.createPost(this.messageContent, disablePatch).subscribe({
-          next: (tx) => {
-            this.loadingCreatePost = false;
-            this.codemirrorWrapper.resetEditor();
-            this.codemirrorWrapper.editable(true);
-            if (!tx || !tx.id) {
-              this._utils.message('Error creating tx!', 'error');
-              return;
-            }
-            this._utils.message('Success!', 'success');
-            this.newStoryEvent.emit(tx.id);
-            this.substories = [];
-          },
-          error: (error) => {
-            this._utils.message(error, 'error');
-            this.loadingCreatePost = false;
-            this.codemirrorWrapper.editable(true);
-          }
-        });
+    dialogRef.afterClosed().subscribe((mainTx: string) => {
+      if (mainTx) {
+        this.loadingCreatePost = false;
+        this.codemirrorWrapper.resetEditor();
+        this.codemirrorWrapper.editable(true);
+        this._utils.message('Success!', 'success');
+        this.newStoryEvent.emit(mainTx);
+        this.substories = [];
       } else {
         this.loadingCreatePost = false;
         this.codemirrorWrapper.editable(true);
