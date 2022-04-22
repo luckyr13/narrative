@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
-import { from, Observable, Subscription, switchMap, of } from 'rxjs';
+import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { StoryService } from '../../core/services/story.service';
 
@@ -40,15 +40,23 @@ export class SubmitStoryDialogComponent implements OnInit {
     const disableDispatch = !this.useDispatch.value;
     const substoriesTxList: string[] = [];
 
+    const textSubstories = this.data.substories.filter((substory) => {
+      return substory.type === 'text';
+    });
+
+    const imagesSubstories = this.data.substories.filter((substory) => {
+      return substory.type === 'image';
+    });
+    const imagesTxList = imagesSubstories.map((substory) => {
+      return substory.id;
+    });
+
     // Substories detected?
     if (this.data.substories && this.data.substories.length) {
       this.loadingPostingSubstories = true;
-      this.postingSubstoriesSubscription = from(this.data.substories).pipe(
-        switchMap((substory) => {
-          if (substory.type === 'text') {
-            return this._story.createPost(substory.content, disableDispatch, [], true);
-          }
-          return of({ id: substory.id, type: substory.type });
+      this.postingSubstoriesSubscription = from(textSubstories).pipe(
+        concatMap((substory) => {
+          return this._story.createPost(substory.content, disableDispatch, [], true);
         })
       ).subscribe({
         next: (tx) => {
@@ -61,20 +69,24 @@ export class SubmitStoryDialogComponent implements OnInit {
         },
         complete: () => {
           this.loadingPostingSubstories = false;
+          substoriesTxList.push(...imagesTxList);
           this.createMainStory(this.data.mainStory, substoriesTxList, disableDispatch);
         }
       });
     } else {
-      this.createMainStory(this.data.mainStory, [], disableDispatch);
+      substoriesTxList.push(...imagesTxList);
+      this.createMainStory(this.data.mainStory, substoriesTxList, disableDispatch);
     }
   }
 
   createMainStory(story: string, substoriesTXIds: string[], disableDispatch: boolean) {
     this.loadingPostingMainStory = true;
     const tags = [];
+
     for (const txId of substoriesTXIds) {
       tags.push({ name: 'Substory', value: txId });
     }
+
     this.postingSubstoriesSubscription = this._story.createPost(story, disableDispatch, tags).subscribe({
       next: (tx) => {
         this.loadingPostingMainStory = false;
