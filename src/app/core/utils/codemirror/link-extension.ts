@@ -1,6 +1,5 @@
 import {EditorView, Decoration, ViewPlugin, DecorationSet, ViewUpdate} from "@codemirror/view";
-import {RangeSetBuilder} from "@codemirror/rangeset";
-import {Extension} from "@codemirror/state";
+import {Extension, RangeSetBuilder} from "@codemirror/state";
 import * as linkify from 'linkifyjs';
 import 'linkify-plugin-hashtag';
 import 'linkify-plugin-mention';

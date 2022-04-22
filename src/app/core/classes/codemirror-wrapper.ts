@@ -1,13 +1,11 @@
-import { EditorState, StateField, StateEffect, Compartment } from '@codemirror/state';
+import { EditorState, StateField, StateEffect, Compartment } from '@codemirror/state'
 import { EditorView, keymap, placeholder, highlightSpecialChars } from '@codemirror/view';
-import { defaultKeymap } from '@codemirror/commands';
-import { history, historyKeymap } from '@codemirror/history';
+import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { Observable, Subject } from 'rxjs';
-import { defaultHighlightStyle } from "@codemirror/highlight";
-import { bracketMatching } from "@codemirror/matchbrackets";
-import { closeBrackets, closeBracketsKeymap } from "@codemirror/closebrackets";
+import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 import { linkExtension } from '../utils/codemirror/link-extension';
 import { dataCounter } from '../utils/codemirror/word-counter-extension';
+import { syntaxHighlighting, defaultHighlightStyle, bracketMatching } from '@codemirror/language';
 
 export class CodeMirrorWrapper {
   editorState: EditorState|null = null;
@@ -39,13 +37,14 @@ export class CodeMirrorWrapper {
               this.placeholderCompartment.of(placeholder(placeholderTxt)),
               this.updateEffectsCompartment.of([]),
               keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
-              defaultHighlightStyle.fallback,
+              syntaxHighlighting(defaultHighlightStyle),
               EditorView.lineWrapping,
               linkExtension(),
               this.editableCompartment.of(EditorView.editable.of(true)),
               dataCounter()
             ]
           });
+
 
           this.editorView = new EditorView({
             state: this.editorState,

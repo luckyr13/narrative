@@ -1,7 +1,6 @@
-import {Panel} from "@codemirror/panel";
-import {showPanel} from "@codemirror/panel";
-import {Text} from "@codemirror/text";
-import { EditorView } from '@codemirror/view';
+import { Panel, showPanel, EditorView } from "@codemirror/view";
+import { Text } from "@codemirror/state";
+
 
 /*
 * From: https://codemirror.net/6/examples/panel/
