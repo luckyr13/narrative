@@ -4,6 +4,7 @@
 <div class="title-buttons">
 	<button
 		mat-icon-button
+		[disabled]="loadingPostingSubstories || loadingPostingMainStory"
 		aria-label="Close window"
 		(click)="close()">
     <mat-icon>close</mat-icon>
@@ -25,18 +26,25 @@
 	</div>
 	<div *ngIf="loadingPostingSubstories">
 		<p>Posting substories ...</p>
+		<mat-spinner [diameter]="20"></mat-spinner>
 	</div>	
 	<div *ngIf="loadingPostingMainStory">
 		<p>Posting main story ...</p>
+		<mat-spinner [diameter]="20"></mat-spinner>
 	</div>
 </mat-dialog-content>
-
 <mat-dialog-actions align="start">
-  <button mat-button (click)="close()">Close</button>
+  <button 
+  	mat-button
+  	[disabled]="loadingPostingSubstories || loadingPostingMainStory"
+  	(click)="close()">Close</button>
   <div class="spacer"></div>
   <button
   	mat-flat-button
   	cdkFocusInitial
   	(click)="submit()"
-  	color="accent">Yes, post story now!</button>
+  	[disabled]="loadingPostingSubstories || loadingPostingMainStory"
+  	color="accent">
+  	<span>Yes, post story now!</span> 
+  </button>
 </mat-dialog-actions>
