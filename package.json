@@ -24,20 +24,23 @@
     "@codemirror/commands": "^0.20.0",
     "@codemirror/lang-markdown": "^0.20.0",
     "@codemirror/state": "^0.20.0",
-    "@codemirror/view": "^0.20.1",
+    "@codemirror/view": "^0.20.2",
     "@types/dompurify": "^2.3.3",
     "@verto/js": "^1.0.0-beta-4",
+    "arbundles": "^0.6.16",
     "ardb": "^1.1.10",
     "arverify": "^0.0.11",
     "arweave": "^1.10.23",
     "arweave-wallet-connector": "^0.0.29",
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
     "dompurify": "^2.3.6",
     "linkify-plugin-hashtag": "^3.0.4",
     "linkify-plugin-mention": "^3.0.4",
     "linkify-string": "^3.0.4",
     "linkifyjs": "^3.0.5",
     "ngx-skeleton-loader": "^5.0.0",
-    "redstone-smartweave": "^0.4.74",
+    "redstone-smartweave": "^0.4.75",
     "rxjs": "~7.5.0",
     "smartweave": "^0.4.46",
     "tslib": "^2.3.0",
@@ -60,6 +63,9 @@
   "browser": {
     "fs": false,
     "path": false,
-    "@three-em/node": false
+    "@three-em/node": false,
+    "crypto": false,
+    "stream": false,
+    "zlib": false
   }
 }
