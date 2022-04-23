@@ -6,6 +6,7 @@ import { ArweaveService } from './arweave.service';
 import { TransactionMetadata } from '../interfaces/transaction-metadata';
 import { UserAuthService } from './user-auth.service';
 import { AppSettingsService } from './app-settings.service';
+import { UtilsService } from '../utils/utils.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class StoryService {
   constructor(
     private _arweave: ArweaveService,
     private _userAuth: UserAuthService,
-    private _appSettings: AppSettingsService) {
+    private _appSettings: AppSettingsService,
+    private _utils: UtilsService) {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
   }
 
@@ -24,7 +26,8 @@ export class StoryService {
     msg: string,
     disableDispatch: boolean,
     extraTags: {name: string, value: string}[] = [],
-    isSubstory: boolean = false) {
+    isSubstory: boolean = false,
+    type: 'text'|'image'|'video') {
     const key = this._userAuth.getPrivateKey();
     const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
@@ -34,6 +37,19 @@ export class StoryService {
       { name: 'Network', value: 'Koii' },
       ...extraTags
     ];
+
+    if (type === 'text') {    
+      // Detect hashtags and mentions
+      const hashtags = this._utils.getLinkHashtags(msg);
+      for (const ht of hashtags) {
+        tags.push({ name: 'Hashtag', value: ht.value });
+      }
+      const mentions = this._utils.getLinkMentions(msg);
+      for (const mn of mentions) {
+        tags.push({ name: 'Mention', value: mn.value });
+      }
+    }
+
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod, disableDispatch);
   }
 

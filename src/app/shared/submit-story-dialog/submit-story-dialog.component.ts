@@ -56,7 +56,7 @@ export class SubmitStoryDialogComponent implements OnInit {
       this.loadingPostingSubstories = true;
       this.postingSubstoriesSubscription = from(textSubstories).pipe(
         concatMap((substory) => {
-          return this._story.createPost(substory.content, disableDispatch, [], true);
+          return this._story.createPost(substory.content, disableDispatch, [], true, 'text');
         })
       ).subscribe({
         next: (tx) => {
@@ -89,11 +89,12 @@ export class SubmitStoryDialogComponent implements OnInit {
     this.loadingPostingMainStory = true;
     const tags = [];
 
+    // Generate tags for Substories
     for (const txId of substoriesTXIds) {
       tags.push({ name: 'Substory', value: txId });
     }
 
-    this.postingSubstoriesSubscription = this._story.createPost(story, disableDispatch, tags).subscribe({
+    this.postingSubstoriesSubscription = this._story.createPost(story, disableDispatch, tags, false, 'text').subscribe({
       next: (tx) => {
         this.loadingPostingMainStory = false;
         this._utils.message('Story created!', 'success');

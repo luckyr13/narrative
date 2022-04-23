@@ -93,6 +93,18 @@ export class UtilsService {
     return links;
   }
 
+  getLinkHashtags(s: string) {
+    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const links = linkify.find(sanitizedContent, 'hashtag');
+    return links;
+  }
+
+  getLinkMentions(s: string) {
+    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const links = linkify.find(sanitizedContent, 'mention');
+    return links;
+  }
+
   sanitize(s: string): string {
     const sanitizedContent = DOMPurify.sanitize(s.trim(), {ALLOWED_TAGS: []});
     const htmlWithLinks = linkifyStr(sanitizedContent, this.options);
