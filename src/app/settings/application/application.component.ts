@@ -11,7 +11,7 @@ export class ApplicationComponent implements OnInit {
   appName = '';
   appVersion = '';
   protocolVersion = '';
-  sessionData = this._userAuth.getSessionData();
+  sessionData: {localStorage: Storage, sessionStorage: Storage};
 
   constructor(
     private _appSettings: AppSettingsService,
@@ -19,6 +19,7 @@ export class ApplicationComponent implements OnInit {
     this.appName = this._appSettings.appName;
     this.appVersion = this._appSettings.appVersion;
     this.protocolVersion = this._appSettings.protocolVersion;
+    this.sessionData = this._userAuth.getSessionData();
   }
 
   ngOnInit(): void {

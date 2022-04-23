@@ -24,7 +24,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   @Output() toggleEvent = new EventEmitter<boolean>();
   account = '';
   method = '';
-  appName = this._appSettings.appName;
+  appName: string;
   profileSubscription: Subscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
   profileImage: string = 'assets/images/blank-profile.png';
@@ -38,6 +38,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
     private _verto: VertoService,
     private _arweave: ArweaveService,
     private _utils: UtilsService) {
+    this.appName = this._appSettings.appName;
   }
 
   ngOnInit(): void {

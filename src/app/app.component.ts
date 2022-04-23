@@ -9,6 +9,7 @@ import {
   ConfirmationDialogComponent 
 } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { MatSidenavContainer } from '@angular/material/sidenav';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
 })
 export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   opened = true;
-  platformLoading$ = this._appSettings.loadingPlatform$;
+  platformLoading$: Observable<boolean>;
   loadAccountSubscription: Subscription = Subscription.EMPTY;
   loginSubscription: Subscription = Subscription.EMPTY;
   @ViewChild(MatSidenavContainer) sidenavContainer!: MatSidenavContainer;
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private _utils: UtilsService,
     public dialog: MatDialog
   ) {
-
+    this.platformLoading$ = this._appSettings.loadingPlatform$;
   }
 
   ngOnInit() {

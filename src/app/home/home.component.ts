@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private maxPosts: number = 10;
   public loadingPosts = false;
   account: string = '';
-  version = this._appSettings.appVersion;
+  version: string = '';
   moreResultsAvailable = true;
   @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
@@ -35,7 +35,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _appSettings: AppSettingsService,
     private _utils: UtilsService,
     private _arweave: ArweaveService,
-    private _ngZone: NgZone) { }
+    private _ngZone: NgZone) {
+    this.version = this._appSettings.appVersion;
+  }
 
   ngOnInit(): void {
     this.loadingPosts = true;
