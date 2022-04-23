@@ -59,6 +59,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
         // Si los elementos arrastrados no son ficheros, rechazarlos
         if (dataTransferApi.items[i].kind === 'file') {
           var file = dataTransferApi.items[i].getAsFile()!;
+          alert('Coming soon ...');
           console.log('... file[' + i + '].name = ' + file.name);
         }
       }
@@ -113,4 +114,8 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     return Object.prototype.hasOwnProperty.call(obj, key);
   }
 
+
+  openFileExplorer() {
+    alert('Coming soon ...');
+  }
 }

@@ -148,6 +148,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .small-username-2 {
     color: rgb(20, 20, 20, 0.8);
   }
+  .substory-container {
+    background-color: #FFF;
+  }
 }
 .dark-theme {
   @include mat.all-component-colors($dark-theme);
@@ -164,7 +167,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
     background-color: #212121;
   }
 
-  .mat-card {
+  .mat-card, .substory-container {
     background-color: #0f0f0f;
   }
   .border-same-as-background {
@@ -197,6 +200,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .small-username-2 {
     color: rgb(20, 20, 20, 0.8);
   }
+  .substory-container {
+    background-color: #FFF;
+  }
 }
 .dark-deep-purple-theme {
   @include mat.all-component-colors($dark-deep-purple-theme);
@@ -213,7 +219,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
     background-color: #212121;
   }
 
-  .mat-card {
+  .mat-card, .substory-container {
     background-color: #0f0f0f;
   }
   .border-same-as-background {
@@ -239,7 +245,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
     background-color: #212121;
   }
 
-  .mat-card {
+  .mat-card, .substory-container {
     background-color: #0f0f0f;
   }
   .border-same-as-background {
@@ -272,6 +278,9 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .small-username-2 {
     color: rgb(20, 20, 20, 0.8);
   }
+  .substory-container {
+    background-color: #FFF;
+  }
 }
 
 .dark-blue-gray-theme {
@@ -289,7 +298,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
     background-color: #172126;
   }
 
-  .mat-card {
+  .mat-card, .substory-container {
     background-color: #000a12;
   }
   .border-same-as-background {

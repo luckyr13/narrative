@@ -21,6 +21,7 @@
   	class="file-upload-zone"
   	[ngClass]="{ 'file-upload-zone-active': dragFileActive }">
   	<button 
+  		(click)="openFileExplorer()"
    		cdkFocusInitial
   		class="btn-upload"
   		mat-fab color="primary"
@@ -40,6 +41,7 @@
     </div>
     <p class="text-secondary-fup">
 	   	<button 
+	   		(click)="openFileExplorer()"
 	   		class="btn-upload-txt"
 	  		mat-flat-button color="accent">
 	      SELECT FILES

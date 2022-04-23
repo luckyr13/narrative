@@ -1,7 +1,7 @@
 .player-container {
 	width: 100%;
 	margin: 0px 0px 20px 0px;
-	height: 320px;
+	height: 220px;
 	position: relative;
 	cursor: default;
 }
@@ -12,6 +12,7 @@
 	height: 100%;
 	text-align: center;
 	cursor: pointer;
+	filter: invert(70%);
 }
 
 .player-container .right-arrow {
@@ -20,6 +21,15 @@
 	height: 100%;
 	text-align: center;
 	cursor: pointer;
+	filter: invert(70%);
+}
+
+.player-container .left-arrow .mat-icon, .player-container .right-arrow .mat-icon {
+	font-size: 32px !important;
+}
+
+.player-container .left-arrow:hover, .player-container .right-arrow:hover {
+	filter: invert(0%);
 }
 
 .player-container .content {
@@ -28,10 +38,26 @@
 	height: 100%;
 	position: relative;
 	text-align: center;
+	overflow-y: auto;
 }
 
 .vcenter {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.substory-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.mat-spinner {
+	margin: 0 auto;
+}
+
+.player-container .content img {
+	max-width: 100%;
+	max-height: 100%;
 }

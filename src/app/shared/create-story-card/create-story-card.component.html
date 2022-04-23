@@ -117,12 +117,14 @@
 			<button
 				*ngIf="!isSubstory"
 				matTooltip="Add Video"
+				(click)="comingSoon()"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">videocam</mat-icon>
 			</button>
 			<button
 				*ngIf="!isSubstory"
 				matTooltip="Add Audio"
+				(click)="comingSoon()"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">mic</mat-icon>
 			</button>

@@ -25,12 +25,11 @@
 		</p>
 	</div>
 	<div *ngIf="loadingPostingSubstories">
-		<p>Posting substories ...</p>
-		<mat-spinner [diameter]="20"></mat-spinner>
+		<p><span>Posting substories ...</span><mat-spinner color="accent" [diameter]="20"></mat-spinner></p>
 	</div>	
 	<div *ngIf="loadingPostingMainStory">
-		<p>Posting main story ...</p>
-		<mat-spinner [diameter]="20"></mat-spinner>
+		<p><span>Posting main story ...</span><mat-spinner color="accent" [diameter]="20"></mat-spinner></p>
+		
 	</div>
 </mat-dialog-content>
 <mat-dialog-actions align="start">

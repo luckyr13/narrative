@@ -3,7 +3,16 @@
     <mat-icon color="accent">chevron_left</mat-icon>
 	</div>
 	<div class="content">
-		
+		<div class="substory-container" *ngFor="let substory of getSubstories()">
+			<mat-spinner color="accent" [diameter]="40" *ngIf="substoriesContent[substory].loading"></mat-spinner>
+			<div
+				*ngIf="substoriesContent[substory].type === 'text/plain'"
+				[innerHTML]="substoriesContent[substory].content">
+			</div>
+			<div *ngIf="substoriesContent[substory].type.indexOf('image') >= 0">
+				<img [src]="substoriesContent[substory].content">
+			</div>
+		</div>
 	</div>
 	<div class="right-arrow vcenter">
 		<mat-icon color="accent">chevron_right</mat-icon>

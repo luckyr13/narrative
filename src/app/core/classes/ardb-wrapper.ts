@@ -77,4 +77,22 @@ export class ArdbWrapper {
     return obs;
   }
 
+  /*
+  * @dev Search transaction
+  */
+  searchOneTransactionById(
+    txId: string): Observable<ArdbTransaction> {
+    const obs = new Observable<ArdbTransaction>((subscriber) => {
+      this.ardb.search('transactions')
+        .id(txId).findOne().then((res: ArdbTransaction|ArdbBlock) => {
+          subscriber.next(<ArdbTransaction>res);
+          subscriber.complete();
+        })
+        .catch((error: string) => {
+          subscriber.error(error);
+        });
+    });
+    return obs;
+  }
+
 }

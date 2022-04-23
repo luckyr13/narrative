@@ -66,7 +66,6 @@ export class StoryService {
   	return this._ardb.searchTransactions(from, limit, maxHeight, tags).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts.map((tx) => {
-
             const post: TransactionMetadata = {
               id: tx.id,
               owner: tx.owner.address,
@@ -74,7 +73,8 @@ export class StoryService {
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data ? tx.data.size : undefined,
               dataType: tx.data ? tx.data.type : undefined,
-              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags
             }
             return post;
           });
@@ -95,7 +95,8 @@ export class StoryService {
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data ? tx.data.size : undefined,
               dataType: tx.data ? tx.data.type : undefined,
-              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags
             }
             return post;
           }) : [];
@@ -117,7 +118,8 @@ export class StoryService {
             blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
             dataSize: tx.data ? tx.data.size : undefined,
             dataType: tx.data ? tx.data.type : undefined,
-            blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
+            blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+            tags: tx.tags
           }
           return post;
         })

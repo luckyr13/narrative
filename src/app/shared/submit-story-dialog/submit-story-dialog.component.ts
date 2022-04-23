@@ -63,7 +63,13 @@ export class SubmitStoryDialogComponent implements OnInit {
           substoriesTxList.push(tx.id);
         },
         error: (err) => {
-          this._utils.message(err, 'error');
+          if (typeof err === 'string') {
+            this._utils.message(err, 'error');
+          } else if (err && err.message) {
+            this._utils.message(err.message, 'error');
+          } else {
+            this._utils.message('Error :(', 'error');
+          }
           this.loadingPostingSubstories = false;
           this.close('');
         },
@@ -94,7 +100,13 @@ export class SubmitStoryDialogComponent implements OnInit {
         this.close(tx.id);
       },
       error: (err) => {
-        this._utils.message(err, 'error');
+        if (typeof err === 'string') {
+          this._utils.message(err, 'error');
+        } else if (err && err.message) {
+          this._utils.message(err.message, 'error');
+        } else {
+          this._utils.message('Error :(', 'error');
+        }
         this.loadingPostingMainStory = false;
         this.close('');
       }

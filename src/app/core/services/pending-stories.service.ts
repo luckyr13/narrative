@@ -58,7 +58,8 @@ export class PendingStoriesService {
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data ? tx.data.size : undefined,
               dataType: tx.data ? tx.data.type : undefined,
-              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags
             }
             return post;
           });
@@ -79,7 +80,8 @@ export class PendingStoriesService {
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data ? tx.data.size : undefined,
               dataType: tx.data ? tx.data.type : undefined,
-              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags
             }
             return post;
           }) : [];

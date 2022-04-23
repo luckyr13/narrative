@@ -29,6 +29,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   detectedLinks: string[] = [];
+  substories: string[] = [];
 
   constructor(
     private _verto: VertoService,
@@ -40,10 +41,24 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadVertoProfile();
+    this.loadContent();
     if (this.post.blockTimestamp) {
       this.post.blockTimestamp = this._utils.dateFormat(this.post.blockTimestamp);
     }
-    
+    this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
+    this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {
+      this.isDarkTheme = this._userSettings.isDarkTheme(theme);
+    });
+    this.extractTagsFromPost(this.post);
+  }
+
+  extractTagsFromPost(post: TransactionMetadata) {
+    const tags = post.tags!;
+    for (const t of tags) {
+      if (t.name === 'Substory') {
+        this.substories.push(t.value);
+      }
+    }
   }
 
   loadVertoProfile() {
@@ -67,36 +82,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.loadingContent = true;
-    this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
-      next: (data: string|Uint8Array) => {
-        this.loadingContent = false;
-        this.content = this._utils.sanitize(`${data}`);
-        const links = this._utils.getLinks(`${data}`);
-        this.detectedLinks = links.map((val) => {
-          return val.href;
-        });
-        
-        window.setTimeout(() => {
-          const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
-            this.contentContainer.nativeElement.getElementsByTagName('a') : [];
-          for (const anchor of aTags) {
-            anchor.addEventListener('click', (event: MouseEvent) => {
-              event.stopPropagation();
-            });
-          }
-        }, 400);
-      },
-      error: (error) => {
-        this.loadingContent = false;
-        this._utils.message(error, 'error');
-      }
-    });
-
-    this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
-    this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {
-      this.isDarkTheme = this._userSettings.isDarkTheme(theme);
-    });
+   
   }
 
   ngOnDestroy() {
@@ -146,6 +132,34 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       ariaLabel: 'Share on social media'
     });
 
+  }
+
+  loadContent() {
+    this.loadingContent = true;
+    this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
+      next: (data: string|Uint8Array) => {
+        this.loadingContent = false;
+        this.content = this._utils.sanitize(`${data}`);
+        const links = this._utils.getLinks(`${data}`);
+        this.detectedLinks = links.map((val) => {
+          return val.href;
+        });
+        
+        window.setTimeout(() => {
+          const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
+            this.contentContainer.nativeElement.getElementsByTagName('a') : [];
+          for (const anchor of aTags) {
+            anchor.addEventListener('click', (event: MouseEvent) => {
+              event.stopPropagation();
+            });
+          }
+        }, 400);
+      },
+      error: (error) => {
+        this.loadingContent = false;
+        this._utils.message(error, 'error');
+      }
+    });
   }
 
 }
