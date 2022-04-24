@@ -16,23 +16,25 @@ export class UtilsService {
   // build fitting regex
   regex = RegExp('^(' + this.allowlist.join('|') + '):', 'gim');
   // Options for linkify
-  options = {
-    defaultProtocol: 'https',
-    target: (href: string, type: string) => {
-      if (type === 'mention' || type === 'hashtag') {
-        return '_self';
-      }
-      return '_blank';
-    },
-    formatHref: {
-      hashtag: (href: string) => '/#/search/' + href.substr(1),
-      mention: (href: string) => '/#/' + href.substr(1)
-    }
-  };
+  options = {};
 
   constructor(
     private _snackBar: MatSnackBar) {
     const _this = this;
+
+    this.options = {
+      defaultProtocol: 'https',
+      target: (href: string, type: string) => {
+        if (type === 'mention' || type === 'hashtag') {
+          return '_self';
+        }
+        return '_blank';
+      },
+      formatHref: {
+        hashtag: (href: string) => this.getBaseURL() + '#/search/' + href.substr(1),
+        mention: (href: string) => this.getBaseURL() + '#/' + href.substr(1)
+      }
+    }
 
     // Add a hook to enforce URI scheme allow-list
     DOMPurify.addHook('afterSanitizeAttributes', function(node) {
@@ -152,6 +154,15 @@ export class UtilsService {
 
 
     return ``;
+  }
+
+
+  getBaseURL() {
+    const full = `${window.location.href}`;
+    const urlComponents = full.split('#');
+    const baseURL = urlComponents && urlComponents.length ? urlComponents[0] : window.location.origin;
+
+    return baseURL;
   }
 
 }

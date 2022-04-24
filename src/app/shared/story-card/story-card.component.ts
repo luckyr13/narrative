@@ -121,12 +121,13 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       this.profile.username :
       this.post.owner;
 
+
     this._bottomSheetShare.open(BottomSheetShareComponent, {
       data: {
         title: 'Story from Narrative!',
         content: this._utils.sanitizeFull(`${tmpContent} ...`.substr(0, limit)),
         img: '',
-        fullURL: `${window.location.origin}/#/${user}/${this.post.id}`
+        fullURL: `${this._utils.getBaseURL()}#/${user}/${this.post.id}`
       },
       direction: direction,
       ariaLabel: 'Share on social media'
