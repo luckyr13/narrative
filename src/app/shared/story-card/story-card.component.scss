@@ -50,7 +50,8 @@ mat-card-header {
 	width: calc(100%);
 	min-height: 100%;
 	padding-left: 14px;
-  word-break: break-all;
+	word-break: normal;
+	overflow-wrap: anywhere;
 }
 
 .story-container .content {
@@ -61,6 +62,7 @@ mat-card-header {
 
 .story-container .content a {
   word-break: break-all;
+  text-overflow: ellipsis;
 }
 
 .mat-card-actions {
