@@ -50,14 +50,17 @@ mat-card-header {
 	width: calc(100%);
 	min-height: 100%;
 	padding-left: 14px;
-
-  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 .story-container .content {
 	min-height: 40px;
 	clear: both;
 	margin-bottom: 6px;
+}
+
+.story-container .content a {
+  word-break: break-all;
 }
 
 .mat-card-actions {
@@ -156,6 +159,7 @@ h2 {
 
 .story-actions {
 	display: flex;
+  flex-wrap: wrap;
 }
 
 .story-actions .mat-button {
@@ -170,7 +174,9 @@ h2 {
 }
 .story-actions .action-btn-wrapper {
 	flex-grow: 1;
+  flex-wrap: wrap;
 	text-align: center;
+
 }
 .story-actions .action-btn-wrapper div {
 	font-size: 10px;
@@ -201,3 +207,4 @@ h2 {
 	font-size: 12px;
 	font-weight: bold;
 }
+
