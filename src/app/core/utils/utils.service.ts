@@ -6,20 +6,22 @@ import 'linkify-plugin-hashtag';
 import 'linkify-plugin-mention';
 import DOMPurify from 'dompurify';
 import { Observable, from } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilsService {
    // allowed URI schemes
-  allowlist = ['https', 'http', 'ipfs'];
+  allowlist = ['https', 'http'];
   // build fitting regex
   regex = RegExp('^(' + this.allowlist.join('|') + '):', 'gim');
   // Options for linkify
   options = {};
 
   constructor(
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private sanitizer: DomSanitizer) {
     const _this = this;
 
     this.options = {
@@ -163,6 +165,19 @@ export class UtilsService {
     const baseURL = urlComponents && urlComponents.length ? urlComponents[0] : window.location.origin;
 
     return baseURL;
+  }
+
+  /*
+  *  https://angular.io/guide/security#sanitization-and-security-contexts
+  */
+  youtubeVideoURL(id: string) {
+    // Appending an ID to a YouTube URL is safe.
+    // Always make sure to construct SafeValue objects as
+    // close as possible to the input data so
+    // that it's easier to check if the value is safe.
+    const youtubeUrl = 'https://www.youtube.com/embed/' + id;
+    const sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(youtubeUrl);
+    return sanitizedUrl;
   }
 
 }
