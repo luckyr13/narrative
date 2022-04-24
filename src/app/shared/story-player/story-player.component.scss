@@ -52,3 +52,8 @@ $player-height: 320px;
 
 .arrow.right img {
 }
+
+.player-container .arrow-container.off {
+	opacity: 0.1;
+	cursor: default;
+}

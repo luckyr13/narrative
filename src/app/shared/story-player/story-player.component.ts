@@ -37,8 +37,6 @@ export class StoryPlayerComponent implements OnInit {
       this.currentSubstoryIdArrPos -= 1;
       this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
     }
-
-    console.log(this.currentSubstoryIdArrPos, this.currentSubstory)
   }
   
 }

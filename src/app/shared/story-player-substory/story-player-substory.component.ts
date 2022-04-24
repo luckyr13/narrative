@@ -19,6 +19,24 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   };
   substoryContentSubscription = Subscription.EMPTY;
   @Input('substoryId') substoryId!: string;
+  supportedFiles: Record<string, string[]> = {
+    'image': [
+      'image/gif', 'image/png',
+      'image/jpeg', 'image/bmp',
+      'image/webp'
+    ],
+    'audio': [
+      'audio/midi', 'audio/mpeg',
+      'audio/webm', 'audio/ogg',
+      'audio/wav'
+    ],
+    'video': [
+      'video/webm', 'video/ogg', 'video/mp4'
+    ],
+    'text': [
+      'text/plain'
+    ],
+  };
 
   constructor(
     private _substory: SubstoryService,
@@ -36,10 +54,16 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
       switchMap((tx) => {
         const tags = tx.tags!;
         let contentType = '';
+        const supportedFiles: string[] = [];
 
+        for (const sfCat of Object.keys(this.supportedFiles)) {
+          for (const sf of this.supportedFiles[sfCat]) {
+            supportedFiles.push(sf);
+          }
+        }
 
         for (const t of tags) {
-          if (t.name === 'Content-Type') {
+          if (t.name === 'Content-Type' && supportedFiles.indexOf(t.value) >= 0) {
             this.substoryContent.type = t.value;
             if (t.value.indexOf('image') >= 0) {
               let fileURL = `${this._arweave.baseURL}${tx.id}`;
