@@ -8,13 +8,13 @@ declare const document: any;
 })
 export class AppSettingsService {
 	appName = 'Narrative';
-	appVersion = '0.1.0';
+	appVersion = '0.1.1';
 
   // Dev protocol
-  //protocolVersion = '0.0-dev';
+   protocolVersion = '0.0-dev';
 
   // Prod protocol
-	protocolVersion = '0.1';
+	// protocolVersion = '0.1';
 
   private _loadingPlatform: Subject<boolean> = new Subject<boolean>();
   public loadingPlatform$ = this._loadingPlatform.asObservable();
