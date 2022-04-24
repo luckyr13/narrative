@@ -9,7 +9,13 @@ declare const document: any;
 export class AppSettingsService {
 	appName = 'Narrative';
 	appVersion = '0.0.9';
-	protocolVersion = '0.1';
+
+  // Dev protocol
+  protocolVersion = '0.0-dev';
+
+  // Prod protocol
+	//protocolVersion = '0.1';
+  
   private _loadingPlatform: Subject<boolean> = new Subject<boolean>();
   public loadingPlatform$ = this._loadingPlatform.asObservable();
   private _showMainToolbar: Subject<boolean> = new Subject<boolean>();
