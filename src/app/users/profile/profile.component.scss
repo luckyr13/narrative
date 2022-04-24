@@ -142,3 +142,7 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 .active {
   opacity: 1;
 }
+
+.mat-tab-label, .mat-tab-link {
+  letter-spacing: 1px;
+}

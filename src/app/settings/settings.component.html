@@ -10,7 +10,6 @@
   <nav 
     mat-tab-nav-bar 
     class="mat-elevation-z1"
-    backgroundColor="primary" 
     color="accent" [tabPanel]="tabPanel">
     <a 
       class="action-btn-wrapper"
@@ -21,7 +20,7 @@
       [active]="rlApplication.isActive"> 
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlApplication.isActive }">info</mat-icon>
-      <div>App Info</div>
+      <div class="action-btn-label">App Info</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -32,7 +31,7 @@
       [active]="rlNetwork.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlNetwork.isActive }">settings_input_antenna</mat-icon>
-      <div>Network</div>
+      <div class="action-btn-label">Network</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -43,7 +42,7 @@
       [active]="rlWallet.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlWallet.isActive }">wallet</mat-icon>
-      <div>Wallet</div>
+      <div class="action-btn-label">Wallet</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -54,7 +53,7 @@
       [active]="rlAppearance.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlAppearance.isActive }">palette</mat-icon>
-      <div>Appearance</div>
+      <div class="action-btn-label">Appearance</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -65,7 +64,7 @@
       [active]="rlLanguage.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlLanguage.isActive }">translate</mat-icon>
-      <div>Language</div>
+      <div class="action-btn-label">Language</div>
     </a>
     
   </nav>

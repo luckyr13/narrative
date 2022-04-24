@@ -19,3 +19,17 @@
   font-weight: bold;
   line-height: 10px;
 }
+.mat-tab-link {
+  height: 66px;
+}
+.action-btn-label {
+  display: none;
+  font-weight: normal !important;
+  letter-spacing: 1px;
+ }
+@media (min-width: 600px) {
+  .action-btn-label {
+    margin-top: 2px;
+    display: block;
+  }
+}
