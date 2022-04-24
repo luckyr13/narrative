@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 
 @Component({
@@ -10,6 +10,7 @@ export class StoryPlayerComponent implements OnInit {
   isDarkTheme = false;
   @Input('substories') substories!: string[];
   currentSubstory = '';
+  currentSubstoryIdArrPos = 0;
 
   constructor(
     private _userSettings: UserSettingsService) {
@@ -23,8 +24,21 @@ export class StoryPlayerComponent implements OnInit {
       this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
 
-    this.currentSubstory = this.substories.length ? this.substories[0] : '';
+    this.currentSubstory = this.substories.length ? this.substories[this.currentSubstoryIdArrPos] : '';
+  }
+
+  playNextStory(option: 'next'|'prev') {
+    const numSubstories = this.substories.length;
+
+    if (option === 'next' && numSubstories > (this.currentSubstoryIdArrPos + 1)) {
+      this.currentSubstoryIdArrPos += 1;
+      this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
+    } else if (option === 'prev' && (this.currentSubstoryIdArrPos - 1) >= 0) {
+      this.currentSubstoryIdArrPos -= 1;
+      this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
+    }
+
+    console.log(this.currentSubstoryIdArrPos, this.currentSubstory)
   }
   
-
 }

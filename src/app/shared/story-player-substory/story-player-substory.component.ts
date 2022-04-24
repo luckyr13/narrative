@@ -1,4 +1,4 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { from, Observable, Subscription, switchMap, tap, catchError, of, map } from 'rxjs';
 import { SubstoryService } from '../../core/services/substory.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
@@ -10,7 +10,7 @@ import { UtilsService } from '../../core/utils/utils.service';
   templateUrl: './story-player-substory.component.html',
   styleUrls: ['./story-player-substory.component.scss']
 })
-export class StoryPlayerSubstoryComponent implements OnInit {
+export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   substoryContent: { type: string, loading: boolean, content: string, error: string } = {
     type: '',
     loading: true,
@@ -27,7 +27,11 @@ export class StoryPlayerSubstoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.load();
     
+  }
+
+  load() {
     this.substoryContentSubscription = this.loadMetadata(this.substoryId).pipe(
       switchMap((tx) => {
         const tags = tx.tags!;
@@ -41,6 +45,7 @@ export class StoryPlayerSubstoryComponent implements OnInit {
               let fileURL = `${this._arweave.baseURL}${tx.id}`;
               fileURL = this._utils.sanitizeFull(`${fileURL}`);
               this.substoryContent.content = fileURL;
+              this.substoryContent.loading = false;
               return of(fileURL);
             }
           }
@@ -85,6 +90,12 @@ export class StoryPlayerSubstoryComponent implements OnInit {
   }
 
   loadMetadata(txId: string): Observable<TransactionMetadata> {
+    this.substoryContent = {
+      type: '',
+      loading: true,
+      content: '',
+      error: ''
+    };
     return this._substory.getPost(txId).pipe(
       tap({
         next: (txData) => {
@@ -100,5 +111,9 @@ export class StoryPlayerSubstoryComponent implements OnInit {
 
   ngOnDestroy() {
     this.substoryContentSubscription.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.load();    
   }
 }

@@ -2,15 +2,15 @@
 	<div class="substory-container">
 		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
 		<div
-			class="text-container"
-			*ngIf="substoryContent.type === 'text/plain'">
+			class="text-container fadeIn"
+			*ngIf="substoryContent.type === 'text/plain' && substoryContent.content ">
 			<p [innerHTML]="substoryContent.content">
 				
 			</p>
 		</div>
 		<div
 			*ngIf="substoryContent.type.indexOf('image') >= 0"
-			class="image-container"
+			class="image-container fadeIn"
 			[ngStyle]="{ 'background-image': 'url(' + substoryContent.content + ')' }">
 			
 		</div>

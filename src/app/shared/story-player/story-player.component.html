@@ -1,6 +1,7 @@
 <div class="player-container" (click)="$event.stopPropagation()">
 	<div
 		class="arrow-container vcenter"
+		(click)="playNextStory('prev')"
   	[ngClass]="{ 'arrow-dark': isDarkTheme }">
     <div
     	class="arrow left border-color-theme">
@@ -10,6 +11,7 @@
 	<app-story-player-substory [substoryId]="currentSubstory"></app-story-player-substory>
 	<div
 		class="arrow-container vcenter"
+		(click)="playNextStory('next')"
   	[ngClass]="{ 'arrow-dark': isDarkTheme }">
     <div
     	class="arrow right border-color-theme">
