@@ -21,6 +21,11 @@
 		<mat-spinner color="accent" diameter="32"></mat-spinner>
 	</div>
 	<mat-list>
+		<mat-list-item >
+			<strong>Network status:</strong>
+			<span *ngIf="networkInfo"><span class="point connected">·</span>  Connected</span>
+			<span *ngIf="!networkInfo"><span class="point disconnected">·</span> Disconnected</span>
+		</mat-list-item>
 		<mat-list-item *ngFor="let networkData of networkInfo | keyvalue">
 			<strong>{{ networkData.key }}</strong>
 			<span> {{ networkData.value }}</span>
