@@ -42,11 +42,11 @@ export class StoryService {
       // Detect hashtags and mentions
       const hashtags = this._utils.getLinkHashtags(msg);
       for (const ht of hashtags) {
-        tags.push({ name: 'Hashtag', value: ht.value });
+        tags.push({ name: 'Hashtag', value: ht.value.toLowerCase() });
       }
       const mentions = this._utils.getLinkMentions(msg);
       for (const mn of mentions) {
-        tags.push({ name: 'Mention', value: mn.value });
+        tags.push({ name: 'Mention', value: mn.value.toLowerCase() });
       }
     }
 
