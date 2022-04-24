@@ -11,6 +11,7 @@ export class StoryPlayerComponent implements OnInit {
   @Input('substories') substories!: string[];
   currentSubstory = '';
   currentSubstoryIdArrPos = 0;
+  infiniteScrollActive = true;
 
   constructor(
     private _userSettings: UserSettingsService) {
@@ -30,13 +31,24 @@ export class StoryPlayerComponent implements OnInit {
   playNextStory(option: 'next'|'prev') {
     const numSubstories = this.substories.length;
 
-    if (option === 'next' && numSubstories > (this.currentSubstoryIdArrPos + 1)) {
-      this.currentSubstoryIdArrPos += 1;
-      this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
-    } else if (option === 'prev' && (this.currentSubstoryIdArrPos - 1) >= 0) {
-      this.currentSubstoryIdArrPos -= 1;
-      this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
+    if (this.infiniteScrollActive) {
+      if (option === 'next' && numSubstories > (this.currentSubstoryIdArrPos + 1)) {
+        this.currentSubstoryIdArrPos += 1;
+      } else if (option === 'next' && numSubstories <= (this.currentSubstoryIdArrPos + 1)) {
+        this.currentSubstoryIdArrPos = 0;
+      } else if (option === 'prev' && (this.currentSubstoryIdArrPos - 1) >= 0) {
+        this.currentSubstoryIdArrPos -= 1;
+      } else if (option === 'prev' && (this.currentSubstoryIdArrPos - 1) < 0) {
+        this.currentSubstoryIdArrPos = numSubstories - 1;
+      }
+    } else {
+      if (option === 'next' && numSubstories > (this.currentSubstoryIdArrPos + 1)) {
+        this.currentSubstoryIdArrPos += 1;
+      } else if (option === 'prev' && (this.currentSubstoryIdArrPos - 1) >= 0) {
+        this.currentSubstoryIdArrPos -= 1;
+      }
     }
+    this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
   }
   
 }

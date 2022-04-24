@@ -2,7 +2,9 @@
 	<div
 		class="arrow-container vcenter"
 		(click)="playNextStory('prev')"
-  	[ngClass]="{ 'arrow-dark': isDarkTheme, 'off': (this.currentSubstoryIdArrPos - 1) < 0 }">
+  	[ngClass]="{ 
+  		'arrow-dark': isDarkTheme,
+  		'off': ((currentSubstoryIdArrPos - 1) < 0 && !infiniteScrollActive) || substories.length <= 1 }">
     <div
     	class="arrow left border-color-theme">
     	<img src="assets/images/arrow.png">
@@ -12,7 +14,9 @@
 	<div
 		class="arrow-container vcenter"
 		(click)="playNextStory('next')"
-  	[ngClass]="{ 'arrow-dark': isDarkTheme, 'off': this.substories.length <= (this.currentSubstoryIdArrPos + 1) }">
+  	[ngClass]="{ 
+  		'arrow-dark': isDarkTheme,
+  		'off': (substories.length <= (currentSubstoryIdArrPos + 1) && !infiniteScrollActive) || substories.length <= 1 }">
     <div
     	class="arrow right border-color-theme">
     	<img src="assets/images/arrow.png">
