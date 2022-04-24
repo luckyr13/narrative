@@ -1,0 +1,18 @@
+<div class="content">
+	<div class="substory-container">
+		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
+		<div
+			class="text-container"
+			*ngIf="substoryContent.type === 'text/plain'">
+			<p [innerHTML]="substoryContent.content">
+				
+			</p>
+		</div>
+		<div
+			*ngIf="substoryContent.type.indexOf('image') >= 0"
+			class="image-container"
+			[ngStyle]="{ 'background-image': 'url(' + substoryContent.content + ')' }">
+			
+		</div>
+	</div>
+</div>

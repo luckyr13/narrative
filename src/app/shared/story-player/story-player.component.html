@@ -7,24 +7,7 @@
     	<img src="assets/images/arrow.png">
     </div>
 	</div>
-	<div class="content">
-		<div class="substory-container" *ngFor="let substory of getSubstories()">
-			<mat-spinner color="accent" [diameter]="40" *ngIf="substoriesContent[substory].loading"></mat-spinner>
-			<div
-				class="text-container"
-				*ngIf="substoriesContent[substory].type === 'text/plain'">
-				<p [innerHTML]="substoriesContent[substory].content">
-					
-				</p>
-			</div>
-			<div
-				*ngIf="substoriesContent[substory].type.indexOf('image') >= 0"
-				class="image-container"
-				[ngStyle]="{ 'background-image': 'url('+substoriesContent[substory].content+')' }">
-				
-			</div>
-		</div>
-	</div>
+	<app-story-player-substory [substoryId]="currentSubstory"></app-story-player-substory>
 	<div
 		class="arrow-container vcenter"
   	[ngClass]="{ 'arrow-dark': isDarkTheme }">
