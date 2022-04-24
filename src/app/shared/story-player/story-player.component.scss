@@ -1,40 +1,34 @@
+$player-height: 260px;
+
 .player-container {
 	width: 100%;
 	margin: 0px 0px 20px 0px;
-	height: 220px;
+	height: $player-height;
 	position: relative;
 	cursor: default;
 }
 
-.player-container .left-arrow {
+.player-container .arrow-container {
 	float: left;
-	width: 10%;
+	width: 4%;
 	height: 100%;
 	text-align: center;
 	cursor: pointer;
-	filter: invert(70%);
+	position: relative;
+	opacity: 0.2;
 }
 
-.player-container .right-arrow {
-	float: left;
-	width: 10%;
-	height: 100%;
-	text-align: center;
-	cursor: pointer;
-	filter: invert(70%);
+.player-container .arrow-container:hover {
+	opacity: 0.4;
 }
 
-.player-container .left-arrow .mat-icon, .player-container .right-arrow .mat-icon {
-	font-size: 32px !important;
-}
-
-.player-container .left-arrow:hover, .player-container .right-arrow:hover {
-	filter: invert(0%);
+.player-container .arrow-container.arrow-dark {
+	filter: invert(100%);
 }
 
 .player-container .content {
 	float: left;
-	width: 80%;
+	width: 92%;
 	height: 100%;
 	position: relative;
 	text-align: center;
@@ -57,7 +51,47 @@
 	margin: 0 auto;
 }
 
+.player-container .content .image-container {
+	width: 100%;
+	height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.player-container .content .text-container {
+	width: 100%;
+	height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+
+}
+
+
 .player-container .content img {
 	max-width: 100%;
 	max-height: 100%;
+	object-fit: cover;
+}
+
+.arrow {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.arrow img {
+	width: 100%;
+	height: 100%;
+}
+
+.arrow.left {
+	transform: rotate(180deg);
+
+}
+
+.arrow.right img {
 }

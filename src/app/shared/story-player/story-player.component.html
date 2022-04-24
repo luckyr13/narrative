@@ -1,21 +1,37 @@
 <div class="player-container" (click)="$event.stopPropagation()">
-	<div class="left-arrow vcenter">
-    <mat-icon color="accent">chevron_left</mat-icon>
+	<div
+		class="arrow-container vcenter"
+  	[ngClass]="{ 'arrow-dark': isDarkTheme }">
+    <div
+    	class="arrow left border-color-theme">
+    	<img src="assets/images/arrow.png">
+    </div>
 	</div>
 	<div class="content">
 		<div class="substory-container" *ngFor="let substory of getSubstories()">
 			<mat-spinner color="accent" [diameter]="40" *ngIf="substoriesContent[substory].loading"></mat-spinner>
 			<div
-				*ngIf="substoriesContent[substory].type === 'text/plain'"
-				[innerHTML]="substoriesContent[substory].content">
+				class="text-container"
+				*ngIf="substoriesContent[substory].type === 'text/plain'">
+				<p [innerHTML]="substoriesContent[substory].content">
+					
+				</p>
 			</div>
-			<div *ngIf="substoriesContent[substory].type.indexOf('image') >= 0">
-				<img [src]="substoriesContent[substory].content">
+			<div
+				*ngIf="substoriesContent[substory].type.indexOf('image') >= 0"
+				class="image-container"
+				[ngStyle]="{ 'background-image': 'url('+substoriesContent[substory].content+')' }">
+				
 			</div>
 		</div>
 	</div>
-	<div class="right-arrow vcenter">
-		<mat-icon color="accent">chevron_right</mat-icon>
+	<div
+		class="arrow-container vcenter"
+  	[ngClass]="{ 'arrow-dark': isDarkTheme }">
+    <div
+    	class="arrow right border-color-theme">
+    	<img src="assets/images/arrow.png">
+    </div>
 	</div>
 	
 </div>

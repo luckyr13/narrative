@@ -22,9 +22,9 @@ mat-card-header {
 	min-height: 100px;
 	position: relative;
 	clear: both;
-	display: flex;
-
-
+	display: inline-grid;
+	margin-bottom: 10px;
+	width: 100%;
 }
 
 .loading-avatar {
@@ -34,9 +34,9 @@ mat-card-header {
 
 .avatar-container {
 	float: left;
-	width: 82px;
-	text-align: left;
+	width: 100%;
 	min-height: 100%;
+	text-align: center;
 }
 
 .avatar {
@@ -47,7 +47,7 @@ mat-card-header {
 
 .story-container {
 	float: left;
-	width: calc(100% - 82px);
+	width: calc(100%);
 	min-height: 100%;
 	padding-left: 14px;
 
@@ -92,6 +92,21 @@ mat-card-header {
 	.profile-secondary-actions {
 		margin-top: -12px;
 		width: 10%;
+	}
+
+
+	.card-content {
+		display: flex;
+	}
+
+	.story-container {
+		width: calc(100% - 82px);
+	}
+
+
+	.avatar-container {
+		width: 82px;
+		text-align: left;
 	}
 
 }

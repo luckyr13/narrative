@@ -4,6 +4,7 @@ import { UtilsService } from '../../core/utils/utils.service';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { SubstoryService } from '../../core/services/substory.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
+import { UserSettingsService } from '../../core/services/user-settings.service';
 
 @Component({
   selector: 'app-story-player',
@@ -14,11 +15,13 @@ export class StoryPlayerComponent implements OnInit {
   @Input('substories') substories!: string[];
   substoriesContent: Record<string, {content: string, loading: boolean, error: string, type: string}> = {};
   substoriesContentSubscription = Subscription.EMPTY;
+  isDarkTheme = false;
 
   constructor(
     private _utils: UtilsService,
     private _arweave: ArweaveService,
-    private _substory: SubstoryService) {
+    private _substory: SubstoryService,
+    private _userSettings: UserSettingsService) {
     
   }
 
@@ -52,6 +55,12 @@ export class StoryPlayerComponent implements OnInit {
       })
     ).subscribe(() => {
 
+    });
+
+    // Get theme info
+    this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
+    this._userSettings.currentThemeStream.subscribe((theme) => {
+      this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
   }
 
