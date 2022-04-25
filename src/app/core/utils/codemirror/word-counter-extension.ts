@@ -33,6 +33,7 @@ function wordCountPanel(view: EditorView): Panel {
 }
 
 function dataCountPanel(view: EditorView): Panel {
+  const storyMaxSizeBytes = 100000;
   let dom = document.createElement("div")
   dom.textContent = countData(view.state.doc)
   dom.className = "cm-data-info-panel"
@@ -41,6 +42,14 @@ function dataCountPanel(view: EditorView): Panel {
     update: (update) => {
       if (update.docChanged) {
         dom.textContent = countData(update.state.doc)
+        // Update UI
+        const numChars = view.state.doc.length;
+        if (numChars >= storyMaxSizeBytes) {
+          dom.className = "cm-data-info-panel-danger"
+        } else {
+          dom.className = "cm-data-info-panel"
+
+        }
       }
     }
   }
@@ -64,6 +73,20 @@ const dataInfoTheme = EditorView.baseTheme({
   '.cm-data-info-panel': {
     padding: '5px 10px',
     color: 'inherit !important',
+    backgroundColor: 'inherit !important',
+    fontFamily: 'monospace',
+    textAlign: 'right'
+  },
+  '.cm-data-info-panel-warning': {
+    padding: '5px 10px',
+    color: 'yellow !important',
+    backgroundColor: 'inherit !important',
+    fontFamily: 'monospace',
+    textAlign: 'right'
+  },
+  '.cm-data-info-panel-danger': {
+    padding: '5px 10px',
+    color: 'red !important',
     backgroundColor: 'inherit !important',
     fontFamily: 'monospace',
     textAlign: 'right'
