@@ -163,7 +163,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container{
     background-color: #0f0f0f;
   }
-  .mat-dialog-container {
+  .mat-dialog-container, .mat-dialog-container .mat-card {
     background-color: #3F3F3F;
   }
   .mat-drawer, .mat-menu-panel {
@@ -218,7 +218,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #0f0f0f;
   }
-  .mat-dialog-container {
+  .mat-dialog-container, .mat-dialog-container .mat-card {
     background-color: #3F3F3F;
   }
   .mat-drawer, .mat-menu-panel {
@@ -247,7 +247,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #0f0f0f;
   }
-  .mat-dialog-container {
+  .mat-dialog-container, .mat-dialog-container .mat-card {
     background-color: #3F3F3F;
   }
   .mat-drawer, .mat-menu-panel {
@@ -303,7 +303,7 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #000a12;
 
-  }.mat-dialog-container {
+  }.mat-dialog-container, .mat-dialog-container .mat-card {
     background-color: #333B41;
   }
   .mat-drawer, .mat-menu-panel {
