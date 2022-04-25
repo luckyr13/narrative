@@ -1,5 +1,5 @@
 import { 
-  Component, OnInit, ElementRef, OnDestroy, AfterViewInit,
+  Component, OnInit, ElementRef, OnDestroy, AfterContentInit,
   ViewChild, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
@@ -26,7 +26,7 @@ import { ArbundlesService } from '../../core/services/arbundles.service';
   templateUrl: './create-story-card.component.html',
   styleUrls: ['./create-story-card.component.scss']
 })
-export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewInit, OnChanges {
+export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
   @ViewChild('postMessage', {static: true}) postMessage!: ElementRef;
   loading: boolean = true;
   loadEditorSubscription: Subscription = Subscription.EMPTY;
@@ -98,7 +98,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
       });
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     this.loading = true;
     this.loadEditorSubscription = this.codemirrorWrapper.init(
       this.postMessage.nativeElement
@@ -115,7 +115,6 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
         this.loadVertoProfile(this.account);
       }
     });
-    
   }
 
   ngOnDestroy() {
@@ -129,10 +128,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterViewIni
 
   submitSubstory() {
     this.loadingCreatePost = true;
-    window.setTimeout(() => {
-      this.newStoryEvent.emit(this.messageContent);
-      this.substories = [];
-    }, 300);
+    this.newStoryEvent.emit(this.messageContent);
+    this.substories = [];
   }
 
   submit() {

@@ -26,42 +26,40 @@ export class CodeMirrorWrapper {
   init(container: any, placeholderTxt= 'What\'s on your mind?') {
     const obs = new Observable((subscriber) => {
       try {
-        window.setTimeout(() => {
-          this.editorState = EditorState.create({
-            doc: '',
-            extensions: [
-              history(),
-              highlightSpecialChars(),
-              bracketMatching(),
-              closeBrackets(),
-              this.placeholderCompartment.of(placeholder(placeholderTxt)),
-              this.updateEffectsCompartment.of([]),
-              keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
-              syntaxHighlighting(defaultHighlightStyle),
-              EditorView.lineWrapping,
-              linkExtension(),
-              this.editableCompartment.of(EditorView.editable.of(true)),
-              dataCounter()
-            ]
-          });
+      
+        this.editorState = EditorState.create({
+          doc: '',
+          extensions: [
+            history(),
+            highlightSpecialChars(),
+            bracketMatching(),
+            closeBrackets(),
+            this.placeholderCompartment.of(placeholder(placeholderTxt)),
+            this.updateEffectsCompartment.of([]),
+            keymap.of([...closeBracketsKeymap, ...defaultKeymap, ...historyKeymap]),
+            syntaxHighlighting(defaultHighlightStyle),
+            EditorView.lineWrapping,
+            linkExtension(),
+            this.editableCompartment.of(EditorView.editable.of(true)),
+            dataCounter()
+          ]
+        });
 
+        this.editorView = new EditorView({
+          state: this.editorState,
+          parent: container,
+          
+        });
 
-          this.editorView = new EditorView({
-            state: this.editorState,
-            parent: container,
-            
-          });
+        this.editorView.dispatch({
+          effects: this.updateEffectsCompartment.reconfigure(EditorView.updateListener.of((upd) => {
+            this.content = upd.state.doc.toString().trim();
+            this._content.next(this.content);
+          }))
+        });
 
-          this.editorView.dispatch({
-            effects: this.updateEffectsCompartment.reconfigure(EditorView.updateListener.of((upd) => {
-              this.content = upd.state.doc.toString().trim();
-              this._content.next(this.content);
-            }))
-          });
-
-          subscriber.next();
-          subscriber.complete();
-        }, 500);
+        subscriber.next();
+        subscriber.complete();
         
       } catch (error) {
         subscriber.error(error);

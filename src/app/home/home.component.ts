@@ -155,9 +155,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       id: tx,
       owner: this.account
     };
-    window.setTimeout(() => {
-      this.posts.unshift(txMeta);
-    }, 500);
+    this.posts.unshift(txMeta);
   }
 
 }
