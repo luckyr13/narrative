@@ -32,6 +32,13 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   detectedLinks: string[] = [];
   substories: string[] = [];
+  /*
+  *  Default: 
+  *  Story: 100kb = 100000b
+  *  Image: 1mb = 1000000b
+  */
+  storyMaxSizeBytes = 100000;
+  contentError = '';
 
   constructor(
     private _verto: VertoService,
@@ -138,8 +145,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   }
 
-  loadContent() {
-    this.loadingContent = true;
+
+  _loadContentHelperLoadContent() {
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
         this.loadingContent = false;
@@ -158,6 +165,16 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         this._utils.message(error, 'error');
       }
     });
+  }
+
+  loadContent() {
+    
+    if (+(this.post.dataSize!) <= this.storyMaxSizeBytes) {
+      this.loadingContent = true;
+      this._loadContentHelperLoadContent();
+    } else {
+      this.contentError = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${this.post.dataSize} bytes.`;
+    }
   }
 
   interceptClicks() {

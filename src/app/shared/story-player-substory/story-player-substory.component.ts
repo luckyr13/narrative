@@ -41,6 +41,15 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   };
   @ViewChild('contentContainer') contentContainer!: ElementRef;
 
+  /*
+  *  Default: 
+  *  Story: 100kb = 100000b
+  *  Image: 1mb = 1000000b
+  */
+  storyMaxSizeBytes = 100000;
+  storyImageMaxSizeBytes = 2000000;
+  contentError = '';
+
   constructor(
     private _substory: SubstoryService,
     private _arweave: ArweaveService,
@@ -70,6 +79,14 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
           if (t.name === 'Content-Type' && supportedFiles.indexOf(t.value) >= 0) {
             this.substoryContent.type = t.value;
             if (t.value.indexOf('image') >= 0) {
+              // Check dataSize first
+              const dataSize = +(tx.dataSize!);
+              if (dataSize > this.storyImageMaxSizeBytes) {
+                this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
+                this.substoryContent.loading = false;
+                throw new Error(this.substoryContent.error);
+              }
+
               let fileURL = `${this._arweave.baseURL}${tx.id}`;
               fileURL = this._utils.sanitizeFull(`${fileURL}`);
               this.substoryContent.content = fileURL;
@@ -78,11 +95,22 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
             }
           }
         }
+        const dataSize = +(tx.dataSize!);
+        if (dataSize > this.storyMaxSizeBytes) {
+          this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
+          this.substoryContent.loading = false;
+          throw new Error(this.substoryContent.error);
+        }
         return this.loadContent(tx.id);
       })
-    ).subscribe(() => {
-      // Intercept click on anchors
-      this.interceptClicks();
+    ).subscribe({
+      next: () => {
+        // Intercept click on anchors
+        this.interceptClicks();
+      },
+      error: (error) => {
+        
+      }
     });
   }
 

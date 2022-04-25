@@ -2,6 +2,13 @@
 	<div class="substory-container">
 		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
 		<div
+			class="text-error fadeIn"
+			*ngIf="substoryContent.error ">
+			<p #contentContainer>
+				{{ substoryContent.error }}
+			</p>
+		</div>
+		<div
 			class="text-container fadeIn"
 			*ngIf="substoryContent.type === 'text/plain' && substoryContent.content ">
 			<p #contentContainer [innerHTML]="substoryContent.content">
@@ -9,7 +16,7 @@
 			</p>
 		</div>
 		<div
-			*ngIf="substoryContent.type.indexOf('image') >= 0"
+			*ngIf="substoryContent.type.indexOf('image') >= 0 && !substoryContent.error"
 			class="image-container fadeIn"
 			[ngStyle]="{ 'background-image': 'url(' + substoryContent.content + ')' }">
 			

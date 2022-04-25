@@ -89,7 +89,13 @@
 			  	#contentContainer
 			  	class="content fadeIn" [innerHTML]="content">
 			  </div>
-			  <div *ngIf="substories && substories.length">
+			  <div 
+			  	*ngIf="!loadingContent && contentError"
+			  	#contentContainer
+			  	class="content-error fadeIn">
+			  	{{ contentError }}
+			  </div>
+			  <div class="clear-both" *ngIf="substories && substories.length">
 			  	<app-story-player [substories]="substories"></app-story-player>
 			  </div>
 			  <div 

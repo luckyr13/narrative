@@ -60,6 +60,13 @@ mat-card-header {
 	margin-bottom: 6px;
 }
 
+.story-container .content-error {
+	min-height: 40px;
+	clear: both;
+	margin-bottom: 6px;
+	font-style: italic;
+}
+
 .story-container .content a {
   word-break: break-all;
   text-overflow: ellipsis;
