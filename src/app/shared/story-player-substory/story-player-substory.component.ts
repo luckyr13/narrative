@@ -1,9 +1,11 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { from, Observable, Subscription, switchMap, tap, catchError, of, map } from 'rxjs';
 import { SubstoryService } from '../../core/services/substory.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UtilsService } from '../../core/utils/utils.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'; 
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-story-player-substory',
@@ -37,11 +39,13 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
       'text/plain'
     ],
   };
+  @ViewChild('contentContainer') contentContainer!: ElementRef;
 
   constructor(
     private _substory: SubstoryService,
     private _arweave: ArweaveService,
-    private _utils: UtilsService,) {
+    private _utils: UtilsService,
+    private _dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -77,7 +81,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
         return this.loadContent(tx.id);
       })
     ).subscribe(() => {
-
+      // Intercept click on anchors
+      this.interceptClicks();
     });
   }
 
@@ -87,23 +92,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
         next: (content) => {
           this.substoryContent.content = this._utils.sanitize(`${content}`);
           this.substoryContent.loading = false;
-          
-          /*
-          const links = this._utils.getLinks(`${content}`);
-          const detectedLinks = links.map((val) => {
-            return val.href;
-          });
-          window.setTimeout(() => {
-            const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
-              this.contentContainer.nativeElement.getElementsByTagName('a') : [];
-            for (const anchor of aTags) {
-              anchor.addEventListener('click', (event: MouseEvent) => {
-                event.stopPropagation();
-              });
-            }
-          }, 400);
-          */
 
+         
         },
         error: (error) => {
           this.substoryContent.error = error;
@@ -138,6 +128,50 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.load();    
+    if (changes && changes['substoryId'] && !changes['substoryId'].firstChange) {
+      this.load();
+    }
+  }
+
+  interceptClicks() {
+    window.setTimeout(() => {
+      const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
+        this.contentContainer.nativeElement.getElementsByTagName('a') : [];
+      for (const anchor of aTags) {
+        anchor.addEventListener('click', (event: MouseEvent) => {
+          event.stopPropagation();
+          event.preventDefault();
+          const anchor = <Element>event.target;
+          if (anchor.getAttribute('target') === '_self') {
+            window.location.href = anchor.getAttribute('href')!;
+          } else {
+            this.confirmDialog(anchor.getAttribute('href')!);
+          }
+        });
+      }
+    }, 400);
+  }
+
+  confirmDialog(href: string) {
+    const dialogRef = this._dialog.open(
+      ConfirmationDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: false,
+        data: {
+          content: `Do you really want to visit this site? ${href}`,
+          closeLabel: 'No',
+          confirmLabel: 'Yes, open link in new tab'
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((confirm: string) => {
+      if (confirm) {
+        window.open(href, '_blank');
+       
+      }
+    });
   }
 }

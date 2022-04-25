@@ -4,7 +4,7 @@
 		<div
 			class="text-container fadeIn"
 			*ngIf="substoryContent.type === 'text/plain' && substoryContent.content ">
-			<p [innerHTML]="substoryContent.content">
+			<p #contentContainer [innerHTML]="substoryContent.content">
 				
 			</p>
 		</div>
