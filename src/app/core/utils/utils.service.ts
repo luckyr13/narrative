@@ -92,19 +92,19 @@ export class UtilsService {
   }
 
   getLinks(s: string) {
-    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const sanitizedContent = this.sanitizeFull(s);
     const links = linkify.find(sanitizedContent, 'url');
     return links;
   }
 
   getLinkHashtags(s: string) {
-    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const sanitizedContent = this.sanitizeFull(s);
     const links = linkify.find(sanitizedContent, 'hashtag');
     return links;
   }
 
   getLinkMentions(s: string) {
-    const sanitizedContent = DOMPurify.sanitize(s, {ALLOWED_TAGS: []});
+    const sanitizedContent = this.sanitizeFull(s);
     const links = linkify.find(sanitizedContent, 'mention');
     return links;
   }
