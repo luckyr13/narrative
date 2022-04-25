@@ -7,8 +7,7 @@
 		<mat-list-item *ngIf="mainAddress">
 			<app-arweave-address
         [address]="mainAddress"
-        [ellipsis]="false"
-        prependSymbol="">Address: </app-arweave-address>
+        prependSymbol="">Current address: </app-arweave-address>
 		</mat-list-item>
 		<mat-list-item *ngIf="!mainAddress">
 			<span>Wallet not detected!</span>
