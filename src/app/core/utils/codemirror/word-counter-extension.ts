@@ -60,9 +60,7 @@ function dataCountPanel(view: EditorView): Panel {
 function countData(doc: Text) {
   let count = 0, iter = doc.iter();
   while (!iter.next().done) {
-    for (let i = 0; i < iter.value.length; i++) {
-      count++;
-    }
+    count += new Blob([iter.value]).size;
   }
   return `Story size: ${count} byte${count === 1 ? '' : 's'}`;
 }
