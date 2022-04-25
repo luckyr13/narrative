@@ -46,6 +46,8 @@ function dataCountPanel(view: EditorView): Panel {
         const numChars = view.state.doc.length;
         if (numChars >= storyMaxSizeBytes) {
           dom.className = "cm-data-info-panel-danger"
+        } else if (numChars >= 1000) {
+          dom.className = "cm-data-info-panel-warning"
         } else {
           dom.className = "cm-data-info-panel"
 
@@ -79,7 +81,7 @@ const dataInfoTheme = EditorView.baseTheme({
   },
   '.cm-data-info-panel-warning': {
     padding: '5px 10px',
-    color: 'yellow !important',
+    color: '#eed202 !important',
     backgroundColor: 'inherit !important',
     fontFamily: 'monospace',
     textAlign: 'right'

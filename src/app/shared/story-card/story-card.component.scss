@@ -67,6 +67,10 @@ mat-card-header {
 	font-style: italic;
 }
 
+.story-container .content-error p {
+	margin-bottom: 6px;
+}
+
 .story-container .content a {
   word-break: break-all;
   text-overflow: ellipsis;
@@ -217,3 +221,7 @@ h2 {
 	font-weight: bold;
 }
 
+.btn-open-anyway {
+	margin-left: 10px;
+	font-size: 12px !important;
+}

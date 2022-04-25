@@ -117,6 +117,12 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
+  openStory(event: MouseEvent, txId: string) {
+    event.stopPropagation();
+    const url = `${this._arweave.baseURL}${txId}`;
+    this.confirmDialog(url);
+  }
+
 
   share(event: MouseEvent) {
     event.stopPropagation();
@@ -168,8 +174,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   }
 
   loadContent() {
-    
-    if (+(this.post.dataSize!) <= this.storyMaxSizeBytes) {
+    const dataSize = this.post.dataSize ? +(this.post.dataSize) : 0;
+    if (dataSize <= this.storyMaxSizeBytes) {
       this.loadingContent = true;
       this._loadContentHelperLoadContent();
     } else {
