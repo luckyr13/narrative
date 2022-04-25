@@ -46,7 +46,7 @@ export class StoryService {
       }
       const mentions = this._utils.getLinkMentions(msg);
       for (const mn of mentions) {
-        tags.push({ name: 'Mention', value: mn.value.toLowerCase() });
+        tags.push({ name: 'Mention', value: mn.value });
       }
     }
 
