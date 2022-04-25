@@ -248,6 +248,13 @@ export class ArweaveService {
     tags: {name: string, value: string}[],
     loginMethod: string,
     disableDispatch: boolean): Promise<Transaction|{id: string, type: string}> {
+    // Check if the login method allows dispatch
+    if (!disableDispatch) {
+      if (loginMethod !== 'arconnect' && loginMethod !== 'arweavewebwallet') {
+        throw new Error('Dispatch is not available for this login method!');
+      }
+    }
+    
     // Create transaction
     let transaction = await this.arweave.createTransaction({
         data: fileBin,
@@ -258,12 +265,17 @@ export class ArweaveService {
       transaction.addTag(t.name, t.value);
     }
 
+
     // If ArConnect try Dispatch first
     // Limit: 100kb
     const dataSizeLimitDispatch = 100000;
-    if (loginMethod === 'arconnect' && +transaction.data_size < dataSizeLimitDispatch && !disableDispatch) {
+    if (loginMethod === 'arconnect' && !disableDispatch) {
       if (!(window && window.arweaveWallet)) {
         throw new Error('ArConnect method not available!');
+      }
+
+      if (+transaction.data_size > dataSizeLimitDispatch) {
+        throw new Error(`Dispatch is not available for data size > ${dataSizeLimitDispatch} bytes.`);
       }
 
       const dispatchResult = await window.arweaveWallet.dispatch(transaction);
@@ -287,9 +299,13 @@ export class ArweaveService {
         await uploader.uploadChunk();
         console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
       }
-    } else if (loginMethod === 'arweavewebwallet' && +transaction.data_size < dataSizeLimitDispatch && !disableDispatch) {
+    } else if (loginMethod === 'arweavewebwallet' && !disableDispatch) {
       if (!(window && window.arweaveWallet)) {
         throw new Error('Arweave Wallet method not available!');
+      }
+
+      if (+transaction.data_size > dataSizeLimitDispatch) {
+        throw new Error(`Dispatch is not available for data size > ${dataSizeLimitDispatch} bytes.`);
       }
 
       const dispatchResult = await window.arweaveWallet.dispatch(transaction);
