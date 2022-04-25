@@ -57,7 +57,7 @@ mat-card-header {
 .story-container .content {
 	min-height: 40px;
 	clear: both;
-	margin-bottom: 6px;
+	margin-bottom: 20px;
 }
 
 .story-container .content-error {
@@ -224,4 +224,8 @@ h2 {
 .btn-open-anyway {
 	margin-left: 10px;
 	font-size: 12px !important;
+}
+
+.btn-read-more {
+	text-decoration: underline;
 }

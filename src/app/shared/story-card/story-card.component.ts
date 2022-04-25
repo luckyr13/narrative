@@ -27,6 +27,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   contentSubscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
   content: string = '';
+  originalRawContent: string = '';
   isDarkTheme = false;
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
@@ -39,6 +40,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   */
   storyMaxSizeBytes = 100000;
   contentError = '';
+
+  maxPreviewSize = 250;
+  realPreviewSize = this.maxPreviewSize;
 
   constructor(
     private _verto: VertoService,
@@ -151,12 +155,19 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   }
 
+  readMore(event: MouseEvent) {
+    event.stopPropagation();
+    this.realPreviewSize = this.content.length;
+
+  }
+
 
   _loadContentHelperLoadContent() {
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
         this.loadingContent = false;
         this.content = this._utils.sanitize(`${data}`);
+        this.originalRawContent = this._utils.sanitizeFull(`${data}`);
         const links = this._utils.getLinks(`${data}`);
         this.detectedLinks = links.map((val) => {
           return val.href;
@@ -171,6 +182,15 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         this._utils.message(error, 'error');
       }
     });
+  }
+
+  showStoryMoreTextBtn() {
+    return this.originalRawContent.length > this.maxPreviewSize;
+  }
+
+  substr(s: string, length: number) {
+    const ellipsis = length <= this.maxPreviewSize ? '...' : '';
+    return (this._utils.sanitize(s.substr(0, length)) + ellipsis);
   }
 
   loadContent() {

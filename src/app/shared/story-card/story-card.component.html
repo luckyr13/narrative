@@ -84,11 +84,33 @@
 			  	appearance="line" 
 			  	*ngIf="loadingContent"
 			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 20, 'marginTop.px': 0, 'width': '90%' }"></ngx-skeleton-loader>
+			  <!-- Story -->
 			  <div 
-			  	*ngIf="!loadingContent && content"
+			  	*ngIf="!loadingContent && content && !showStoryMoreTextBtn()"
 			  	#contentContainer
 			  	class="content fadeIn" [innerHTML]="content">
 			  </div>
+			  <!-- Preview -->
+			  <div 
+			  	*ngIf="!loadingContent && originalRawContent && showStoryMoreTextBtn()"
+			  	#contentContainer
+			  	class="content fadeIn">
+			  	<p [innerHTML]="substr(originalRawContent, realPreviewSize)">
+
+			  	</p>
+			  	<div class="text-right">
+			  		<button 
+		        	mat-button
+		        	class="btn-read-more"
+		        	color="accent"
+		        	*ngIf="realPreviewSize <= maxPreviewSize"
+		        	(click)="readMore($event)"
+		        	aria-label="Read more" matTooltip="Read more">
+		        	Read more
+			      </button>
+			  	</div>
+			  </div>
+			  
 			  <div 
 			  	*ngIf="!loadingContent && contentError"
 			  	#contentContainer
