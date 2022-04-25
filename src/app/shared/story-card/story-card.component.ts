@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { VertoService } from '../../core/services/verto.service';
 import { Subscription, Observable } from 'rxjs';
@@ -10,6 +10,8 @@ import { UtilsService } from '../../core/utils/utils.service';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import { BottomSheetShareComponent } from '../bottom-sheet-share/bottom-sheet-share.component';
 import { Direction } from '@angular/cdk/bidi';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'; 
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-story-card',
@@ -37,7 +39,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     private _arweave: ArweaveService,
     private _userSettings: UserSettingsService,
     private _utils: UtilsService,
-    private _bottomSheetShare: MatBottomSheet) { }
+    private _bottomSheetShare: MatBottomSheet,
+    private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadVertoProfile();
@@ -146,19 +149,55 @@ export class StoryCardComponent implements OnInit, OnDestroy {
           return val.href;
         });
         
-        window.setTimeout(() => {
-          const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
-            this.contentContainer.nativeElement.getElementsByTagName('a') : [];
-          for (const anchor of aTags) {
-            anchor.addEventListener('click', (event: MouseEvent) => {
-              event.stopPropagation();
-            });
-          }
-        }, 400);
+        // Intercept click on anchors
+        this.interceptClicks();
+        
       },
       error: (error) => {
         this.loadingContent = false;
         this._utils.message(error, 'error');
+      }
+    });
+  }
+
+  interceptClicks() {
+    window.setTimeout(() => {
+      const aTags = this.contentContainer && this.contentContainer.nativeElement ? 
+        this.contentContainer.nativeElement.getElementsByTagName('a') : [];
+      for (const anchor of aTags) {
+        anchor.addEventListener('click', (event: MouseEvent) => {
+          event.stopPropagation();
+          event.preventDefault();
+          const anchor = <Element>event.target;
+          if (anchor.getAttribute('target') === '_self') {
+            window.location.href = anchor.getAttribute('href')!;
+          } else {
+            this.confirmDialog(anchor.getAttribute('href')!);
+          }
+        });
+      }
+    }, 400);
+  }
+
+  confirmDialog(href: string) {
+    const dialogRef = this._dialog.open(
+      ConfirmationDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          content: `Do you really want to visit this site? ${href}`,
+          closeLabel: 'No',
+          confirmLabel: 'Yes, open link in new tab'
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((confirm: string) => {
+      if (confirm) {
+        window.open(href, '_blank');
+       
       }
     });
   }
