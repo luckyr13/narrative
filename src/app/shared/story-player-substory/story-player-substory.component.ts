@@ -13,11 +13,12 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./story-player-substory.component.scss']
 })
 export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
-  substoryContent: { type: string, loading: boolean, content: string, error: string } = {
+  substoryContent: { type: string, loading: boolean, content: string, error: string, raw: string} = {
     type: '',
     loading: true,
     content: '',
-    error: ''
+    error: '',
+    raw: ''
   };
   substoryContentSubscription = Subscription.EMPTY;
   @Input('substoryId') substoryId!: string;
@@ -49,6 +50,9 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   storyMaxSizeBytes = 100000;
   storyImageMaxSizeBytes = 2000000;
   contentError = '';
+
+  maxPreviewSize = 250;
+  realPreviewSize = this.maxPreviewSize;
 
   constructor(
     private _substory: SubstoryService,
@@ -119,6 +123,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
       tap({
         next: (content) => {
           this.substoryContent.content = this._utils.sanitize(`${content}`);
+
+          this.substoryContent.raw = this._utils.sanitizeFull(`${content}`);
           this.substoryContent.loading = false;
 
          
@@ -136,7 +142,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
       type: '',
       loading: true,
       content: '',
-      error: ''
+      error: '',
+      raw: ''
     };
     return this._substory.getPost(txId).pipe(
       tap({
@@ -208,5 +215,22 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     const url = `${this._arweave.baseURL}${txId}`;
     this.confirmDialog(url);
+  }
+
+
+  showStoryMoreTextBtn() {
+    return this.substoryContent.raw.length > this.maxPreviewSize;
+  }
+
+  substr(s: string, length: number) {
+    const ellipsis = length <= this.maxPreviewSize ? '...' : '';
+    return (this._utils.sanitize(s.substr(0, length)) + ellipsis);
+  }
+
+
+  seeMore(event: MouseEvent) {
+    event.stopPropagation();
+    this.realPreviewSize = this.substoryContent.content.length;
+
   }
 }
