@@ -1,25 +1,61 @@
 <div class="content">
-	<div class="substory-container">
+	<div
+		class="substory-container"
+		*ngIf="substoryContent.loading">
 		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
+	</div>
+	<!-- text -->
+	<div
+		class="substory-container"
+		*ngIf="substoryContent.type === 'text/plain'  && !substoryContent.loading">
+		
 		<div
 			class="text-error fadeIn"
-			*ngIf="substoryContent.error ">
+			*ngIf="substoryContent.error">
 			<p #contentContainer>
 				{{ substoryContent.error }}
 			</p>
+			<button 
+      	mat-icon-button
+      	class="btn-open-anyway"
+      	(click)="openStory($event, substoryId)"
+      	aria-label="Open in new window" matTooltip="Open in new window">
+      	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
+      </button>
 		</div>
 		<div
-			class="text-container fadeIn"
-			*ngIf="substoryContent.type === 'text/plain' && substoryContent.content ">
+			class="text-container fadeIn" *ngIf="substoryContent.content">
 			<p #contentContainer [innerHTML]="substoryContent.content">
 				
 			</p>
 		</div>
+	</div>
+	<!-- image -->
+	<div
+		class="substory-container image-container"
+		*ngIf="substoryContent.type.indexOf('image') >= 0  && !substoryContent.loading">
+		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
 		<div
-			*ngIf="substoryContent.type.indexOf('image') >= 0 && !substoryContent.error"
+			class="text-error fadeIn"
+			*ngIf="substoryContent.error">
+			<p #contentContainer>
+				{{ substoryContent.error }}
+			</p>
+			<button 
+      	mat-icon-button
+      	class="btn-open-anyway"
+      	(click)="openStory($event, substoryId)"
+      	aria-label="Open in new window" matTooltip="Open in new window">
+      	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
+      </button>
+		</div>
+		<div
 			class="image-container fadeIn"
+			*ngIf="substoryContent.content"
 			[ngStyle]="{ 'background-image': 'url(' + substoryContent.content + ')' }">
 			
 		</div>
 	</div>
+
+
 </div>

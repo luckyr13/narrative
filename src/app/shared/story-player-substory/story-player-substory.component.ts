@@ -202,4 +202,11 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  
+  openStory(event: MouseEvent, txId: string) {
+    event.stopPropagation();
+    const url = `${this._arweave.baseURL}${txId}`;
+    this.confirmDialog(url);
+  }
 }
