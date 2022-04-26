@@ -12,7 +12,7 @@
 </div>
 <div class="clear-both"></div>
 <mat-dialog-content
-	*ngIf="!this.file.size"
+	*ngIf="!uploadingFile"
 	class="content border-right-special"
 	(drop)="dropFile($event, data.type);"
 	(dragover)="dragOverFile($event);"
@@ -70,15 +70,7 @@
 	</p>
 </mat-dialog-content>
 <mat-dialog-content
-	class="content border-right-special"
-	*ngIf="this.file.size && this.file.dataUrl">
-	<div class="image-preview" *ngIf="data.type === 'image'">
-		<img [src]="this.file.dataUrl">
-		<br>
-		<button 
-   		class="btn-upload-txt"
-  		mat-flat-button color="accent">
-      Upload Image
-    </button>
-	</div>
+	class="content border-right-special text-center"
+	*ngIf="uploadingFile">
+	<mat-spinner color="accent" [diameter]="40"></mat-spinner>
 </mat-dialog-content>

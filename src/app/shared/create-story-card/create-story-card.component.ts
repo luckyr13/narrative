@@ -230,7 +230,20 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     );
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe(() => this.matButtonImage.focus());
+    dialogRef.afterClosed().subscribe((tx: string) => {
+      this.matButtonImage.focus();
+      if (tx) {
+        const ids = this.substories.map((v) => {
+          return v.arrId;
+        });
+        const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
+        const newId = this.substories.push({
+          id: tx,
+          type: 'image',
+          arrId: maxId
+        });
+      }
+    });
   }
 
   addSubstory() {

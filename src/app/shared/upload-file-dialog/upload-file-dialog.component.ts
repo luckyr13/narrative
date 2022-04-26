@@ -1,6 +1,10 @@
 import { Component, OnInit, Inject, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, of, switchMap, map } from 'rxjs';
+import { ArweaveService } from '../../core/services/arweave.service';
+import { UserAuthService } from '../../core/services/user-auth.service';
+import { AppSettingsService } from '../../core/services/app-settings.service';
+import Transaction from 'arweave/web/lib/transaction';
 
 /*
 *  Based on Drag and Drop tutorial:
@@ -32,28 +36,31 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     ]
   };
   @ViewChild('fileInput') fileInput!: ElementRef;
-  file: {name: string, size: number, type: string, dataUrl: string, dataBlob: Blob|null } = {
+  file: {name: string, size: number, type: string } = {
     name: '',
     size: 0,
-    type: '',
-    dataUrl: '',
-    dataBlob: null
+    type: ''
   };
   readFileSubscription = Subscription.EMPTY;
+  uploadingFile = false;
+
 
   constructor(
     private _dialogRef: MatDialogRef<UploadFileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
       type: string,
-    }) { }
+    },
+    private _arweave: ArweaveService,
+    private _userAuth: UserAuthService,
+    private _appSettings: AppSettingsService) { }
 
 
   ngOnInit(): void {
 
   }
 
-  close(confirm: boolean = false) {
-    this._dialogRef.close(confirm);
+  close(txId: string = '') {
+    this._dialogRef.close(txId);
   }
 
   dropFile(event: Event, type: string) {
@@ -86,14 +93,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
         file = dataTransferApi.files[0];
       }
 
-      this.readFileSubscription = this.fileToDataUrl(file!, type).subscribe({
-        next: (f) => {
-          this.file.dataUrl = f;
-        },
-        error: (error) => {
-          this.errorMessage01 = error;
-        },
-      });
+      this.upload(file, type);
     } catch (err) {
       console.error(err);
       this.errorMessage01 = `${err}`;
@@ -149,10 +149,9 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     this.fileInput.nativeElement.click();
   }
 
-  fileToDataUrl(file: File, type: string): Observable<string> {
-    this.errorMessage01 = '';
 
-    let method = new Observable<string>((subscriber) => {
+  fileToData(file: File, type: string, toArrayBuffer: boolean = false): Observable<string|ArrayBuffer> {
+    let method = new Observable<string|ArrayBuffer>((subscriber) => {
        // Transform .json file into key
        try {
 
@@ -163,14 +162,17 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
         freader.onload = async () => {
           try {
             const tmp_res: string = freader.result!.toString();
+            
+            this.file.name = file.name;
+            this.file.size = file.size;
+            this.file.type = file.type;
 
-            if (file) {
-              this.file.name = file.name;
-              this.file.size = file.size;
-              this.file.type = type;
+            if (toArrayBuffer) {
+              subscriber.next(freader.result!);
+
+            } else {
+              subscriber.next(tmp_res);
             }
-
-            subscriber.next(tmp_res);
             subscriber.complete();
           } catch (error) {
             throw Error('Error loading file');
@@ -181,7 +183,11 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
           throw Error('Error reading file');
         }
         
-        freader.readAsDataURL(file!);
+        if (toArrayBuffer) {
+          freader.readAsArrayBuffer(file!);
+        } else {
+          freader.readAsDataURL(file!);
+        }
 
        } catch (error) {
          subscriber.error(error);
@@ -197,16 +203,8 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     const files: FileList = target.files!;
     const file = target && files.length ? 
       files[0] : null;
-    
-    this.readFileSubscription = this.fileToDataUrl(file!, type).subscribe({
-      next: (f) => {
-        this.file.dataUrl = f;
-      },
-      error: (error) => {
-        this.errorMessage01 = error;
-      },
-    });
 
+    this.upload(file!, type);
   }
 
   getSupportedFilesAsStr(type: string) {
@@ -222,4 +220,30 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
       throw new Error(`${type} not supported`);
     }
   }
+
+  upload(file: File, type: string) {
+    this.errorMessage01 = '';
+    this.uploadingFile = true;
+
+    this.readFileSubscription = this.fileToData(file!, type, true).pipe(
+        switchMap((filebuf: ArrayBuffer|string) => {
+          const key = this._userAuth.getPrivateKey();
+          const loginMethod = this._userAuth.loginMethod;
+          const tags: {name: string, value: string}[] = [];
+          const disableDispatch = true;
+
+          return this._arweave.uploadFileToArweave(filebuf, file.type, key,tags, loginMethod, disableDispatch);
+        })
+      ).subscribe({
+      next: (tx: Transaction|{id: string, type: string}) => {
+        this.close(tx.id);
+      },
+      error: (error) => {
+        this.errorMessage01 = error;
+        this.uploadingFile = false;
+      },
+    });
+  }
+
+
 }
