@@ -563,3 +563,13 @@ a {
 .small-username-2 {
   color: rgb(220, 220, 220, 0.8);
 }
+
+/*
+* Fix menu panel width
+*/
+@media (min-width: 600px) {
+  .mat-menu-panel {
+    max-width: 350px !important;
+  }
+
+}
