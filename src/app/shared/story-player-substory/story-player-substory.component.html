@@ -74,6 +74,7 @@
       </button>
 		</div>
 		<div
+			(click)="openStory($event, substoryId)"
 			class="image-container fadeIn"
 			*ngIf="substoryContent.content"
 			[ngStyle]="{ 'background-image': 'url(' + substoryContent.content + ')' }">
