@@ -4,20 +4,22 @@
 		(click)="playNextStory('prev')"
   	[ngClass]="{ 
   		'arrow-dark': isDarkTheme,
-  		'off': ((currentSubstoryIdArrPos - 1) < 0 && !infiniteScrollActive) || substories.length <= 1 }">
+  		'off': ((currentSubstoryIdArrPos - 1) < 0 && !infiniteScrollActive) || substories.length <= 1 || loadingSubstory }">
     <div
     	class="arrow left border-color-theme">
     	<img src="assets/images/arrow.png">
     </div>
 	</div>
-	<app-story-player-substory [substoryId]="currentSubstory"></app-story-player-substory>
+	<app-story-player-substory
+		[substoryId]="currentSubstory" 
+		(loadingSubstoryEvent)="updateLoadingSubstory($event)"></app-story-player-substory>
 	
 	<div
 		class="arrow-container vcenter"
 		(click)="playNextStory('next')"
   	[ngClass]="{ 
   		'arrow-dark': isDarkTheme,
-  		'off': (substories.length <= (currentSubstoryIdArrPos + 1) && !infiniteScrollActive) || substories.length <= 1 }">
+  		'off': (substories.length <= (currentSubstoryIdArrPos + 1) && !infiniteScrollActive) || substories.length <= 1 || loadingSubstory }">
     <div
     	class="arrow right border-color-theme">
     	<img src="assets/images/arrow.png">

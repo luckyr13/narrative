@@ -12,6 +12,7 @@ export class StoryPlayerComponent implements OnInit {
   currentSubstory = '';
   currentSubstoryIdArrPos = 0;
   infiniteScrollActive = true;
+  loadingSubstory = false;
 
   constructor(
     private _userSettings: UserSettingsService) {
@@ -31,6 +32,10 @@ export class StoryPlayerComponent implements OnInit {
   playNextStory(option: 'next'|'prev') {
     const numSubstories = this.substories.length;
 
+    if (this.loadingSubstory) {
+      return;
+    }
+
     if (this.infiniteScrollActive) {
       if (option === 'next' && numSubstories > (this.currentSubstoryIdArrPos + 1)) {
         this.currentSubstoryIdArrPos += 1;
@@ -49,6 +54,10 @@ export class StoryPlayerComponent implements OnInit {
       }
     }
     this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
+  }
+
+  updateLoadingSubstory(loading: boolean) {
+    this.loadingSubstory = loading;
   }
   
 }

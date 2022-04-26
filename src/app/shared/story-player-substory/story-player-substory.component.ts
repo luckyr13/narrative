@@ -1,4 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import { 
+  Component, OnInit, Input, OnDestroy,
+  OnChanges, SimpleChanges, ViewChild, ElementRef,
+  Output, EventEmitter } from '@angular/core';
 import { from, Observable, Subscription, switchMap, tap, catchError, of, map } from 'rxjs';
 import { SubstoryService } from '../../core/services/substory.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
@@ -22,6 +25,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   };
   substoryContentSubscription = Subscription.EMPTY;
   @Input('substoryId') substoryId!: string;
+  @Output() loadingSubstoryEvent = new EventEmitter<boolean>();
   supportedFiles: Record<string, string[]> = {
     'image': [
       'image/gif', 'image/png',
@@ -67,6 +71,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   }
 
   load() {
+    this.loadingSubstoryEvent.emit(true);
     this.substoryContentSubscription = this.loadMetadata(this.substoryId).pipe(
       switchMap((tx) => {
         const tags = tx.tags!;
@@ -88,6 +93,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               if (dataSize > this.storyImageMaxSizeBytes) {
                 this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
+                this.loadingSubstoryEvent.emit(false);
                 throw new Error(this.substoryContent.error);
               }
 
@@ -95,6 +101,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               fileURL = this._utils.sanitizeFull(`${fileURL}`);
               this.substoryContent.content = fileURL;
               this.substoryContent.loading = false;
+                this.loadingSubstoryEvent.emit(false);
               return of(fileURL);
             }
           }
@@ -103,6 +110,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
         if (dataSize > this.storyMaxSizeBytes) {
           this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
           this.substoryContent.loading = false;
+          this.loadingSubstoryEvent.emit(false);
           throw new Error(this.substoryContent.error);
         }
         return this.loadContent(tx.id);
@@ -126,12 +134,13 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
 
           this.substoryContent.raw = this._utils.sanitizeFull(`${content}`);
           this.substoryContent.loading = false;
-
+          this.loadingSubstoryEvent.emit(false);
          
         },
         error: (error) => {
           this.substoryContent.error = error;
           this.substoryContent.loading = false;
+          this.loadingSubstoryEvent.emit(false);
         }
       })
     );
