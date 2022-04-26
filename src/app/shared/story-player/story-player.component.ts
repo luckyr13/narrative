@@ -12,7 +12,7 @@ export class StoryPlayerComponent implements OnInit {
   currentSubstory = '';
   currentSubstoryIdArrPos = 0;
   infiniteScrollActive = true;
-  loadingSubstory = false;
+  loadingSubstory = true;
 
   constructor(
     private _userSettings: UserSettingsService) {
