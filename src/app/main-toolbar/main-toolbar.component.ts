@@ -48,7 +48,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
     });
 
     this._auth.account$.subscribe((address) => {
-      if (address != this.account) {
+      if (address != '') {
         this.account = address;
         this.method = this._auth.loginMethod;
         this.profileSubscription = this._verto.getProfile(this.account).subscribe({
@@ -67,6 +67,11 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
             this._utils.message(error, 'error');
           }
         });
+      } else {
+        this.account = '';
+        this.method = '';
+        this.profile = null;
+        this.profileImage = 'assets/images/blank-profile.png';
       }
     });
   }
