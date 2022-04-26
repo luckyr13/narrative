@@ -12,14 +12,22 @@
 </div>
 <div class="clear-both"></div>
 <mat-dialog-content
+	*ngIf="!this.file.size"
 	class="content border-right-special"
-	(drop)="dropFile($event);"
+	(drop)="dropFile($event, data.type);"
 	(dragover)="dragOverFile($event);"
 	(dragenter)="dragEnterFile($event)"
 	(dragleave)="dragLeaveFile($event)">
   <div
   	class="file-upload-zone"
   	[ngClass]="{ 'file-upload-zone-active': dragFileActive }">
+		<div style="visibility: hidden">
+			<input
+				type="file"
+				#fileInput
+				(change)="readFileFromInput($event, data.type)"
+				[accept]="getSupportedFilesAsStr(data.type)" >
+		</div>
   	<button 
   		(click)="openFileExplorer()"
    		cdkFocusInitial
@@ -60,4 +68,17 @@
 	<p class="footer-text">
 		Using this tool implies that you agree to Narrative's Terms of Service and Community Guidelines. 
 	</p>
+</mat-dialog-content>
+<mat-dialog-content
+	class="content border-right-special"
+	*ngIf="this.file.size && this.file.dataUrl">
+	<div class="image-preview" *ngIf="data.type === 'image'">
+		<img [src]="this.file.dataUrl">
+		<br>
+		<button 
+   		class="btn-upload-txt"
+  		mat-flat-button color="accent">
+      Upload Image
+    </button>
+	</div>
 </mat-dialog-content>
