@@ -19,10 +19,15 @@
 		</div>
 	</div>
 </div>
-<div class="no-results" *ngIf="!results.length && !loadingResults">
+
+<div class="no-results clear-both" *ngIf="!results.length && !loadingResults">
 	Nothing found!
 </div>
+
 <div class="more-results-container clear-both">
+	<div class="text-center" *ngIf="results.length && !loadingResults">
+		From {{ results.length }} registers.
+	</div>
 	<mat-spinner *ngIf="loadingMoreResults" color="accent" diameter="32"></mat-spinner>
 	<mat-card 
 		#moreResultsCard 

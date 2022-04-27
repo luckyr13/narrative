@@ -11,7 +11,7 @@ import { UtilsService } from '../../core/utils/utils.service';
   styleUrls: ['./arweave-address.component.scss']
 })
 export class ArweaveAddressComponent implements OnInit, OnDestroy {
-  public verified: boolean = false
+  public verified: boolean = false;
   @Input() address: string = '';
   @Input() isAddress: boolean = true;
   @Input() showOpenVieblockBtn: boolean = true;

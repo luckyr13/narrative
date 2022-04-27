@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, switchMap, concat, of, merge } from 'rxjs';
+import { Subscription, switchMap, concat, of, merge, from, mergeMap } from 'rxjs';
 import { SearchService } from '../../core/services/search.service';
 import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { NetworkInfoInterface } from 'arweave/web/network';
+import { VertoService } from '../../core/services/verto.service';
+import { UserInterface } from '@verto/js/dist/common/faces';
 
 @Component({
   selector: 'app-results',
@@ -16,18 +18,23 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 export class ResultsComponent implements OnInit, OnDestroy {
   query: string = '';
   loadingPosts = false;
+  loadingProfiles = false;
   posts: TransactionMetadata[] = [];
   moreResultsAvailable = true;
   private _postSubscription: Subscription = Subscription.EMPTY;
   private _nextResultsSubscription: Subscription = Subscription.EMPTY;
+  private _vertoProfileSubscription: Subscription = Subscription.EMPTY;
   private maxPosts: number = 10;
+  profiles: UserInterface[] = [];
+  defaultProfileImage = 'assets/images/blank-profile.png';
 
   constructor(
     private _route: ActivatedRoute,
     private _utils: UtilsService,
     private _search: SearchService,
     private _arweave: ArweaveService,
-    private _story: StoryService) { }
+    private _story: StoryService,
+    private _verto: VertoService) { }
 
   ngOnInit(): void {
 
@@ -65,9 +72,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
     return res;
   }
 
-  getStoriesIfFrom(from: string[], height: number) {
-    if (from.length) {
-      return this._story.getLatestPosts(from, this.maxPosts, height);
+  getStoriesIfFrom(fromAddr: string[], height: number) {
+    if (fromAddr.length) {
+      return this._story.getLatestPosts(fromAddr, this.maxPosts, height);
     }
 
     return of([]);
@@ -77,7 +84,14 @@ export class ResultsComponent implements OnInit, OnDestroy {
   loadPosts(q: string) {
     const res = this.breakQuery(q);
     let numPostsFound = 0;
+
+    // Search and load profiles
+    const mentions = res.mentions.map((v) => {
+      return this._utils.removeInitialSymbol(v, '@');
+    });
+    this.loadProfiles(mentions, res.from);
     
+    // Load posts
     this.loadingPosts = true;
     this.posts = [];
     this._postSubscription = this._arweave.getNetworkInfo().pipe(
@@ -160,6 +174,42 @@ export class ResultsComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._postSubscription.unsubscribe();
     this._nextResultsSubscription.unsubscribe();
+    this._vertoProfileSubscription.unsubscribe();
+  }
+
+  loadProfiles(mentions: string[], fromAddr: string[]) {
+    let numProfilesFound = 0;
+    
+    this.loadingProfiles = true;
+    this.profiles = [];
+
+    const query = mentions.concat(fromAddr);
+
+    const fQuery: string[] = [];
+
+    for (let q of query) {
+      if (fQuery.indexOf(q) < 0) {
+        fQuery.push(q);
+      }
+    }
+    this._vertoProfileSubscription = from(fQuery).pipe(
+      mergeMap((addr: string) => {
+        return this._verto.getProfile(addr);
+      }),
+    ).subscribe({
+      next: (profile) => {
+        if (profile && this.profiles.find((p) => p.username === profile.username) === undefined) {
+          this.profiles.push(profile);
+        }
+      }
+    });
+  }
+
+  getImageUrl(txId: string) {
+    if (txId) {
+      return `${this._arweave.baseURL}${txId}`;
+    }
+    return this.defaultProfileImage;
   }
 
 

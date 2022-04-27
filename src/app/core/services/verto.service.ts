@@ -14,7 +14,7 @@ export class VertoService {
   	this._verto = new Verto();
   }
 
-  public getProfile(address: string): Observable<UserInterface | undefined> {
+  public getProfile(address: string): Observable<UserInterface | undefined> {    
   	if (this.profiles[address]) {
   		return of(this.profiles[address]);
   	}
