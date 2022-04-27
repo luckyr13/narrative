@@ -6,6 +6,7 @@ import { Subscription, switchMap, map } from 'rxjs';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { Router } from '@angular/router';
+import { SearchService } from '../../core/services/search.service';
 
 @Component({
   selector: 'app-trending',
@@ -27,7 +28,8 @@ export class TrendingComponent implements OnInit, OnDestroy {
     private _trending: TrendingService,
     private _arweave: ArweaveService,
     private _utils: UtilsService,
-    private _router: Router) { }
+    private _router: Router,
+    private _search: SearchService) { }
 
   ngOnInit(): void {
     this.loadingResults = true;
@@ -176,7 +178,7 @@ export class TrendingComponent implements OnInit, OnDestroy {
       route.push(subdir);
     }
     route.push(r1);
-
+    this._search.updateQueryStream(r1);
     this._router.navigate(route);
   }
 

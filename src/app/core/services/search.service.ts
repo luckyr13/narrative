@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import ArdbTransaction from 'ardb/lib/models/transaction';
-import { Observable, from, map } from 'rxjs';
+import { Observable, from, map, Subject } from 'rxjs';
 import { ArdbWrapper } from '../classes/ardb-wrapper';
 import { ArweaveService } from './arweave.service';
 import { TransactionMetadata } from '../interfaces/transaction-metadata';
@@ -14,6 +14,8 @@ import { UtilsService } from '../utils/utils.service';
 export class SearchService {
   private _ardbHash: ArdbWrapper;
   private _ardbMention: ArdbWrapper;
+  private _query: Subject<string> = new Subject<string>();
+  public queryStream = this._query.asObservable();
 
   constructor(
     private _arweave: ArweaveService,
@@ -24,6 +26,9 @@ export class SearchService {
     this._ardbMention = new ArdbWrapper(this._arweave.arweave);
   }
 
+  updateQueryStream(q: string) {
+    this._query.next(q);
+  }
 
   getLatestPostsHashtags(
     from: string[] | string = [],

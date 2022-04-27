@@ -41,6 +41,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
     this._route.paramMap.subscribe(async params => {
       this.query = params.get('query')! ? `${params.get('query')!}`.trim() : '';
       this.loadPosts(this.query);
+
+      this._search.updateQueryStream(this.query);
       
     });
 

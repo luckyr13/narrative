@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TrendingComponent } from './trending/trending.component';
+import { SearchService } from '../core/services/search.service';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -20,6 +22,7 @@ export class SearchComponent implements OnInit {
   constructor(
     private _router: Router,
     private _route: ActivatedRoute,
+    private _search: SearchService
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +35,12 @@ export class SearchComponent implements OnInit {
         }
       });
     }
+
+    this._search.queryStream.subscribe((q: string) => {
+      if (q) {
+        this.query.setValue(q);
+      }
+    });
 
 
   }
