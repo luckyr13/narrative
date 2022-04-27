@@ -1,2 +1,37 @@
-<h2>Trending topics</h2>
-<p>trending works!</p>
+<mat-spinner *ngIf="loadingResults" color="accent" diameter="32"></mat-spinner>
+<div *ngIf="!loadingResults" class="fadeIn">
+	<div class="col-6">
+		<h2>Trending hashtags</h2>
+		<div class="trending-container">
+			<div *ngFor="let ht of getTrendingHashtags()">
+				<a [href]="getLocalSearchUrl(ht.hashtag)">
+				{{ ht.hashtag }}
+				</a> ({{ ht.qty }})
+			</div>
+		</div>
+	</div>
+	<div class="col-6">
+		<h2>Trending mentions</h2>
+		<div class="trending-container">
+			<div *ngFor="let mention of getTrendingMentions()">
+				<strong>{{ mention.mention }}</strong> ({{ mention.qty }})
+			</div>
+		</div>
+	</div>
+</div>
+<div class="no-results" *ngIf="!results.length && !loadingResults">
+	Nothing found!
+</div>
+<div class="more-results-container clear-both">
+	<mat-spinner *ngIf="loadingMoreResults" color="accent" diameter="32"></mat-spinner>
+	<mat-card 
+		#moreResultsCard 
+		[style.visibility]="!loadingResults && !loadingMoreResults && moreResultsAvailable ? 'visible' : 'hidden'"
+		class="more-results-card mat-elevation-z0"
+		matRipple
+		(click)="moreResults()" >
+	  <mat-card-content class="more-results text-center fadeIn">
+			Get more results
+	  </mat-card-content>
+	</mat-card>
+</div>
