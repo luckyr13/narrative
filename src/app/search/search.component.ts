@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
-
+import { TrendingComponent } from './trending/trending.component';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -42,6 +42,20 @@ export class SearchComponent implements OnInit {
       this._router.navigate([`${query}`], {relativeTo: this._route});
     } else {
       this._router.navigate(['.'], {relativeTo: this._route});
+    }
+  }
+
+  onActivate(component: any) {
+    if (component.clickTagMentionEvent) {
+      component.clickTagMentionEvent.subscribe({
+        next:(v: any) => {
+          if (v) {
+            this.query.setValue(v);
+            this.onSubmitSearch();
+          }
+        }
+      })
+
     }
   }
 

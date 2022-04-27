@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, switchMap, merge, of } from 'rxjs';
+import { Subscription, switchMap, concat, of, merge } from 'rxjs';
 import { SearchService } from '../../core/services/search.service';
 import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
@@ -45,12 +45,15 @@ export class ResultsComponent implements OnInit, OnDestroy {
     const numWords = words.length;
     const res: {hashtags: string[], mentions: string[], from: string[]} = {hashtags: [], mentions: [], from: []};
     for (let i = 0; i < numWords; i++) {
-      let word = this.removeInitialSymbol(words[i].trim(), '#');
-      word = this.removeInitialSymbol(words[i].trim(), '@');
+      let word = this._utils.removeInitialSymbol(words[i].trim(), '#');
+      word = this._utils.removeInitialSymbol(word, '@');
+
       // Hashtag
       res.hashtags.push(`#${word.toLowerCase()}`);
+      res.hashtags.push(`#${word}`);
 
       // Mention
+      res.mentions.push(`@${word.toLowerCase()}`);
       res.mentions.push(`@${word}`);
 
       // Address
@@ -73,6 +76,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
   loadPosts(q: string) {
     const res = this.breakQuery(q);
+    let numPostsFound = 0;
     
     this.loadingPosts = true;
     this.posts = [];
@@ -97,19 +101,25 @@ export class ResultsComponent implements OnInit, OnDestroy {
       })
     ).subscribe({
       next: (posts) => {
-        if (!posts || !posts.length) {
-          this.moreResultsAvailable = false;
+        if (posts && posts.length) {
+          numPostsFound += posts.length;
         }
         this.posts.push(...posts);
-        // Enough time for UI
-        window.setTimeout(() => {
-          this.loadingPosts = false;
-        }, 500);
+        
       },
       error: (error) => {
         this.loadingPosts = false;
         this.moreResultsAvailable = false;
         this._utils.message(error, 'error');
+      },
+      complete: () => {
+        if (!numPostsFound) {
+          this.moreResultsAvailable = false;
+        } else {
+          this.moreResultsAvailable = true;
+        }
+
+        this.loadingPosts = false;
       }
     })
 
@@ -118,18 +128,31 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
   moreResults() {
     this.loadingPosts = true;
-    this._nextResultsSubscription = this._search.nextHashtags().subscribe({
+    let numPostsFound = 0;
+    this._nextResultsSubscription = merge(
+      this._search.nextHashtags(),
+      this._search.nextMentions(),
+      this._story.next()
+    ).subscribe({
       next: (posts) => {
-        if (!posts || !posts.length) {
-          this.moreResultsAvailable = false;
+        if (posts && posts.length) {
+          numPostsFound += posts.length;
         }
         this.posts = this.posts.concat(posts);
-        this.loadingPosts = false;
       },
       error: (error) => {
         this.loadingPosts = false;
         this.moreResultsAvailable = false;
         this._utils.message(error, 'error');
+      },
+      complete: () => {
+        if (!numPostsFound) {
+          this.moreResultsAvailable = false;
+        } else {
+          this.moreResultsAvailable = true;
+        }
+
+        this.loadingPosts = false;
       }
     })
   }
@@ -138,11 +161,6 @@ export class ResultsComponent implements OnInit, OnDestroy {
     this._postSubscription.unsubscribe();
     this._nextResultsSubscription.unsubscribe();
   }
-
-  removeInitialSymbol(hashtag: string, symbol: string = '#') {
-    return this._utils.removeInitialSymbol(hashtag, symbol);
-  }
-
 
 
 }
