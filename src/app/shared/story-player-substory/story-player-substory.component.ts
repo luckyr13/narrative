@@ -9,6 +9,7 @@ import { ArweaveService } from '../../core/services/arweave.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'; 
 import {MatDialog} from '@angular/material/dialog';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-story-player-substory',
@@ -16,7 +17,9 @@ import {MatDialog} from '@angular/material/dialog';
   styleUrls: ['./story-player-substory.component.scss']
 })
 export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
-  substoryContent: { type: string, loading: boolean, content: string, error: string, raw: string} = {
+  substoryContent: { 
+    type: string, loading: boolean, content: string|SafeResourceUrl, error: string, raw: string
+  } = {
     type: '',
     loading: true,
     content: '',
@@ -24,7 +27,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     raw: ''
   };
   substoryContentSubscription = Subscription.EMPTY;
-  @Input('substoryId') substoryId!: string;
+  @Input('substory') substory!: { id: string, type: string};
   @Output() loadingSubstoryEvent = new EventEmitter<boolean>();
   supportedFiles: Record<string, string[]> = {
     'image': [
@@ -66,13 +69,22 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.load();
+    if (this.substory.type === 'tx' && this.substory.id) {
+      this.loadTx(this.substory.id);
+
+    } else if (this.substory.type === 'youtube' && this.substory.id){
+      this.loadYoutubeVideo(this.substory.id);
+
+    } else {
+      console.error('Player: Unknown type');
+    }
     
   }
 
-  load() {
+  loadTx(tx: string) {
     this.loadingSubstoryEvent.emit(true);
-    this.substoryContentSubscription = this.loadMetadata(this.substoryId).pipe(
+    this.realPreviewSize = this.maxPreviewSize;
+    this.substoryContentSubscription = this.loadMetadata(tx).pipe(
       switchMap((tx) => {
         const tags = tx.tags!;
         let contentType = '';
@@ -172,8 +184,12 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes && changes['substoryId'] && !changes['substoryId'].firstChange) {
-      this.load();
+    if (changes && changes['substory'] && !changes['substory'].firstChange) {
+      if (this.substory.type === 'tx' && this.substory.id) {
+        this.loadTx(this.substory.id);
+      } else if (this.substory.type === 'youtube' && this.substory.id) {
+        this.loadYoutubeVideo(this.substory.id);
+      }
     }
   }
 
@@ -226,6 +242,10 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     this.confirmDialog(url);
   }
 
+  openLink(event: MouseEvent, link: string) {
+    event.stopPropagation();
+    this.confirmDialog(link);
+  }
 
   showStoryMoreTextBtn() {
     return this.substoryContent.raw.length > this.maxPreviewSize;
@@ -239,7 +259,20 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
 
   seeMore(event: MouseEvent) {
     event.stopPropagation();
-    this.realPreviewSize = this.substoryContent.content.length;
+    this.realPreviewSize = `${this.substoryContent.content}`.length;
 
+  }
+
+  getYoutubeUrl(id: string) {
+    return this._utils.youtubeVideoURL(id);
+  }
+
+  loadYoutubeVideo(youtubeId: string) {
+    this.loadingSubstoryEvent.emit(true);
+    this.substoryContent.error = '';
+    this.substoryContent.type = 'youtube';
+    this.substoryContent.loading = false;
+    this.substoryContent.content = this._utils.youtubeVideoURLSecure(youtubeId);
+    this.loadingSubstoryEvent.emit(false);
   }
 }

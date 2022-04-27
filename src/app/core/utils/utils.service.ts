@@ -170,14 +170,22 @@ export class UtilsService {
   /*
   *  https://angular.io/guide/security#sanitization-and-security-contexts
   */
-  youtubeVideoURL(id: string) {
+  youtubeVideoURLSecure(id: string) {
     // Appending an ID to a YouTube URL is safe.
     // Always make sure to construct SafeValue objects as
     // close as possible to the input data so
     // that it's easier to check if the value is safe.
-    const youtubeUrl = 'https://www.youtube.com/embed/' + id;
+    id = this.sanitizeFull(id);
+    const youtubeUrl = `https://www.youtube.com/embed/${id}`;
+    
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(youtubeUrl);
     return sanitizedUrl;
+  }
+
+  youtubeVideoURL(id: string) {
+    id = this.sanitizeFull(id);
+    const youtubeUrl = `https://www.youtube.com/embed/${id}`;
+    return youtubeUrl;
   }
 
   removeInitialSymbol(hashtag: string, symbol: string = '#') {

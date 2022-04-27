@@ -9,10 +9,12 @@ import { UserSettingsService } from '../../core/services/user-settings.service';
 export class StoryPlayerComponent implements OnInit {
   isDarkTheme = false;
   @Input('substories') substories!: string[];
-  currentSubstory = '';
+  @Input('youtubeIds') youtubeIds!: string[];
+  currentSubstory: { id: string, type: string }|null = null;
   currentSubstoryIdArrPos = 0;
   infiniteScrollActive = true;
   loadingSubstory = false;
+  allSubstories: { id: string, type: string }[] = [];
 
   constructor(
     private _userSettings: UserSettingsService,
@@ -21,17 +23,27 @@ export class StoryPlayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    // Fill allSubstories array
+    for (const st of this.substories) {
+      this.allSubstories.push({ id: st, type: 'tx' });
+    }
+    for (const yt of this.youtubeIds) {
+      this.allSubstories.push({ id: yt, type: 'youtube' });
+    }
+
     // Get theme info
     this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
     this._userSettings.currentThemeStream.subscribe((theme) => {
       this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
 
-    this.currentSubstory = this.substories.length ? this.substories[this.currentSubstoryIdArrPos] : '';
+    this.currentSubstoryIdArrPos = 0;
+    this.currentSubstory = this.allSubstories.length ? this.allSubstories[this.currentSubstoryIdArrPos] : null;
   }
 
   playNextStory(option: 'next'|'prev') {
-    const numSubstories = this.substories.length;
+    const numSubstories = this.allSubstories.length;
 
     if (this.loadingSubstory) {
       return;
@@ -54,7 +66,7 @@ export class StoryPlayerComponent implements OnInit {
         this.currentSubstoryIdArrPos -= 1;
       }
     }
-    this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
+    this.currentSubstory = this.allSubstories[this.currentSubstoryIdArrPos];
   }
 
   updateLoadingSubstory(loading: boolean) {

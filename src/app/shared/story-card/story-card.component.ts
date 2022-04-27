@@ -31,7 +31,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   isDarkTheme = false;
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
-  detectedLinks: string[] = [];
+  detectedYouTubeIds: string[] = [];
   substories: string[] = [];
   /*
   *  Default: 
@@ -70,7 +70,11 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     const tags = post.tags!;
     for (const t of tags) {
       if (t.name === 'Substory') {
-        this.substories.push(t.value);
+        if (this._arweave.validateAddress(t.value)) {
+          this.substories.push(t.value);
+        } else {
+          console.error('Invalid Substory tag', t);
+        }
       }
     }
   }
@@ -162,6 +166,43 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   }
 
 
+  detectYouTubeLinks(links: string[]): string[] {
+    const detectedYouTubeIds: string[] = [];
+    // Arbitrary length
+    const maxIdLength = 15;
+    const detectedYouTubeLinks = links.filter((val) => {
+      const url = new URL(val);
+      const hostname = url.hostname;
+      const search = url.search;
+      const pathname = url.pathname;
+      if (/youtube.com/.test(hostname)) {
+        const params = new URLSearchParams(search);
+        let v = params.get('v');
+        if (v) {
+          v = v.substr(0, maxIdLength);
+          // Skip duplicates
+          if (detectedYouTubeIds.indexOf(v) < 0) {
+            detectedYouTubeIds.push(v);
+          }
+        }
+        return true;
+      } else if (/youtu.be/.test(hostname)) {
+        let path = this._utils.removeInitialSymbol(pathname, '/');
+        if (path) {
+          path = path.substr(0, maxIdLength);
+          // Skip duplicates
+           if (detectedYouTubeIds.indexOf(path) < 0) {
+            detectedYouTubeIds.push(path);
+          }
+        }
+        return true;
+      }
+      return false;
+    });
+
+    return detectedYouTubeIds;
+  }
+
   _loadContentHelperLoadContent() {
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
@@ -169,10 +210,12 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         this.content = this._utils.sanitize(`${data}`);
         this.originalRawContent = this._utils.sanitizeFull(`${data}`);
         const links = this._utils.getLinks(`${data}`);
-        this.detectedLinks = links.map((val) => {
+        const detectedLinks = links.map((val) => {
           return val.href;
         });
         
+        this.detectedYouTubeIds = this.detectYouTubeLinks(detectedLinks);
+
         // Intercept click on anchors
         this.interceptClicks();
         

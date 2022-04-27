@@ -17,7 +17,7 @@
 			<button 
       	mat-icon-button
       	class="btn-open-anyway"
-      	(click)="openStory($event, substoryId)"
+      	(click)="openStory($event, substory.id)"
       	aria-label="Open in new window" matTooltip="Open in new window">
       	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
       </button>
@@ -50,9 +50,6 @@
 	      </button>
 	  	</div>
 	  </div>
-
-
-		
 	</div>
 	<!-- image -->
 	<div
@@ -68,17 +65,46 @@
 			<button 
       	mat-icon-button
       	class="btn-open-anyway"
-      	(click)="openStory($event, substoryId)"
+      	(click)="openStory($event, substory.id)"
       	aria-label="Open in new window" matTooltip="Open in new window">
       	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
       </button>
 		</div>
 		<div
-			(click)="openStory($event, substoryId)"
+			(click)="openStory($event, substory.id)"
 			class="image-container fadeIn"
 			*ngIf="substoryContent.content"
 			[ngStyle]="{ 'background-image': 'url(' + substoryContent.content + ')' }">
 			
+		</div>
+	</div>
+
+	<!-- Youtube Video -->
+	<div
+		class="substory-container youtube-container"
+		*ngIf="substoryContent.type.indexOf('youtube') >= 0  && !substoryContent.loading">
+		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
+		<div
+			class="text-error fadeIn"
+			*ngIf="substoryContent.error">
+			<p #contentContainer>
+				{{ substoryContent.error }}
+			</p>
+			<button 
+      	mat-icon-button
+      	class="btn-open-anyway"
+      	(click)="openLink($event, getYoutubeUrl(substory.id))"
+      	aria-label="Open in new window" matTooltip="Open in new window">
+      	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
+      </button>
+		</div>
+		<div
+			class="youtube-container fadeIn"
+			*ngIf="substoryContent.content && !substoryContent.error">
+			<iframe
+				[src]="substoryContent.content" title="YouTube video player"
+				frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</div>
 	</div>
 
