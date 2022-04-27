@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.moreResultsAvailable = false;
         this._utils.message(error, 'error');
       }
-    })
+    });
 
     this._auth.account$.subscribe((_account) => {
       this.account = _account;
