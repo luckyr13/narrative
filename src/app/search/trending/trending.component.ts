@@ -46,7 +46,7 @@ export class TrendingComponent implements OnInit, OnDestroy {
             const t = tags[i];
             const tagName = t.name.toLowerCase();
             if (tagName === 'hashtag') {
-              const hashtagValue = t.value.toLowerCase();
+              const hashtagValue = t.value;
               if (Object.prototype.hasOwnProperty.call(this.hashtags, hashtagValue) &&
                 this.hashtags[hashtagValue].txs.indexOf(v.owner) < 0) {
                 this.hashtags[hashtagValue].qty += 1;
@@ -131,7 +131,7 @@ export class TrendingComponent implements OnInit, OnDestroy {
               const t = tags[i];
               const tagName = t.name.toLowerCase();
               if (tagName === 'hashtag') {
-                const hashtagValue = t.value.toLowerCase();
+                const hashtagValue = t.value;
                 if (Object.prototype.hasOwnProperty.call(this.hashtags, hashtagValue) &&
                   this.hashtags[hashtagValue].txs.indexOf(v.owner) < 0) {
                   this.hashtags[hashtagValue].qty += 1;
