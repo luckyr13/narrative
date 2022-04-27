@@ -63,7 +63,6 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {
       this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
-    this.extractTagsFromPost(this.post);
   }
 
   extractTagsFromPost(post: TransactionMetadata) {
@@ -218,6 +217,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
         // Intercept click on anchors
         this.interceptClicks();
+
+        // Generate tags
+        this.extractTagsFromPost(this.post);
         
       },
       error: (error) => {

@@ -22,8 +22,7 @@ export class StoryPlayerComponent implements OnInit {
     
   }
 
-  ngOnInit(): void {
-
+  fillSubstories() {
     // Fill allSubstories array
     for (const st of this.substories) {
       this.allSubstories.push({ id: st, type: 'tx' });
@@ -31,6 +30,14 @@ export class StoryPlayerComponent implements OnInit {
     for (const yt of this.youtubeIds) {
       this.allSubstories.push({ id: yt, type: 'youtube' });
     }
+    this.currentSubstoryIdArrPos = 0;
+    this.currentSubstory = this.allSubstories.length ? this.allSubstories[this.currentSubstoryIdArrPos] : null;
+  }
+
+  ngOnInit(): void {
+
+    this.fillSubstories();
+    
 
     // Get theme info
     this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
@@ -38,8 +45,7 @@ export class StoryPlayerComponent implements OnInit {
       this.isDarkTheme = this._userSettings.isDarkTheme(theme);
     });
 
-    this.currentSubstoryIdArrPos = 0;
-    this.currentSubstory = this.allSubstories.length ? this.allSubstories[this.currentSubstoryIdArrPos] : null;
+    
   }
 
   playNextStory(option: 'next'|'prev') {
@@ -73,5 +79,5 @@ export class StoryPlayerComponent implements OnInit {
     this.loadingSubstory = loading;
     this._cd.detectChanges();
   }
-  
+
 }
