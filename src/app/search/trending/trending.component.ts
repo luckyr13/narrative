@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TrendingService } from '../../core/services/trending.service';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UtilsService } from '../../core/utils/utils.service';
@@ -22,7 +22,6 @@ export class TrendingComponent implements OnInit, OnDestroy {
   loadingResults = false;
   hashtags: Record<string, {hashtag: string, qty: number, txs: string[]}> = {};
   mentions: Record<string, {mention: string, qty: number, txs: string[]}> = {};
-  @Output() clickTagMentionEvent = new EventEmitter<string>();
 
   constructor(
     private _trending: TrendingService,
@@ -181,8 +180,5 @@ export class TrendingComponent implements OnInit, OnDestroy {
     this._router.navigate(route);
   }
 
-  emitClick(tagMention: string) {
-    this.clickTagMentionEvent.emit(tagMention);
-  }
 
 }

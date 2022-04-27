@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { TrendingComponent } from './trending/trending.component';
@@ -24,12 +24,14 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this._route.firstChild!.paramMap.subscribe(async params => {
-      const query = params.get('query')! ? `${params.get('query')!}`.trim() : '';
-      if (query) {
-        this.query.setValue(query)
-      }
-    });
+    if (this._route.firstChild) {
+      this._route.firstChild.paramMap.subscribe(async params => {
+        const query = params.get('query')! ? `${params.get('query')!}`.trim() : '';
+        if (query) {
+          this.query.setValue(query)
+        }
+      });
+    }
 
 
   }
@@ -39,24 +41,12 @@ export class SearchComponent implements OnInit {
     const query = this.query!.value ? `${this.query!.value}`.trim() : '';
 
     if (query) {
-      this._router.navigate([`${query}`], {relativeTo: this._route});
+      this._router.navigate(['/', 'search', `${query}`]);
     } else {
-      this._router.navigate(['.'], {relativeTo: this._route});
+      this._router.navigate(['/', 'search']);
     }
+  
   }
 
-  onActivate(component: any) {
-    if (component.clickTagMentionEvent) {
-      component.clickTagMentionEvent.subscribe({
-        next:(v: any) => {
-          if (v) {
-            this.query.setValue(v);
-            this.onSubmitSearch();
-          }
-        }
-      })
-
-    }
-  }
 
 }
