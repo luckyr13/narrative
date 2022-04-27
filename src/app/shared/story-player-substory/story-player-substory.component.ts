@@ -49,10 +49,10 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   /*
   *  Default: 
   *  Story: 100kb = 100000b
-  *  Image: 1mb = 1000000b
+  *  Image: 3mb = 3000000b
   */
   storyMaxSizeBytes = 100000;
-  storyImageMaxSizeBytes = 2000000;
+  storyImageMaxSizeBytes = 3000000;
   contentError = '';
 
   maxPreviewSize = 250;
