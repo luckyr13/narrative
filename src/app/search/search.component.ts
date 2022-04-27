@@ -14,7 +14,7 @@ export class SearchComponent implements OnInit {
   defaultLang: any;
 
   get query() {
-    return this.searchForm.get('query');
+    return this.searchForm.get('query')!;
   }
    
   constructor(
@@ -27,10 +27,10 @@ export class SearchComponent implements OnInit {
     this._route.firstChild!.paramMap.subscribe(async params => {
       const query = params.get('query')! ? `${params.get('query')!}`.trim() : '';
       if (query) {
-        this.searchForm.get('query')!.setValue(query)
+        this.query.setValue(query)
       }
-      
     });
+
 
   }
 

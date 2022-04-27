@@ -180,4 +180,11 @@ export class UtilsService {
     return sanitizedUrl;
   }
 
+  removeInitialSymbol(hashtag: string, symbol: string = '#') {
+    const hasht = hashtag.length && (hashtag[0] === symbol) ?
+      hashtag.substr(1, hashtag.length) :
+      hashtag;
+    return hasht;
+  }
+
 }

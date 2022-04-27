@@ -5,6 +5,7 @@ import { UtilsService } from '../../core/utils/utils.service';
 import { Subscription, switchMap, map } from 'rxjs';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { NetworkInfoInterface } from 'arweave/web/network';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-trending',
@@ -25,7 +26,8 @@ export class TrendingComponent implements OnInit, OnDestroy {
   constructor(
     private _trending: TrendingService,
     private _arweave: ArweaveService,
-    private _utils: UtilsService) { }
+    private _utils: UtilsService,
+    private _router: Router) { }
 
   ngOnInit(): void {
     this.loadingResults = true;
@@ -112,9 +114,8 @@ export class TrendingComponent implements OnInit, OnDestroy {
     });
   }
 
-  getLocalSearchUrl(hashtag: string) {
-    const hasht = hashtag.length && hashtag[0] === '#' ? hashtag.substr(1, hashtag.length) : hashtag;
-    return `${this._utils.getBaseURL()}#/search/${hasht}`;
+  removeInitialSymbol(hashtag: string, symbol: string = '#') {
+    return this._utils.removeInitialSymbol(hashtag, symbol);
   }
 
   moreResults() {
@@ -167,6 +168,16 @@ export class TrendingComponent implements OnInit, OnDestroy {
         this._utils.message(error, 'error');
       }
     })
+  }
+
+  navigate(r1: string, subdir = '' ) {
+    const route = ['/'];
+    if (subdir) {
+      route.push(subdir);
+    }
+    route.push(r1);
+
+    this._router.navigate(route);
   }
 
 }

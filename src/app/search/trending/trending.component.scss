@@ -6,7 +6,9 @@ h2 {
 .trending-container {
 	padding: 20px;
 }
-
+.trending-container a {
+	cursor: pointer;
+}
 .mat-spinner {
 	margin: 0 auto;
 }
