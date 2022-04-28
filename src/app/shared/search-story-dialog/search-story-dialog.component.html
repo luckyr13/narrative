@@ -12,7 +12,26 @@
 <div class="clear-both"></div>
 <mat-dialog-content
 	class="content border-right-special">
-	<p class="footer-text">
-		--
-	</p>
+	<div class="search-container">
+    <form [formGroup]="searchForm" (ngSubmit)="onSubmitSearch()">
+    	<p>
+  		  <mat-form-field appearance="standard" color="accent">
+  		    <mat-label>Search the blockweave</mat-label>
+  		    <input
+            matInput 
+            required
+            placeholder="Introduce an Arweave transaction ID"
+            autocomplete="off" 
+            formControlName="query">
+  		  </mat-form-field>
+  		  <button 
+          type="submit"
+          [disabled]="!searchForm.valid"
+          mat-flat-button color="accent"><mat-icon>search</mat-icon></button>
+  		</p>
+    </form>
+  </div>
+  <div>
+  	
+  </div>	
 </mat-dialog-content>

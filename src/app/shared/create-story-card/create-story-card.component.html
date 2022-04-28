@@ -79,22 +79,19 @@
 				matTooltip="Add Substory"
 				mat-icon-button color="accent"
 				[disabled]="loadingCreatePost"
-				(click)="addSubstory()">
+				[matMenuTriggerFor]="matMenuSubstory">
 				<mat-icon class="material-icons-outlined">post_add</mat-icon>
 			</button>
-
-		  <!--
-				<mat-menu #matMenuSubstory="matMenu">
-				  <button mat-menu-item (click)="addSubstory()">
-				    <mat-icon>post_add</mat-icon>
-				    <span>Create substory</span>
+			<mat-menu #matMenuSubstory="matMenu">
+			  <button mat-menu-item (click)="addSubstory()">
+			    <mat-icon>post_add</mat-icon>
+			    <span>Create substory</span>
+			  </button>
+				  <button mat-menu-item (click)="searchStory()">
+				    <mat-icon>search</mat-icon>
+				    <span>Search story</span>
 				  </button>
-					  <button mat-menu-item (click)="searchStory()">
-					    <mat-icon>search</mat-icon>
-					    <span>Search story</span>
-					  </button>
-				</mat-menu>
-			-->
+			</mat-menu>
 			<button
 				*ngIf="!isSubstory"
 				matTooltip="Add Image"

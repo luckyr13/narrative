@@ -10,6 +10,8 @@ import { JWKInterface } from 'arweave/web/lib/wallet';
 import { ArweaveWebWallet } from 'arweave-wallet-connector';
 declare const window: any;
 
+export const arweaveAddressLength = 43;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -433,8 +435,6 @@ export class ArweaveService {
 
   validateAddress(address: string) {
     // Validate address 
-    const arweaveAddressLength = 43;
-
     if (address && address.length === arweaveAddressLength) {
       return true;
     }

@@ -74,7 +74,7 @@ export class UtilsService {
   message(msg: string, panelClass: string = '', verticalPosition: any = undefined) {
     this._snackBar.open(msg, 'X', {
       duration: 3000,
-      horizontalPosition: 'center',
+      horizontalPosition: 'right',
       verticalPosition: verticalPosition,
       panelClass: panelClass
     });

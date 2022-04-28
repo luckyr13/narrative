@@ -393,14 +393,14 @@ body {
 
 
 /* GLOBAL STYLES FOR MATERIAL COMPONENTS */
-.mat-snack-bar-container.error{
+.mat-snack-bar-container.error, .mat-snack-bar-container.error .mat-button{
   background-color: #f44336;
   color: #FFF;
 }
 
-.mat-snack-bar-container.success{
-  background-color: #69f0ae;
-  color: rgba(0,0,0,.87);
+.mat-snack-bar-container.success, .mat-snack-bar-container.success .mat-button{
+  background-color: #3BC661;
+  color: #FFF;
 }
 
 /*

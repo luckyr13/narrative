@@ -42,3 +42,38 @@
 		min-width: 800px;
 	}
 }
+
+.search-container {
+  padding: 0px 20px 0px 20px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.search-container .mat-form-field {
+  width: 100%;
+}
+
+.search-container p {
+  display: flex;
+  flex-direction: column;
+}
+.search-container button {
+  margin-left: 0px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  border-radius: 50px;
+}
+
+@media (min-width: 700px) {
+  .search-container {
+  }
+  .search-container p {
+    flex-direction: row;
+  }
+
+  .search-container button {
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
