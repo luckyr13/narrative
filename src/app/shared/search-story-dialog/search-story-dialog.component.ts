@@ -54,9 +54,6 @@ export class SearchStoryDialogComponent implements OnInit, OnDestroy {
     //const query = encodeURI(this.query!.value);
     const query = this.query!.value ? `${this.query!.value}`.trim() : '';
 
-    if (query) {
-      alert(query)
-    }
   
   }
 
