@@ -8,13 +8,11 @@ import { UserSettingsService } from '../../core/services/user-settings.service';
 })
 export class StoryPlayerComponent implements OnInit {
   isDarkTheme = false;
-  @Input('substories') substories!: string[];
-  @Input('youtubeIds') youtubeIds!: string[];
+  @Input('substories') substories!: {id: string, type: string}[];
   currentSubstory: { id: string, type: string }|null = null;
   currentSubstoryIdArrPos = 0;
   infiniteScrollActive = true;
   loadingSubstory = false;
-  allSubstories: { id: string, type: string }[] = [];
 
   constructor(
     private _userSettings: UserSettingsService,
@@ -23,15 +21,9 @@ export class StoryPlayerComponent implements OnInit {
   }
 
   fillSubstories() {
-    // Fill allSubstories array
-    for (const st of this.substories) {
-      this.allSubstories.push({ id: st, type: 'tx' });
-    }
-    for (const yt of this.youtubeIds) {
-      this.allSubstories.push({ id: yt, type: 'youtube' });
-    }
+   
     this.currentSubstoryIdArrPos = 0;
-    this.currentSubstory = this.allSubstories.length ? this.allSubstories[this.currentSubstoryIdArrPos] : null;
+    this.currentSubstory = this.substories.length ? this.substories[this.currentSubstoryIdArrPos] : null;
   }
 
   ngOnInit(): void {
@@ -49,7 +41,7 @@ export class StoryPlayerComponent implements OnInit {
   }
 
   playNextStory(option: 'next'|'prev') {
-    const numSubstories = this.allSubstories.length;
+    const numSubstories = this.substories.length;
 
     if (this.loadingSubstory) {
       return;
@@ -72,7 +64,7 @@ export class StoryPlayerComponent implements OnInit {
         this.currentSubstoryIdArrPos -= 1;
       }
     }
-    this.currentSubstory = this.allSubstories[this.currentSubstoryIdArrPos];
+    this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
   }
 
   updateLoadingSubstory(loading: boolean) {

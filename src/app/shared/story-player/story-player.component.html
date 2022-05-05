@@ -4,7 +4,7 @@
 		(click)="playNextStory('prev')"
   	[ngClass]="{ 
   		'arrow-dark': isDarkTheme,
-  		'off': ((currentSubstoryIdArrPos - 1) < 0 && !infiniteScrollActive) || allSubstories.length <= 1 || loadingSubstory }">
+  		'off': ((currentSubstoryIdArrPos - 1) < 0 && !infiniteScrollActive) || substories.length <= 1 || loadingSubstory }">
     <div
     	class="arrow left border-color-theme">
     	<img src="assets/images/arrow.png">
@@ -19,7 +19,7 @@
 		(click)="playNextStory('next')"
   	[ngClass]="{ 
   		'arrow-dark': isDarkTheme,
-  		'off': (allSubstories.length <= (currentSubstoryIdArrPos + 1) && !infiniteScrollActive) || allSubstories.length <= 1 || loadingSubstory }">
+  		'off': (substories.length <= (currentSubstoryIdArrPos + 1) && !infiniteScrollActive) || substories.length <= 1 || loadingSubstory }">
     <div
     	class="arrow right border-color-theme">
     	<img src="assets/images/arrow.png">

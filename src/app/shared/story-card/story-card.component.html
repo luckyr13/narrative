@@ -126,8 +126,8 @@
 	        	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
 		      </button>
 			  </div>
-			  <div class="clear-both" *ngIf="substories.length || detectedYouTubeIds.length">
-			  	<app-story-player [substories]="substories" [youtubeIds]="detectedYouTubeIds"></app-story-player>
+			  <div class="clear-both" *ngIf="substories.length">
+			  	<app-story-player [substories]="substories"></app-story-player>
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
