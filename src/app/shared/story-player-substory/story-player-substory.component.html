@@ -11,7 +11,7 @@
 		<div
 			class="text-error fadeIn"
 			*ngIf="substoryContent.error">
-			<p #contentContainer>
+			<p>
 				{{ substoryContent.error }}
 			</p>
 			<button 
@@ -22,28 +22,20 @@
       	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
       </button>
 		</div>
-		<!-- Story -->
-		<div
-			class="text-container fadeIn"
-			*ngIf="substoryContent.content && !substoryContent.loading && !showStoryMoreTextBtn()">
-			<p #contentContainer [innerHTML]="substoryContent.content">
-				
-			</p>
-		</div>
-	  <!-- Preview -->
-	  <div 
-	  	*ngIf="!substoryContent.loading && substoryContent.raw && showStoryMoreTextBtn()"
+	  <div
 	  	#contentContainer
+	  	*ngIf="substoryContent.content"
 	  	class="content fadeIn">
-	  	<p [innerHTML]="substr(substoryContent.raw, realPreviewSize)">
-
-	  	</p>
-	  	<div class="text-right">
+	  	<!-- Story -->
+	  	<p
+	  		*ngIf="substoryContent.content && !substoryContent.loading"
+	  		[innerHTML]="substoryContent.content">
+			</p>
+	  	<div class="text-right" *ngIf="!substoryContent.loading && substoryContent.raw && showStoryMoreTextBtn()">
 	  		<button 
         	mat-button
         	class="btn-see-more"
         	color="accent"
-        	*ngIf="realPreviewSize <= maxPreviewSize"
         	(click)="seeMore($event)"
         	aria-label="See more" matTooltip="See more">
         	See more
@@ -59,7 +51,7 @@
 		<div
 			class="text-error fadeIn"
 			*ngIf="substoryContent.error">
-			<p #contentContainer>
+			<p>
 				{{ substoryContent.error }}
 			</p>
 			<button 
@@ -87,7 +79,7 @@
 		<div
 			class="text-error fadeIn"
 			*ngIf="substoryContent.error">
-			<p #contentContainer>
+			<p>
 				{{ substoryContent.error }}
 			</p>
 			<button 

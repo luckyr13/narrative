@@ -17,6 +17,22 @@
 			  	mat-card-avatar
 			  	[src]="profileImage">
 			</div>
+			<div class="text-center" *ngIf="fullMode">
+				<ngx-skeleton-loader 
+					class="avatar-fullmode-main"
+					*ngIf="loadingProfile"
+					[animation]="isDarkTheme ? 'progress-dark' : 'progress'"
+					appearance="circle"
+					[theme]="{ 'height.px': 62, 'width.px': 62, 'marginTop.px': 0 }"></ngx-skeleton-loader>
+				<img
+			  	class="avatar-fullmode-main"
+			  	*ngIf="!loadingProfile"
+			  	(click)="$event.stopPropagation()"
+			  	[routerLink]="['/', profile ? profile.username : post.owner]"
+			  	mat-card-avatar
+			  	[src]="profileImage">
+			  
+			</div>
 			<div class="story-container">
 				<div class="story-title">
 					<ngx-skeleton-loader 
@@ -114,26 +130,21 @@
 			  	[theme]="{ 'height.px': 18, 'marginBottom.px': 20, 'marginTop.px': 0, 'width': '90%' }"></ngx-skeleton-loader>
 			  <!-- Story type: text -->
 			  <ng-container *ngIf="validateContentType(storyContentType, 'text')">
-			  	<!-- Story -->
 				  <div 
-				  	*ngIf="!loadingContent && content && !showStoryMoreTextBtn()"
-				  	#contentContainer
-				  	class="content fadeIn" [innerHTML]="content">
-				  </div>
-				  <!-- Preview -->
-				  <div 
-				  	*ngIf="!loadingContent && originalRawContent && showStoryMoreTextBtn()"
 				  	#contentContainer
 				  	class="content fadeIn">
-				  	<p [innerHTML]="substr(originalRawContent, realPreviewSize)">
-
+				  	<!-- Preview -->
+				  	<p 
+				  		*ngIf="!loadingContent && content"
+				  		[innerHTML]="content">
 				  	</p>
-				  	<div class="text-right">
+				  	<div 
+				  		*ngIf="!loadingContent && originalRawContent && showStoryMoreTextBtn()" 
+				  		class="text-right">
 				  		<button 
 			        	mat-button
 			        	class="btn-see-more"
 			        	color="accent"
-			        	*ngIf="realPreviewSize <= maxPreviewSize"
 			        	(click)="readMore($event)"
 			        	aria-label="See more" matTooltip="See more">
 			        	See more
@@ -147,8 +158,7 @@
 			 	</div>
 			  
 			  <div 
-			  	*ngIf="!loadingContent && contentError"
-			  	#contentContainer
+			  	*ngIf="!loadingContent && contentError clear-both"
 			  	class="content-error fadeIn">
 			  	<span>
 			  		{{ contentError }}

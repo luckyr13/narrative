@@ -47,8 +47,14 @@ mat-card-header {
 	width: 62px;
 	height: 62px;
 	cursor: pointer;
-	float: left;
 	margin-right: 16px;
+	display: none;
+}
+
+.avatar-fullmode-main {
+	width: 62px;
+	height: 62px;
+	cursor: pointer;
 }
 
 .story-title {
@@ -127,6 +133,14 @@ mat-card-header {
 		width: 82px;
 		text-align: left;
 		padding-right: 12px;
+	}
+
+	.avatar-fullmode {
+		display: block;
+	}
+
+	.avatar-fullmode-main {
+		display: none;
 	}
 
 }

@@ -145,9 +145,12 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     return this._arweave.getDataAsString(txId).pipe(
       tap({
         next: (content) => {
-          this.substoryContent.content = this._utils.sanitize(`${content}`);
 
           this.substoryContent.raw = this._utils.sanitizeFull(`${content}`);
+          if (this.substoryContent.raw.length < this.maxPreviewSize) {
+            this.realPreviewSize = this.substoryContent.raw.length;
+          }
+          this.substoryContent.content = this.substr(this.substoryContent.raw, this.realPreviewSize);
           this.substoryContent.loading = false;
           this.loadingSubstoryEvent.emit(false);
          
@@ -251,19 +254,19 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   }
 
   showStoryMoreTextBtn() {
-    return this.substoryContent.raw.length > this.maxPreviewSize;
+    return this.substoryContent.raw.length > this.maxPreviewSize && this.realPreviewSize !== `${this.substoryContent.raw}`.length;
   }
 
   substr(s: string, length: number) {
-    const ellipsis = length <= this.maxPreviewSize ? '...' : '';
+    const ellipsis = length <= this.maxPreviewSize && length < s.length ? '...' : '';
     return (this._utils.sanitize(s.substr(0, length)) + ellipsis);
   }
 
 
   seeMore(event: MouseEvent) {
     event.stopPropagation();
-    this.realPreviewSize = `${this.substoryContent.content}`.length;
-
+    this.realPreviewSize = `${this.substoryContent.raw}`.length;
+    this.substoryContent.content = this.substr(this.substoryContent.raw, this.realPreviewSize);
   }
 
   getYoutubeUrl(id: string) {

@@ -172,7 +172,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     const defLangWritingSystem = 'LTR';
     let direction: Direction = defLangWritingSystem === 'LTR' ? 
       'ltr' : 'rtl';
-    const tmpContent = this._utils.sanitizeFull(this.content);
+    const tmpContent = this._utils.sanitizeFull(this.originalRawContent);
     const limit = 200;
     const user = this.profile && this.profile.username ? 
       this.profile.username :
@@ -194,8 +194,10 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   readMore(event: MouseEvent) {
     event.stopPropagation();
-    this.realPreviewSize = this.content.length;
+    this.realPreviewSize = this.originalRawContent.length;
+    this.content = this.substr(this.originalRawContent, this.realPreviewSize);
 
+    this.interceptClicks();
   }
 
 
@@ -240,28 +242,28 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     this.loadingContent = true;
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
-        this.content = this._utils.sanitize(`${data}`);
+        // this.content = this._utils.sanitize(`${data}`);
         this.originalRawContent = this._utils.sanitizeFull(`${data}`);
-        const links = this._utils.getLinks(`${data}`);
+        const links = this._utils.getLinks(`${this.originalRawContent}`);
         const detectedLinks = links.map((val) => {
           return val.href;
         });
-        
-        
-        // Intercept click on anchors
-        this.interceptClicks();
 
         
-        // Extrac youtube links
+        
+        // Extract youtube links
         const detectedYouTubeIds = this.detectYouTubeLinks(detectedLinks);
 
         for (const ytId of detectedYouTubeIds) {
           this.substories.push({id: ytId, type: 'youtube'});
         }
 
+        this.content = this.substr(this.originalRawContent, this.maxPreviewSize);
+
 
         this.loadingContent = false;
         
+        this.interceptClicks();
       },
       error: (error) => {
         this.loadingContent = false;
@@ -271,11 +273,11 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   }
 
   showStoryMoreTextBtn() {
-    return this.originalRawContent.length > this.maxPreviewSize;
+    return this.originalRawContent.length > this.maxPreviewSize && this.realPreviewSize !== `${this.originalRawContent}`.length;
   }
 
   substr(s: string, length: number) {
-    const ellipsis = length <= this.maxPreviewSize ? '...' : '';
+    const ellipsis = length <= this.maxPreviewSize && length < s.length ? '...' : '';
     return (this._utils.sanitize(s.substr(0, length)) + ellipsis);
   }
 
