@@ -20,6 +20,7 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class StoryCardComponent implements OnInit, OnDestroy {
 	@Input() post!: TransactionMetadata;
+  @Input() fullMode = false;
 	loadingContent = false;
 	loadingProfile = false;
 	profileImage = 'assets/images/blank-profile.png';
@@ -32,16 +33,42 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   substories: {id: string, type: 'tx'|'youtube'}[] = [];
+  appName: string = '';
+  storyType: string = '';
+  storyContentType: string = '';
+  supportedFiles: Record<string, string[]> = {
+    'image': [
+      'image/gif', 'image/png',
+      'image/jpeg', 'image/bmp',
+      'image/webp'
+    ],
+    'audio': [
+      'audio/midi', 'audio/mpeg',
+      'audio/webm', 'audio/ogg',
+      'audio/wav'
+    ],
+    'video': [
+      'video/webm', 'video/ogg', 'video/mp4'
+    ],
+    'text': [
+      'text/plain'
+    ],
+  };
+
   /*
   *  Default: 
   *  Story: 100kb = 100000b
   *  Image: 1mb = 1000000b
   */
   storyMaxSizeBytes = 100000;
+  storyImageMaxSizeBytes = 3000000;
   contentError = '';
 
   maxPreviewSize = 250;
   realPreviewSize = this.maxPreviewSize;
+
+  // Tx metadata
+
 
   constructor(
     private _verto: VertoService,
@@ -67,12 +94,20 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   extractTagsFromPost(post: TransactionMetadata) {
     const tags = post.tags!;
     for (const t of tags) {
+      // Get substories
       if (t.name === 'Substory') {
         if (this._arweave.validateAddress(t.value)) {
           this.substories.push({ id: t.value, type: 'tx' });
         } else {
           console.error('Invalid Substory tag', t);
         }
+      } else if (t.name === 'App-Name') {
+        this.appName = t.value;
+
+      } else if (t.name === 'Type') {
+        this.storyType = t.value;        
+      } else if (t.name === 'Content-Type') {
+        this.storyContentType = t.value;
       }
     }
   }
@@ -202,9 +237,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   }
 
   _loadContentHelperLoadContent() {
+    this.loadingContent = true;
     this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
       next: (data: string|Uint8Array) => {
-        this.loadingContent = false;
         this.content = this._utils.sanitize(`${data}`);
         this.originalRawContent = this._utils.sanitizeFull(`${data}`);
         const links = this._utils.getLinks(`${data}`);
@@ -216,15 +251,16 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         // Intercept click on anchors
         this.interceptClicks();
 
-        // Generate tags
-        this.extractTagsFromPost(this.post);
-
+        
         // Extrac youtube links
         const detectedYouTubeIds = this.detectYouTubeLinks(detectedLinks);
 
         for (const ytId of detectedYouTubeIds) {
           this.substories.push({id: ytId, type: 'youtube'});
         }
+
+
+        this.loadingContent = false;
         
       },
       error: (error) => {
@@ -245,11 +281,16 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   loadContent() {
     const dataSize = this.post.dataSize ? +(this.post.dataSize) : 0;
-    if (dataSize <= this.storyMaxSizeBytes) {
-      this.loadingContent = true;
+    // Read tags and
+    // fill substories array
+    this.extractTagsFromPost(this.post);
+    if (dataSize <= this.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
+      this._loadContentHelperLoadContent();
+    } else if (dataSize <= this.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
+      // Load content
       this._loadContentHelperLoadContent();
     } else {
-      this.contentError = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${this.post.dataSize} bytes.`;
+      this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes. Size limit for text: ${this.storyMaxSizeBytes}bytes. Story size: ${this.post.dataSize} bytes.`;
     }
   }
 
@@ -293,6 +334,19 @@ export class StoryCardComponent implements OnInit, OnDestroy {
        
       }
     });
+  }
+
+
+  validateContentType(contentType: string, desiredType: 'image'|'audio'|'video'|'text') {
+    return (
+      Object.prototype.hasOwnProperty.call(this.supportedFiles, desiredType) ?
+      this.supportedFiles[desiredType].indexOf(contentType) >= 0 :
+      false
+    );
+  }
+
+  getFullImgUrlFromTx(tx: string) {
+    return `${this._arweave.baseURL}${tx}`;
   }
 
 }

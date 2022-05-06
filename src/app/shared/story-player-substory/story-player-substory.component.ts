@@ -48,6 +48,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     ],
   };
   @ViewChild('contentContainer') contentContainer!: ElementRef;
+  owner: string = '';
 
   /*
   *  Default: 
@@ -89,6 +90,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
         const tags = tx.tags!;
         let contentType = '';
         const supportedFiles: string[] = [];
+
+        this.owner = tx.owner;
 
         for (const sfCat of Object.keys(this.supportedFiles)) {
           for (const sf of this.supportedFiles[sfCat]) {

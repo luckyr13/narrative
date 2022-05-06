@@ -33,8 +33,6 @@ mat-card-header {
 
 
 .avatar-container {
-	float: left;
-	width: 100%;
 	min-height: 100%;
 	text-align: center;
 }
@@ -45,9 +43,21 @@ mat-card-header {
 	cursor: pointer;
 }
 
-.story-container {
+.avatar-fullmode {
+	width: 62px;
+	height: 62px;
+	cursor: pointer;
 	float: left;
-	width: calc(100%);
+	margin-right: 16px;
+}
+
+.story-title {
+	display: flex;
+	margin-bottom: 12px;
+}
+
+.story-container {
+	width: 100%;
 	min-height: 100%;
 	padding-left: 14px;
 	word-break: normal;
@@ -91,23 +101,21 @@ mat-card-header {
 	.profile-username {
 		margin-right: 12px;
 		margin-left: 6px;
-		line-height: 32px !important;
 	}
-	.profile-address, .profile-name, .profile-username {
-		min-width: 5%;
-		float: left;
+	.profile-name.fullmode, .profile-username.fullmode, .profile-story-date.fullmode {
+		line-height: 62px !important;
+	}
+	.profile-address.fullmode {
+		line-height: 50px !important;
 	}
 	.profile-address {
 		margin-top: 0px;
-		line-height: 20px !important;
 	}
 	.profile-name-container {
-		height: 32px;
-		width: 90%;
+		flex-direction: row !important;
 	}
 	.profile-secondary-actions {
 		margin-top: -12px;
-		width: 10%;
 	}
 
 
@@ -115,14 +123,10 @@ mat-card-header {
 		display: flex;
 	}
 
-	.story-container {
-		width: calc(100% - 82px);
-	}
-
-
 	.avatar-container {
 		width: 82px;
 		text-align: left;
+		padding-right: 12px;
 	}
 
 }
@@ -137,17 +141,18 @@ h2 small {
 }
 
 h2 {
-	margin-bottom: 20px;
 }
 
 .profile-name-container {
 	cursor: pointer;
-	float: left;
-	width: 80%;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
 }
 .profile-secondary-actions {
 	float: left;
-	width: 20%;
+}
+.profile-name {
 }
 .profile-name:hover {
 	text-decoration: underline;
@@ -156,13 +161,17 @@ h2 {
 	display: block;
 }
 .profile-username {
-	line-height: 16px;
 	opacity: 0.8;
 }
 .profile-address {
 	margin-top: 6px;
-	line-height: 10px;
 	opacity: 0.8;
+}
+.profile-name, .profile-username, .profile-story-date {
+	line-height: 26px;
+}
+.profile-address {
+	line-height: 12px;
 }
 
 .tx {
@@ -228,4 +237,24 @@ h2 {
 
 .btn-see-more {
 	text-decoration: underline;
+}
+.tx-metadata-chips {
+	margin-top: 22px;
+}
+
+.tx-metadata-chips span {
+	font-size: 10px !important;
+	background-color: black;
+	color: white;
+	padding: 4px;
+	margin-left: 4px;
+}
+
+.story-image-container {
+	text-align: center;
+	padding: 20px;
+}
+.story-image-container img {
+	max-width: 100%;
+
 }
