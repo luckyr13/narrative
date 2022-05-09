@@ -232,9 +232,12 @@
 	  <div
 	  	class="clear-both tx-metadata-chips"
 	  	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0)) && fullMode">
-				<span *ngIf="appName" >Protocol: {{ appName }}</span>
+	  		<h4 class="meta">Tx metadata:</h4>
+	  		<span *ngIf="application">Application: {{ application }} </span>
+				<span *ngIf="appName" >App-Name: {{ appName }}</span>
 				<span *ngIf="storyType" >Story type: {{ storyType }}</span>
 				<span *ngIf="storyContentType" >Content type: {{ storyContentType }}</span>
+				<span *ngIf="owner" >Owner: {{ owner }}</span>
 		</div>
 	</mat-card-content>
 	<mat-card-actions align="end">

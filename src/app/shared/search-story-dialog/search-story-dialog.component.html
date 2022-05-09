@@ -1,38 +1,55 @@
 <h2 mat-dialog-title class="title-text">
-	Search story
+  Search story
 </h2>
 <div class="title-buttons">
-	<button
-		mat-icon-button
-		aria-label="Close window"
-		(click)="close()">
+  <button
+    mat-icon-button
+    aria-label="Close window"
+    (click)="close()">
     <mat-icon>close</mat-icon>
   </button>
 </div>
 <div class="clear-both"></div>
 <mat-dialog-content
-	class="content border-right-special">
-	<div class="search-container">
+  class="content border-right-special">
+  <div class="search-container">
+
     <form [formGroup]="searchForm" (ngSubmit)="onSubmitSearch()">
-    	<p>
-  		  <mat-form-field appearance="standard" color="accent">
-  		    <mat-label>Search the blockweave</mat-label>
-  		    <input
+      <p>
+        <mat-form-field appearance="standard" color="accent">
+          <mat-label>Search the blockweave</mat-label>
+          <input
             matInput 
             required
             placeholder="Introduce an Arweave transaction ID"
             autocomplete="off" 
             formControlName="query">
-  		  </mat-form-field>
-  		  <button 
+        </mat-form-field>
+        <button 
           type="submit"
           [disabled]="!searchForm.valid"
-          mat-flat-button color="accent"><mat-icon>search</mat-icon></button>
-  		</p>
+          mat-flat-button color="accent"><mat-icon>search</mat-icon> </button>
+      </p>
     </form>
-    <div *ngIf="searchForm.valid">Coming soon :)</div>
+    <mat-spinner class="loader" *ngIf="loading" color="accent" diameter="24"></mat-spinner>
+    <div class="results" *ngIf="isValidSubstory && !error">
+      <span *ngIf="appName">App-Name: {{ appName }}</span>
+      <span *ngIf="application">Application: {{ application }}</span>
+      <span *ngIf="storyContentType">Content-Type: {{ storyContentType }}</span>
+      <span *ngIf="storyType">Story type: {{ storyType }}</span>
+      <span *ngIf="owner">Owner: {{ owner }}</span>
+      <div class="action-panel">
+        <a mat-flat-button color="accent" (click)="insertSubstory(txId)">Insert as Substory</a>
+      </div>
+      <p *ngIf="txtContent && finalType === 'text'">
+        {{ txtContent }}
+      </p>
+      <p class="image-container" *ngIf="finalType === 'image'">
+        <img [src]="getFileUrl(txId)">
+      </p>
+    </div>
+    <div *ngIf="error">
+        {{ error }}
+    </div>
   </div>
-  <div>
-  	
-  </div>	
 </mat-dialog-content>

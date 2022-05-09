@@ -33,7 +33,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   substories: {id: string, type: 'tx'|'youtube'}[] = [];
+  application: string = '';
   appName: string = '';
+  owner: string = '';
   storyType: string = '';
   storyContentType: string = '';
   supportedFiles: Record<string, string[]> = {
@@ -103,7 +105,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         }
       } else if (t.name === 'App-Name') {
         this.appName = t.value;
-
+      } else if (t.name === 'Application') {
+        this.application = t.value;
       } else if (t.name === 'Type') {
         this.storyType = t.value;        
       } else if (t.name === 'Content-Type') {
@@ -285,6 +288,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     const dataSize = this.post.dataSize ? +(this.post.dataSize) : 0;
     // Read tags and
     // fill substories array
+    this.owner = this.post.owner;
     this.extractTagsFromPost(this.post);
     if (dataSize <= this.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
       this._loadContentHelperLoadContent();

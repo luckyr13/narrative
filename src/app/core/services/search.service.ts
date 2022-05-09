@@ -16,6 +16,8 @@ export class SearchService {
   private _ardbMention: ArdbWrapper;
   private _query: Subject<string> = new Subject<string>();
   public queryStream = this._query.asObservable();
+  private _ardb: ArdbWrapper;
+
 
   constructor(
     private _arweave: ArweaveService,
@@ -24,6 +26,7 @@ export class SearchService {
     private _utils: UtilsService) {
     this._ardbHash = new ArdbWrapper(this._arweave.arweave);
     this._ardbMention = new ArdbWrapper(this._arweave.arweave);
+    this._ardb = new ArdbWrapper(this._arweave.arweave);
   }
 
   updateQueryStream(q: string) {
@@ -178,6 +181,27 @@ export class SearchService {
             return post;
           }) : [];
           return res;
+        })
+      );
+  }
+
+  getTxMetadata(txId: string): Observable<TransactionMetadata> {
+    return this._ardb.searchOneTransactionById(txId).pipe(
+        map((tx: ArdbTransaction) => {
+          if (!tx) {
+            throw new Error('Tx not found!');
+          }
+          const post: TransactionMetadata = {
+            id: tx.id,
+            owner: tx.owner.address,
+            blockId: tx.block && tx.block.id ? tx.block.id : '',
+            blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+            dataSize: tx.data ? tx.data.size : undefined,
+            dataType: tx.data ? tx.data.type : undefined,
+            blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+            tags: tx.tags
+          }
+          return post;
         })
       );
   }

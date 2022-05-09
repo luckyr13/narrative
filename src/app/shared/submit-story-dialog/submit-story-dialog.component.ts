@@ -22,7 +22,7 @@ export class SubmitStoryDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {
       type: string,
       address: string,
-      substories: any[],
+      substories: {id: string, content: string, type: 'text'|'image', arrId: number}[],
       mainStory: string
     },
     private _utils: UtilsService,
@@ -56,6 +56,9 @@ export class SubmitStoryDialogComponent implements OnInit {
       this.loadingPostingSubstories = true;
       this.postingSubstoriesSubscription = from(textSubstories).pipe(
         concatMap((substory) => {
+          if (substory.id) {
+            return of({id: substory.id});
+          }
           return this._story.createPost(substory.content, disableDispatch, [], true, 'text');
         })
       ).subscribe({

@@ -77,3 +77,32 @@
     margin-bottom: 20px;
   }
 }
+
+.loader {
+	margin: 0 auto;
+	margin-top: 10px;
+}
+
+.results {
+
+}
+
+.results span {
+	margin-right: 6px;
+	background-color: black;
+	color: white;
+	padding: 2px;
+	font-size: 12px;
+}
+
+.image-container {
+	text-align: center;
+}
+.image-container img {
+	max-width: 100%;
+}
+
+.action-panel {
+	padding: 10px;
+	text-align: center;
+}

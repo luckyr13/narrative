@@ -45,7 +45,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
   @ViewChild('matButtonImage') matButtonImage!: MatButton;
   @Input('isSubstory') isSubstory!: boolean;
-  substories: any[] = [];
+  substories: {id: string, content: string, type: 'text'|'image', arrId: number}[] = [];
   unsignedTxSubscription = Subscription.EMPTY;
 
   constructor(
@@ -209,7 +209,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         const newId = this.substories.push({
           id: tx,
           type: 'image',
-          arrId: maxId
+          arrId: maxId,
+          content: ''
         });
       }
     });
@@ -240,7 +241,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         const newId = this.substories.push({
           id: tx,
           type: 'image',
-          arrId: maxId
+          arrId: maxId,
+          content: ''
         });
       }
     });
@@ -283,14 +285,26 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         autoFocus: false,
         disableClose: true,
         data: {
-          type: 'image',
-          address: this.account
+          // address: this.account
         }
       }
     );
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe(() => {});
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        const ids = this.substories.map((v) => {
+          return v.arrId;
+        });
+        const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
+        this.substories.push({
+          id: res.tx,
+          content: res.content,
+          type: res.type,
+          arrId: maxId
+        });
+      }
+    });
   }
 
   getImgUrlFromTx(tx: string) {
@@ -303,7 +317,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     });
   }
 
-  deleteSubstory(arrId: string) {
+  deleteSubstory(arrId: number) {
     const i = this.substories.findIndex((s) => {
       return s.arrId === arrId;
     });
