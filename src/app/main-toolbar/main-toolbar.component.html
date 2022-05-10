@@ -42,18 +42,42 @@
     <mat-menu #settingsMenu="matMenu">
       <button
         mat-menu-item
+        [routerLink]="['/', 'settings', 'application']" 
+        [routerLinkActive]="['active']"
+        #rlaAppInfo="routerLinkActive">
+        <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaAppInfo.isActive }">info</mat-icon>
+        <span>App Info</span>
+      </button>
+      <button
+        mat-menu-item
+        [routerLink]="['/', 'settings', 'network']" 
+        [routerLinkActive]="['active']"
+        #rlaNetwork="routerLinkActive">
+        <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaNetwork.isActive }">settings_input_antenna</mat-icon>
+        <span>Network</span>
+      </button>
+      <button
+        mat-menu-item
+        [routerLink]="['/', 'settings', 'wallet']" 
+        [routerLinkActive]="['active']"
+        #rlaWallet="routerLinkActive">
+        <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaWallet.isActive }">wallet</mat-icon>
+        <span>Wallet</span>
+      </button>
+      <button
+        mat-menu-item
         [routerLink]="['/', 'settings', 'appearance']" 
         [routerLinkActive]="['active']"
         #rlaAppearance="routerLinkActive">
-        <mat-icon ngClass=" { 'material-icons-outlined': rlaAppearance.isActive }">palette</mat-icon>
+        <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaAppearance.isActive }">palette</mat-icon>
         <span>Appearance</span>
       </button>
       <button
         mat-menu-item
         [routerLink]="['/', 'settings', 'language']"
         [routerLinkActive]="['active']"
-        #rlaTranslate>
-        <mat-icon ngClass="{ 'material-icons-outlined': rlaTranslate.isActive }">translate</mat-icon>
+        #rlaTranslate="routerLinkActive">
+        <mat-icon [ngClass]="{ 'material-icons-outlined': !rlaTranslate.isActive }">translate</mat-icon>
         <span>Language</span>
       </button>
     </mat-menu>
