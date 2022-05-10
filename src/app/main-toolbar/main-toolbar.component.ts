@@ -28,6 +28,8 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   profileSubscription: Subscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
   profileImage: string = 'assets/images/blank-profile.png';
+  showThemeSelector = false;
+  showSettingsSelector = true;
 
   constructor(
     private _userSettings: UserSettingsService,
