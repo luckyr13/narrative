@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserSettingsService } from '../../core/services/user-settings.service';
 
 @Component({
   selector: 'app-language',
@@ -6,8 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./language.component.scss']
 })
 export class LanguageComponent implements OnInit {
+  currentLang: string;
 
-  constructor() { }
+  constructor(private _userSettings: UserSettingsService) {
+    this.currentLang = this._userSettings.getDefaultLang();
+  }
 
   ngOnInit(): void {
   }

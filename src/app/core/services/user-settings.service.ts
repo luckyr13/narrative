@@ -2,69 +2,50 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 declare const window: any;
 declare const document: any;
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService, LanguageObj } from './language.service';
+import { ThemesService, ThemeObject } from './themes.service';
+
+interface SettingsObject {
+  theme: string,
+  lang: string
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserSettingsService {
-  private _settings: { theme: string, lang: string } = {
+  private _settings: SettingsObject = {
     theme: '',
     lang: ''
   };
   private _storage = window.localStorage;
-  public themes: Record<string, {id: string, label: string, dark: boolean}> = {
-    'dark-blue-gray-theme': {
-      id: 'dark-blue-gray-theme',
-      label: 'Dark Blue',
-      dark: true
-    },
-    'light-blue-theme': {
-      id: 'light-blue-theme',
-      label: 'Light Blue',
-      dark: false
-    },
-    'dark-theme': {
-      id: 'dark-theme',
-      label: 'Dark',
-      dark: true
-    },
-    'light-theme': {
-      id: 'light-theme',
-      label: 'Light',
-      dark: false
-    },
-    'dark-pink-theme': {
-      id: 'dark-pink-theme',
-      label: 'Dark Pink',
-      dark: true
-    },
-    'light-pink-theme': {
-      id: 'light-pink-theme',
-      label: 'Light Pink',
-      dark: false
-    },
-    'dark-deep-purple-theme': {
-      id: 'dark-deep-purple-theme',
-      label: 'Deep Purple',
-      dark: true
-    },
-  };
-  private _currentTheme: Subject<string> = new Subject<string>();
-  public currentThemeStream = this._currentTheme.asObservable();
+  private _currentThemeSource: Subject<string> = new Subject<string>();
+  public currentThemeStream = this._currentThemeSource.asObservable();
+  private _currentLangSource = new Subject<string>();
+  public settingsLangStream = this._currentLangSource.asObservable();
+  public themes: Record<string, ThemeObject>;
+  public languages: Record<string, LanguageObj>;
 
-  get themeNamesList(): string[] {
-    return Object.keys(this.themes);
-  }
-
-  constructor() {
-    const settings = this._storage.getItem('settings');
+  constructor(
+    private _translate: TranslateService,
+    private _langService: LanguageService,
+    private _themeService: ThemesService) {
+    this.themes = this._themeService.themes;
+    this.languages = this._langService.langs;
+    let settings: SettingsObject|null = null;
+    const tmpSettings = this._storage.getItem('settings');
     let dtheme = '';
     let dlang = '';
-
+    try {
+      settings = JSON.parse(tmpSettings); 
+    } catch (error) {
+      console.error('Error loading settings: ', error);
+    }
     if (settings && Object.prototype.hasOwnProperty.call(settings, 'theme')) {
-      dtheme = this._storage.getItem('defaultTheme');
+      dtheme = settings.theme;
     } else if (settings && Object.prototype.hasOwnProperty.call(settings, 'lang')) {
-      dlang = this._storage.getItem('defaultLang');
+      dlang = settings.lang;
     }
 
   	// Default settings
@@ -73,16 +54,26 @@ export class UserSettingsService {
   	} else {
   		this.setTheme('light-blue-theme');
   	}
+    
   	if (dlang) {
+      _translate.setDefaultLang(dlang.toLowerCase());
   		this.setDefaultLang(dlang);
-  	}
+
+  	} else {
+      _translate.setDefaultLang('en');
+      this.setDefaultLang('EN');
+    }
+  }
+
+  get themeNamesList(): string[] {
+    return Object.keys(this.themes);
   }
 
   getDefaultTheme(): string {
   	return this._settings.theme;
   }
 
-  getThemeObj(theme: string): {id: string, label: string, dark: boolean} {
+  getThemeObj(theme: string): ThemeObject {
     return this.themes[theme];
   }
 
@@ -95,7 +86,7 @@ export class UserSettingsService {
     	this._settings.theme = _theme;
     	this._storage.setItem('settings', JSON.stringify(this._settings));
       this.updateBodyClass(_theme);
-      this._currentTheme.next(_theme);
+      this._currentThemeSource.next(_theme);
   	}
   }
 
@@ -103,6 +94,17 @@ export class UserSettingsService {
   	if (_lang) {
   		this._settings.lang = _lang;
     	this._storage.setItem('settings', JSON.stringify(this._settings));
+      this._translate.use(_lang.toLowerCase());
+      this._currentLangSource.next(_lang);
+      const langObj = this._langService.getLangObject(_lang)!;
+
+      // Update index.html
+      if (langObj) {
+        document.documentElement.lang = langObj.code;
+        if (langObj.writing_system) {
+          document.documentElement.dir = langObj.writing_system;
+        }
+      }
   	}
   }
 

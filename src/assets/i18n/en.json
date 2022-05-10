@@ -1,0 +1,52 @@
+{
+	"MAIN_MENU": {
+		"HOME": "Home",
+		"SEARCH": "Search",
+		"PROFILE": "Profile",
+		"FRIENDS": "Friends",
+		"SETTINGS": "Settings"
+	},
+	"GENERAL": {
+		"BUTTONS": {
+			"GO_BACK": "Go back",
+			"OPEN_VIEWBLOCK": "Open in Viewblock",
+			"COPY_ADDRESS": "Copy address",
+			"TIP_AUTHOR": "Tip the author",
+			"CONNECT": "Connect"
+		},
+		"LABELS": {
+			"NO_RESULTS": "No results",
+			"MORE_RESULTS": "More results",
+			"PROFILE": "Profile",
+			"LOGOUT_COMPOSED": "Log out {{ value }}",
+			"LOGOUT": "Log out"
+		},
+		"CREATE_STORY": {
+			"TXTAREA_LABEL": "What's on your mind {{value}}?",
+			"EMOJI_LABEL": "Insert emoji",
+			"ADD_SUBSTORY_LABEL": "Add substory",
+			"ADD_IMAGE_LABEL": "Add image",
+			"ADD_VIDEO_LABEL": "Add video",
+			"ADD_AUDIO_LABEL": "Add audio",
+			"CREATE_SUBSTORY": "Create substory",
+			"SEARCH_SUBSTORY": "Search substory",
+			"UPLOAD_FILE": "Upload file",
+			"FILE_MANAGER": "File manager"
+		},
+		"STORY": {
+			"TX_INFO": "TX info",
+			"ID": "Id",
+			"COMMENT": "Comment",
+			"REPOST": "Repost",
+			"LIKE": "Like",
+			"SHARE": "Share"
+		}
+	},
+	"SETTINGS": {
+		"APP_INFO": "App Info",
+		"NETWORK": "Network",
+		"WALLET": "Wallet",
+		"APPEAREANCE": "Appeareance",
+		"LANGUAGE": "Language"
+	}
+}

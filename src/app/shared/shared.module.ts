@@ -40,6 +40,7 @@ import { FileManagerDialogComponent } from './file-manager-dialog/file-manager-d
 import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dialog.component';
 import { SubmitStoryDialogComponent } from './submit-story-dialog/submit-story-dialog.component';
 import { StoryPlayerSubstoryComponent } from './story-player-substory/story-player-substory.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { StoryPlayerSubstoryComponent } from './story-player-substory/story-play
     MatTabsModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    TranslateModule
   ],
   exports: [
   	MatToolbarModule,
@@ -109,7 +111,8 @@ import { StoryPlayerSubstoryComponent } from './story-player-substory/story-play
     MatTabsModule,
     MatTooltipModule,
     ArweaveAddressComponent,
-    MatDialogModule
+    MatDialogModule,
+    TranslateModule
   ]
 })
 export class SharedModule { }

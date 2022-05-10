@@ -10,6 +10,9 @@ import {
 } from './shared/confirmation-dialog/confirmation-dialog.component';
 import { MatSidenavContainer } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
+import { UserSettingsService } from './core/services/user-settings.service';
+import { LanguageService, LanguageObj } from './core/services/language.service';
+
 
 @Component({
   selector: 'app-root',
@@ -22,11 +25,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   loadAccountSubscription: Subscription = Subscription.EMPTY;
   loginSubscription: Subscription = Subscription.EMPTY;
   @ViewChild(MatSidenavContainer) sidenavContainer!: MatSidenavContainer;
+  menuPosition: 'end'|'start' = 'start';
 
   constructor(
     private _appSettings: AppSettingsService,
+    private _userSettings: UserSettingsService,
     private _auth: UserAuthService,
     private _utils: UtilsService,
+    private _lang: LanguageService,
     public dialog: MatDialog
   ) {
     this.platformLoading$ = this._appSettings.loadingPlatform$;
@@ -50,6 +56,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.consoleWelcomeMessage();
+
+    
+    this.updateWritingDirectionAndLoading(this._userSettings.getDefaultLang())
+    this._userSettings.settingsLangStream.subscribe(this.updateWritingDirectionAndLoading)
+  }
+
+  updateWritingDirectionAndLoading = (lang: string) => {
+    const langObj: LanguageObj|null = this._lang.getLangObject(lang);
+    this.menuPosition = langObj && langObj.writing_system == 'RTL' ? 'end' : 'start'
   }
 
   ngOnDestroy() {

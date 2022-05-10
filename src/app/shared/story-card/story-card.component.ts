@@ -33,6 +33,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   substories: {id: string, type: 'tx'|'youtube'}[] = [];
+  service: string = '';
   application: string = '';
   appName: string = '';
   owner: string = '';
@@ -106,6 +107,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       } else if (t.name === 'App-Name') {
         this.appName = t.value;
       } else if (t.name === 'Application') {
+        this.application = t.value;
+      } else if (t.name === 'Service') {
         this.application = t.value;
       } else if (t.name === 'Type') {
         this.storyType = t.value;        
