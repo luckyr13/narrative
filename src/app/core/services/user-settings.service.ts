@@ -7,8 +7,10 @@ declare const document: any;
   providedIn: 'root'
 })
 export class UserSettingsService {
-	private _defaultTheme: string = '';
-	private _defaultLang: string = '';
+  private _settings: { theme: string, lang: string } = {
+    theme: '',
+    lang: ''
+  };
   private _storage = window.localStorage;
   public themes: Record<string, {id: string, label: string, dark: boolean}> = {
     'dark-blue-gray-theme': {
@@ -47,7 +49,6 @@ export class UserSettingsService {
       dark: true
     },
   };
-
   private _currentTheme: Subject<string> = new Subject<string>();
   public currentThemeStream = this._currentTheme.asObservable();
 
@@ -56,14 +57,21 @@ export class UserSettingsService {
   }
 
   constructor() {
-  	const dtheme = this._storage.getItem('defaultTheme');
-  	const dlang = this._storage.getItem('defaultLang');
+    const settings = this._storage.getItem('settings');
+    let dtheme = '';
+    let dlang = '';
+
+    if (settings && Object.prototype.hasOwnProperty.call(settings, 'theme')) {
+      dtheme = this._storage.getItem('defaultTheme');
+    } else if (settings && Object.prototype.hasOwnProperty.call(settings, 'lang')) {
+      dlang = this._storage.getItem('defaultLang');
+    }
 
   	// Default settings
   	if (dtheme) {
   		this.setTheme(dtheme);
   	} else {
-  		this.setTheme('dark-blue-gray-theme');
+  		this.setTheme('light-blue-theme');
   	}
   	if (dlang) {
   		this.setDefaultLang(dlang);
@@ -71,7 +79,7 @@ export class UserSettingsService {
   }
 
   getDefaultTheme(): string {
-  	return this._defaultTheme;
+  	return this._settings.theme;
   }
 
   getThemeObj(theme: string): {id: string, label: string, dark: boolean} {
@@ -79,31 +87,23 @@ export class UserSettingsService {
   }
 
   getDefaultLang(): string {
-  	return this._defaultLang;
+  	return this._settings.lang;
   }
 
   setDefaultTheme(_theme: string) {
   	if (_theme) {
-    	this._defaultTheme = _theme;
-    	this._storage.setItem('defaultTheme', this._defaultTheme);
+    	this._settings.theme = _theme;
+    	this._storage.setItem('settings', JSON.stringify(this._settings));
       this.updateBodyClass(_theme);
-      this._currentTheme.next(this._defaultTheme);
+      this._currentTheme.next(_theme);
   	}
   }
 
   setDefaultLang(_lang: string) {
   	if (_lang) {
-  		this._defaultLang = _lang;
-    	this._storage.setItem('defaultLang', this._defaultLang);
+  		this._settings.lang = _lang;
+    	this._storage.setItem('settings', JSON.stringify(this._settings));
   	}
-  }
-
-  resetUserSettings() {
-  	this._defaultLang = 'EN';
-  	this._defaultTheme = 'dark-blue-gray-theme';
-  	this._storage.removeItem('defaultTheme');
-  	this._storage.removeItem('defaultLang');
-
   }
 
   /*
