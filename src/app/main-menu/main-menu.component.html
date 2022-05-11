@@ -9,7 +9,7 @@
       mat-list-icon 
       [class]="{ 'material-icons-outlined': !rlaHome.isActive }" 
       [color]="rlaHome.isActive ? 'accent' : 'default'">house</mat-icon>
-    <div mat-line>Home</div>
+    <div mat-line>{{ 'MAIN_MENU.HOME' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
@@ -20,7 +20,7 @@
       mat-list-icon
       [class]="{ 'material-icons-outlined': !rlaSearch.isActive }" 
       [color]="rlaSearch.isActive ? 'accent' : 'default'">search</mat-icon>
-    <div mat-line>Search</div>
+    <div mat-line>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
@@ -31,7 +31,7 @@
       mat-list-icon
       [class]="{ 'material-icons-outlined': !rlaProfile.isActive }" 
       [color]="rlaProfile.isActive ? 'accent' : 'default'">person</mat-icon>
-    <div mat-line>Profile</div>
+    <div mat-line>{{ 'MAIN_MENU.PROFILE' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
@@ -42,7 +42,7 @@
       mat-list-icon
       [class]="{ 'material-icons-outlined': !rlaFriends.isActive }" 
       [color]="rlaFriends.isActive ? 'accent' : 'default'">people_alt</mat-icon>
-    <div mat-line>Friends</div>
+    <div mat-line>{{ 'MAIN_MENU.FRIENDS' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
@@ -53,7 +53,7 @@
       mat-list-icon
       [class]="{ 'material-icons-outlined': !rlaSettings.isActive }" 
       [color]="rlaSettings.isActive ? 'accent' : 'default'">settings</mat-icon>
-    <div mat-line>Settings</div>
+    <div mat-line>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
   </a>
 </mat-nav-list>
 
@@ -68,7 +68,7 @@
       mat-list-icon 
       [class]="{ 'material-icons-outlined': !rlaHome2.isActive }" 
       [color]="rlaHome2.isActive ? 'accent' : 'default'">house</mat-icon>
-    <div mat-line>Home</div>
+    <div mat-line>{{ 'MAIN_MENU.HOME' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
@@ -79,6 +79,6 @@
       mat-list-icon
       [class]="{ 'material-icons-outlined': !rlaSettings2.isActive }" 
       [color]="rlaSettings2.isActive ? 'accent' : 'default'">settings</mat-icon>
-    <div mat-line>Settings</div>
+    <div mat-line>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
   </a>
 </mat-nav-list>

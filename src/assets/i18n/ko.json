@@ -1,28 +1,28 @@
 {
 	"MAIN_MENU": {
-		"HOME": "Home",
-		"SEARCH": "Search",
+		"HOME": "홈",
+		"SEARCH": "검색",
 		"PROFILE": "Profile",
 		"FRIENDS": "Friends",
-		"SETTINGS": "Settings"
+		"SETTINGS": "설정"
 	},
 	"GENERAL": {
 		"BUTTONS": {
-			"GO_BACK": "Go back",
-			"OPEN_VIEWBLOCK": "Open in Viewblock",
-			"COPY_ADDRESS": "Copy address",
+			"GO_BACK": "돌아가기",
+			"OPEN_VIEWBLOCK": "Viewblock 열기",
+			"COPY_ADDRESS": "주소 복사",
 			"COPY_ID": "Copy Id",
-			"TIP_AUTHOR": "Tip the author",
+			"TIP_AUTHOR": "작성자에게 팁 제공",
 			"CONNECT": "Connect",
 			"POST": "Post",
 			"ADD_SUBSTORY": "Add substory"
 		},
 		"LABELS": {
-			"NO_RESULTS": "No results",
+			"NO_RESULTS": "결과 없음",
 			"MORE_RESULTS": "More results",
 			"PROFILE": "Profile",
-			"LOGOUT_COMPOSED": "Log out {{ value }}",
-			"LOGOUT": "Log out",
+			"LOGOUT_COMPOSED": "로그아웃 {{ value }}",
+			"LOGOUT": "로그아웃",
 			"METHOD": "Method",
 			"SHOW_OLDER_RESULTS": "Show older results"
 		},

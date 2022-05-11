@@ -4,7 +4,7 @@
 	    <button mat-icon-button>
     		<mat-icon>house</mat-icon>
   		</button>
-  		<span>Home</span>
+  		<span>{{ 'MAIN_MENU.HOME' | translate }}</span>
 	  </mat-toolbar>
 	</p>
 	<div class="col-body fadeIn">
@@ -20,7 +20,7 @@
 		<div class="more-results-container">
 			<mat-spinner *ngIf="loadingPosts" color="accent" diameter="32"></mat-spinner>
 			<div class="no-results" *ngIf="!posts.length && !loadingPosts">
-				There are no Stories yet!
+				{{ 'GENERAL.LABELS.NO_RESULTS' | translate }}
 			</div>
 			<mat-card 
 				#moreResultsCard 
@@ -29,7 +29,7 @@
 				matRipple
 				(click)="moreResults()" >
 			  <mat-card-content class="more-results text-center">
-					Show older posts
+					{{ 'GENERAL.LABELS.SHOW_OLDER_RESULTS' | translate }}
 			  </mat-card-content>
 			</mat-card>
 		</div>

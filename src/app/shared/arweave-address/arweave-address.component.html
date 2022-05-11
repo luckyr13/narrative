@@ -9,7 +9,7 @@
 		<mat-icon class="green">verified</mat-icon>
 	</a>
 	<a 
-		matTooltip="Open in Viewblock"
+		matTooltip="{{ 'GENERAL.BUTTONS.OPEN_VIEWBLOCK' | translate }}"
 		target="_blank"
 		*ngIf="isAddress && showOpenVieblockBtn"
 		href="https://viewblock.io/arweave/address/{{address}}"
@@ -17,14 +17,14 @@
 		<mat-icon>open_in_new</mat-icon>
 	</a>
 	<a 
-		matTooltip="Open in Viewblock"
+		matTooltip="{{ 'GENERAL.BUTTONS.OPEN_VIEWBLOCK' | translate }}"
 		target="_blank"
 		*ngIf="!isAddress && showOpenVieblockBtn"
 		href="https://viewblock.io/arweave/tx/{{address}}">
 		<mat-icon>open_in_new</mat-icon>
 	</a>
 	<a 
-		[matTooltip]="'Copy ' + (isAddress ? 'address' : 'TX Id')"
+		[matTooltip]="'GENERAL.BUTTONS.COPY_ID' | translate"
 		target="_blank"
 		*ngIf="showCopyBtn"
 		(click)="copyClipboard(address, 'Copied to clipboard!', $event)">

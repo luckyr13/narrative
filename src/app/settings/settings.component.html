@@ -4,7 +4,7 @@
       <button mat-icon-button>
         <mat-icon>settings</mat-icon>
       </button>
-      <span>Settings</span>
+      <span>{{ 'MAIN_MENU.SETTINGS' | translate }}</span>
     </mat-toolbar>
   </p>
   <nav 
@@ -20,7 +20,7 @@
       [active]="rlApplication.isActive"> 
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlApplication.isActive }">info</mat-icon>
-      <div class="action-btn-label">App Info</div>
+      <div class="action-btn-label">{{ 'SETTINGS.APP_INFO' | translate }}</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -31,7 +31,7 @@
       [active]="rlNetwork.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlNetwork.isActive }">settings_input_antenna</mat-icon>
-      <div class="action-btn-label">Network</div>
+      <div class="action-btn-label">{{ 'SETTINGS.NETWORK' | translate }}</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -42,7 +42,7 @@
       [active]="rlWallet.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlWallet.isActive }">wallet</mat-icon>
-      <div class="action-btn-label">Wallet</div>
+      <div class="action-btn-label">{{ 'SETTINGS.WALLET' | translate }}</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -53,7 +53,7 @@
       [active]="rlAppearance.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlAppearance.isActive }">palette</mat-icon>
-      <div class="action-btn-label">Appearance</div>
+      <div class="action-btn-label">{{ 'SETTINGS.APPEARANCE' | translate }}</div>
     </a>
     <a
       class="action-btn-wrapper"
@@ -64,7 +64,7 @@
       [active]="rlLanguage.isActive">
       <mat-icon
         [class]="{ 'material-icons-outlined': !rlLanguage.isActive }">translate</mat-icon>
-      <div class="action-btn-label">Language</div>
+      <div class="action-btn-label">{{ 'SETTINGS.LANGUAGE' | translate }}</div>
     </a>
     
   </nav>

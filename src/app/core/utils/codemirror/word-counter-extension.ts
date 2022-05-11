@@ -62,7 +62,7 @@ function countData(doc: Text) {
   while (!iter.next().done) {
     count += new Blob([iter.value]).size;
   }
-  return `Story size: ${count} byte${count === 1 ? '' : 's'}`;
+  return `${count} byte${count === 1 ? '' : 's'}`;
 }
 
 const dataInfoTheme = EditorView.baseTheme({

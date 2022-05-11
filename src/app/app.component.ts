@@ -12,6 +12,7 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
 import { UserSettingsService } from './core/services/user-settings.service';
 import { LanguageService, LanguageObj } from './core/services/language.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     private _auth: UserAuthService,
     private _utils: UtilsService,
     private _lang: LanguageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _translate: TranslateService
   ) {
     this.platformLoading$ = this._appSettings.loadingPlatform$;
   }
@@ -48,7 +50,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       error: (error) => {
         if (error == 'Error: LaunchArweaveWebWalletModal') {
           // Resume session dialog
-          this.resumeSessionDialog();
+          this._translate.get('DIALOGS.RESUME_SESSION').subscribe((res: any) => {
+            this.resumeSessionDialog(res.MESSAGE, res.CONFIRM, res.DISMISS);
+          });
+          
 
         } else {
           this._utils.message(error, 'error');
@@ -59,7 +64,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     
     this.updateWritingDirectionAndLoading(this._userSettings.getDefaultLang())
-    this._userSettings.settingsLangStream.subscribe(this.updateWritingDirectionAndLoading)
+    this._userSettings.currentLangStream.subscribe(this.updateWritingDirectionAndLoading)
   }
 
   updateWritingDirectionAndLoading = (lang: string) => {
@@ -75,13 +80,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.opened = !this.opened;
   }
 
-  resumeSessionDialog() {
+  resumeSessionDialog(content: string, confirmLabel: string, closeLabel: string) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: {
         title: '',
-        content: 'Resume Arweave Web Wallet session?',
-        confirmLabel: 'Resume Session',
-        closeLabel: 'Dismiss'
+        content: content,
+        confirmLabel: confirmLabel,
+        closeLabel: closeLabel
       },
       disableClose: true
     });

@@ -46,7 +46,7 @@
         [routerLinkActive]="['active']"
         #rlaAppInfo="routerLinkActive">
         <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaAppInfo.isActive }">info</mat-icon>
-        <span>App Info</span>
+        <span>{{ 'SETTINGS.APP_INFO' | translate }}</span>
       </button>
       <button
         mat-menu-item
@@ -54,7 +54,7 @@
         [routerLinkActive]="['active']"
         #rlaNetwork="routerLinkActive">
         <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaNetwork.isActive }">settings_input_antenna</mat-icon>
-        <span>Network</span>
+        <span>{{ 'SETTINGS.NETWORK' | translate }}</span>
       </button>
       <button
         mat-menu-item
@@ -62,7 +62,7 @@
         [routerLinkActive]="['active']"
         #rlaWallet="routerLinkActive">
         <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaWallet.isActive }">wallet</mat-icon>
-        <span>Wallet</span>
+        <span>{{ 'SETTINGS.WALLET' | translate }}</span>
       </button>
       <button
         mat-menu-item
@@ -70,7 +70,7 @@
         [routerLinkActive]="['active']"
         #rlaAppearance="routerLinkActive">
         <mat-icon [ngClass]=" { 'material-icons-outlined': !rlaAppearance.isActive }">palette</mat-icon>
-        <span>Appearance</span>
+        <span>{{ 'SETTINGS.APPEARANCE' | translate }}</span>
       </button>
       <button
         mat-menu-item
@@ -78,7 +78,7 @@
         [routerLinkActive]="['active']"
         #rlaTranslate="routerLinkActive">
         <mat-icon [ngClass]="{ 'material-icons-outlined': !rlaTranslate.isActive }">translate</mat-icon>
-        <span>Language</span>
+        <span>{{ 'SETTINGS.LANGUAGE' | translate }}</span>
       </button>
     </mat-menu>
     <button
@@ -112,7 +112,7 @@
               [address]="account"
               class="small-username-2"></app-arweave-address>
             <div class="small-username-2 login-method-span">
-              <strong>Method:</strong> {{ method }}
+              <strong>{{ 'GENERAL.LABELS.METHOD' | translate }}:</strong> {{ method }}
             </div>
           </div>
         </mat-list-item>
@@ -120,11 +120,11 @@
       <mat-divider></mat-divider>
       <button mat-menu-item [routerLink]="[account]">
         <mat-icon>person</mat-icon>
-        <span>Profile</span>
+        <span>{{ 'GENERAL.LABELS.PROFILE' | translate }}</span>
       </button>
       <button mat-menu-item [routerLink]="['logout']">
         <mat-icon>logout</mat-icon>
-        <span>Log Out</span><span> @{{ ellipsis(account) }}</span>
+        <span>{{ 'GENERAL.LABELS.LOGOUT_COMPOSED' | translate:{ value: ellipsis(account) } }}</span>
       </button>
     </mat-menu>
   </mat-toolbar>

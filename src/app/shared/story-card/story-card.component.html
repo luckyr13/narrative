@@ -195,7 +195,7 @@
         	(click)="comment($event)"
         	aria-label="Comment">
 	        <mat-icon class="material-icons-outlined">comment</mat-icon>
-        	<div>Comment</div>
+        	<div>{{ 'GENERAL.STORY.COMMENT' | translate }}</div>
 	      </button>
       </div>
 	  	<div class="action-btn-wrapper">
@@ -205,7 +205,7 @@
 	  			(click)="repost($event)"
 	  			aria-label="Repost">
 	        <mat-icon class="material-icons-outlined">repeat</mat-icon>
-	        <div>Repost</div>
+	        <div>{{ 'GENERAL.STORY.REPOST' | translate }}</div>
 	      </button>
 	  	</div>
       <div class="action-btn-wrapper">
@@ -215,7 +215,7 @@
       		aria-label="Like"
       		(click)="like($event)">
 	        <mat-icon class="material-icons-outlined">favorite</mat-icon>
-        	<div>Like</div>
+        	<div>{{ 'GENERAL.STORY.LIKE' | translate }}</div>
 	      </button>
 	  	</div>
       <div class="action-btn-wrapper">
@@ -225,7 +225,7 @@
       		aria-label="Share Story"
       		(click)="share($event)">
 	        <mat-icon class="material-icons-outlined">share</mat-icon>
-        	<div>Share</div>
+        	<div>{{ 'GENERAL.STORY.SHARE' | translate }}</div>
 	      </button>
 	  	</div>
 	  </div>

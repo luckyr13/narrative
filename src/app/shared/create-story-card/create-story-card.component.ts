@@ -20,6 +20,8 @@ import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dia
 import { SubmitStoryDialogComponent } from '../submit-story-dialog/submit-story-dialog.component';
 import Transaction from 'arweave/web/lib/transaction';
 import { ArbundlesService } from '../../core/services/arbundles.service';
+import {TranslateService} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-create-story-card',
@@ -56,7 +58,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     private _userSettings: UserSettingsService,
     private _utils: UtilsService,
     private _dialog: MatDialog,
-    private _arbundles: ArbundlesService) {
+    private _arbundles: ArbundlesService,
+    private _translate: TranslateService) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
 
@@ -74,9 +77,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     this.loadingData = true;
     this.profileImage = 'assets/images/blank-profile.png';
     this.nickname = '';
-    const accountEllipsis = this._utils.ellipsis(account);
-    this.codemirrorWrapper.updatePlaceholder(`What\'s on your mind ${accountEllipsis}?`);
-
+    account = account.trim();
+    
     this.profileSubscription = this._verto.getProfile(account).subscribe({
         next: (profile: UserInterface|undefined) => {
           if (profile) {
@@ -85,9 +87,24 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
             }
             if (profile.username) {
               this.nickname = profile.username;
-              this.codemirrorWrapper.updatePlaceholder(`What\'s on your mind ${this.nickname}?`);
-
+              this._translate.get('GENERAL.CREATE_STORY.TXTAREA_LABEL', {value: this.nickname}).subscribe((res: string) => {
+                this.codemirrorWrapper.updatePlaceholder(res);
+              });
+            } else {
+              this._translate.get(
+                'GENERAL.CREATE_STORY.TXTAREA_LABEL',
+                { value: this._utils.ellipsis(account) }
+              ).subscribe((res: string) => {
+                this.codemirrorWrapper.updatePlaceholder(res);
+              });
             }
+          } else {
+            this._translate.get(
+              'GENERAL.CREATE_STORY.TXTAREA_LABEL',
+              { value: this._utils.ellipsis(account) }
+            ).subscribe((res: string) => {
+              this.codemirrorWrapper.updatePlaceholder(res);
+            });
           }
           this.loadingData = false;
         },

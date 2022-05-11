@@ -62,7 +62,7 @@
 	<mat-card-actions align="end">
 		<div class="emotions-container" *ngIf="!loading">
 			<button
-				matTooltip="Insert Emoji"
+				matTooltip="{{ 'GENERAL.CREATE_STORY.EMOJI_LABEL' | translate }}"
 				mat-icon-button
 				color="accent"
 				[matMenuTriggerFor]="matMenuEmojis"
@@ -76,7 +76,7 @@
 			</mat-menu>
 			<button 
 				*ngIf="!isSubstory"
-				matTooltip="Add Substory"
+				matTooltip="{{ 'GENERAL.CREATE_STORY.ADD_SUBSTORY_LABEL' | translate }}"
 				mat-icon-button color="accent"
 				[disabled]="loadingCreatePost"
 				[matMenuTriggerFor]="matMenuSubstory">
@@ -85,16 +85,16 @@
 			<mat-menu #matMenuSubstory="matMenu">
 			  <button mat-menu-item (click)="addSubstory()">
 			    <mat-icon>post_add</mat-icon>
-			    <span>Create substory</span>
+			    <span>{{ 'GENERAL.CREATE_STORY.CREATE_SUBSTORY' | translate }}</span>
 			  </button>
 				  <button mat-menu-item (click)="searchStory()">
 				    <mat-icon>search</mat-icon>
-				    <span>Search story</span>
+				    <span>{{ 'GENERAL.CREATE_STORY.SEARCH_SUBSTORY' | translate }}</span>
 				  </button>
 			</mat-menu>
 			<button
 				*ngIf="!isSubstory"
-				matTooltip="Add Image"
+				matTooltip="{{ 'GENERAL.CREATE_STORY.ADD_IMAGE_LABEL' | translate }}"
 				mat-icon-button color="accent"
 				[disabled]="loadingCreatePost"
 				#matButtonImage
@@ -104,23 +104,23 @@
 			<mat-menu #matMenuImage="matMenu">
 			  <button mat-menu-item (click)="uploadFile('image')">
 			    <mat-icon>cloud_upload</mat-icon>
-			    <span>Upload file</span>
+			    <span>{{ 'GENERAL.CREATE_STORY.UPLOAD_FILE' | translate }}</span>
 			  </button>
 			  <button mat-menu-item (click)="fileManager('image')">
 			    <mat-icon>perm_media</mat-icon>
-			    <span>File Manager</span>
+			    <span>{{ 'GENERAL.CREATE_STORY.FILE_MANAGER' | translate }}</span>
 			  </button>
 			</mat-menu>
 			<button
 				*ngIf="!isSubstory"
-				matTooltip="Add Video"
+				matTooltip="{{ 'GENERAL.CREATE_STORY.ADD_VIDEO_LABEL' | translate }}"
 				(click)="comingSoon()"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">videocam</mat-icon>
 			</button>
 			<button
 				*ngIf="!isSubstory"
-				matTooltip="Add Audio"
+				matTooltip="{{ 'GENERAL.CREATE_STORY.ADD_AUDIO_LABEL' | translate }}"
 				(click)="comingSoon()"
 				mat-icon-button color="accent" [disabled]="loadingCreatePost">
 				<mat-icon class="material-icons-outlined">mic</mat-icon>
@@ -139,7 +139,14 @@
 			class="post-btn"
 			(click)="submit()"
 			mat-raised-button color="accent">
-			<span class="hide-sm">{{ isSubstory ? 'Add substory' : 'Post' }}</span><mat-icon>send</mat-icon></button>
+			<span class="hide-sm" *ngIf="isSubstory">
+				{{ 'GENERAL.BUTTONS.ADD_SUBSTORY' | translate }}
+			</span>
+			<span class="hide-sm" *ngIf="!isSubstory">
+				{{ 'GENERAL.BUTTONS.POST' | translate }}
+			</span>
+			<mat-icon>send</mat-icon></button>
+
 	</mat-card-actions>
 	
 	<mat-card-footer *ngIf="loadingData || loadingCreatePost" class="fadeIn">

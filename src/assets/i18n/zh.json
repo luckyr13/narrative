@@ -1,28 +1,28 @@
 {
 	"MAIN_MENU": {
-		"HOME": "Home",
-		"SEARCH": "Search",
+		"HOME": "主页",
+		"SEARCH": "搜索",
 		"PROFILE": "Profile",
 		"FRIENDS": "Friends",
-		"SETTINGS": "Settings"
+		"SETTINGS": "设置"
 	},
 	"GENERAL": {
 		"BUTTONS": {
-			"GO_BACK": "Go back",
-			"OPEN_VIEWBLOCK": "Open in Viewblock",
-			"COPY_ADDRESS": "Copy address",
+			"GO_BACK": "返回",
+			"OPEN_VIEWBLOCK": "在 ViewBlock 中打开",
+			"COPY_ADDRESS": "复制地址",
 			"COPY_ID": "Copy Id",
-			"TIP_AUTHOR": "Tip the author",
+			"TIP_AUTHOR": "提示作者",
 			"CONNECT": "Connect",
 			"POST": "Post",
 			"ADD_SUBSTORY": "Add substory"
 		},
 		"LABELS": {
-			"NO_RESULTS": "No results",
+			"NO_RESULTS": "没有结果",
 			"MORE_RESULTS": "More results",
 			"PROFILE": "Profile",
-			"LOGOUT_COMPOSED": "Log out {{ value }}",
-			"LOGOUT": "Log out",
+			"LOGOUT_COMPOSED": "退出登陆 {{ value }}",
+			"LOGOUT": "退出登陆",
 			"METHOD": "Method",
 			"SHOW_OLDER_RESULTS": "Show older results"
 		},
@@ -52,7 +52,7 @@
 		"NETWORK": "Network",
 		"WALLET": "Wallet",
 		"APPEARANCE": "Appeareance",
-		"LANGUAGE": "Language"
+		"LANGUAGE": "语言"
 	},
 	"DIALOGS": {
 		"SHARE": {

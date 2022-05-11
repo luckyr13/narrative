@@ -35,3 +35,16 @@ h2 span {
 .mat-list-item span {
 	margin-left: 6px;
 }
+
+.mat-button {
+	margin-left: 12px;
+}
+
+.mat-button.active {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.select-language h3 {
+	margin: 12px 0px 20px 0px;
+}

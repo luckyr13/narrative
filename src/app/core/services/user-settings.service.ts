@@ -23,7 +23,7 @@ export class UserSettingsService {
   private _currentThemeSource: Subject<string> = new Subject<string>();
   public currentThemeStream = this._currentThemeSource.asObservable();
   private _currentLangSource = new Subject<string>();
-  public settingsLangStream = this._currentLangSource.asObservable();
+  public currentLangStream = this._currentLangSource.asObservable();
   public themes: Record<string, ThemeObject>;
   public languages: Record<string, LanguageObj>;
 
@@ -44,22 +44,15 @@ export class UserSettingsService {
     }
     if (settings && Object.prototype.hasOwnProperty.call(settings, 'theme')) {
       dtheme = settings.theme;
-    } else if (settings && Object.prototype.hasOwnProperty.call(settings, 'lang')) {
-      dlang = settings.lang;
+      this.setTheme(dtheme);
+    } else {
+      this.setTheme('light-blue-theme');
     }
-
-  	// Default settings
-  	if (dtheme) {
-  		this.setTheme(dtheme);
-  	} else {
-  		this.setTheme('light-blue-theme');
-  	}
-    
-  	if (dlang) {
+    if (settings && Object.prototype.hasOwnProperty.call(settings, 'lang')) {
+      dlang = settings.lang;
       _translate.setDefaultLang(dlang.toLowerCase());
-  		this.setDefaultLang(dlang);
-
-  	} else {
+      this.setDefaultLang(dlang);
+    } else {
       _translate.setDefaultLang('en');
       this.setDefaultLang('EN');
     }
@@ -79,6 +72,10 @@ export class UserSettingsService {
 
   getDefaultLang(): string {
   	return this._settings.lang;
+  }
+
+  get langCodesList(): string[] {
+    return Object.keys(this.languages);
   }
 
   setDefaultTheme(_theme: string) {
