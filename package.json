@@ -28,7 +28,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@types/dompurify": "^2.3.3",
-    "@verto/js": "^1.0.0-beta-4",
+    "@verto/js": "^1.0.0-beta-22",
     "arbundles": "^0.6.16",
     "ardb": "^1.1.10",
     "arverify": "^0.0.11",
