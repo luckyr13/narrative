@@ -31,7 +31,7 @@ export class StoryService {
     const key = this._userAuth.getPrivateKey();
     const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
-      { name: 'App-Name', value: this._appSettings.appName },
+      { name: 'App-Name', value: this._appSettings.protocolName },
       { name: 'Version', value: this._appSettings.protocolVersion },
       { name: 'Type', value: isSubstory ? 'Substory' : 'Story' },
       { name: 'Network', value: 'Koii' },
@@ -57,7 +57,7 @@ export class StoryService {
   	const tags = [
   		{
         name: "App-Name",
-        values: [this._appSettings.appName]
+        values: [this._appSettings.protocolName]
       },
       {
         name: "Content-Type",

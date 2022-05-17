@@ -16,7 +16,7 @@ export class ApplicationComponent implements OnInit {
   constructor(
     private _appSettings: AppSettingsService,
     private _userAuth: UserAuthService) {
-    this.appName = this._appSettings.appName;
+    this.appName = this._appSettings.protocolName;
     this.appVersion = this._appSettings.appVersion;
     this.protocolVersion = this._appSettings.protocolVersion;
     this.sessionData = this._userAuth.getSessionData();

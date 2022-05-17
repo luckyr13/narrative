@@ -15,6 +15,7 @@ export class AppSettingsService {
 
   // Prod protocol
 	protocolVersion = '0.1';
+  protocolName = 'Narrative';
 
   private _loadingPlatform: Subject<boolean> = new Subject<boolean>();
   public loadingPlatform$ = this._loadingPlatform.asObservable();

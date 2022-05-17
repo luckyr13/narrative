@@ -28,7 +28,7 @@ private _ardb: ArdbWrapper;
     const tags = [
       {
         name: "App-Name",
-        values: [this._appSettings.appName]
+        values: [this._appSettings.protocolName]
       },
       {
         name: "Content-Type",
