@@ -185,7 +185,9 @@
 			</div>
 			<!-- /story-container -->
 		</div>
-	 <div 
+	</mat-card-content>
+	<mat-card-actions>
+		<div 
 	  	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0))"
 	  	class="fadeIn story-actions">
 	  	<div class="action-btn-wrapper">
@@ -240,9 +242,6 @@
 				<span *ngIf="storyContentType" >Content type: {{ storyContentType }}</span>
 				<span *ngIf="owner" >Owner: {{ owner }}</span>
 		</div>
-	</mat-card-content>
-	<mat-card-actions align="end">
-		
 	</mat-card-actions>
 </mat-card>
 <mat-divider></mat-divider>

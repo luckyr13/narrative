@@ -72,4 +72,9 @@ export class StoryPlayerComponent implements OnInit {
     this._cd.detectChanges();
   }
 
+  playStoryByPosition(pos: number) {
+    this.currentSubstoryIdArrPos = pos;
+    this.currentSubstory = this.substories[this.currentSubstoryIdArrPos];
+  }
+
 }
