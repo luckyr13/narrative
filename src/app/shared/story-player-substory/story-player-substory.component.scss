@@ -86,3 +86,19 @@
 		width: calc(100% - 120px);
 	}
 }
+
+
+.content .video-container {
+	width: 100%;
+	height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
+}
+
+.content .video-container video {
+	max-width: 80%;
+	min-width: 50%;
+	text-align: center;
+}

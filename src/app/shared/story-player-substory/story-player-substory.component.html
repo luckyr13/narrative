@@ -100,5 +100,35 @@
 		</div>
 	</div>
 
+	<!-- Video -->
+	<div
+		class="substory-container video-container"
+		*ngIf="substoryContent.type.indexOf('video') >= 0  && !substoryContent.loading">
+		<mat-spinner color="accent" [diameter]="40" *ngIf="substoryContent.loading"></mat-spinner>
+		<div
+			class="text-error fadeIn"
+			*ngIf="substoryContent.error">
+			<p>
+				{{ substoryContent.error }}
+			</p>
+			<button 
+      	mat-icon-button
+      	class="btn-open-anyway"
+      	(click)="openStory($event, substory.id)"
+      	aria-label="Open in new window" matTooltip="Open in new window">
+      	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
+      </button>
+		</div>
+		<div
+			class="image-container fadeIn"
+			*ngIf="substoryContent.content">
+			<video controls preload="none" poster="assets/images/videoPoster.jpg">
+			  <source [src]="substoryContent.content">
+				Your browser does not support the video tag.
+			</video>
+			
+		</div>
+	</div>
+
 
 </div>

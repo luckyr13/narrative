@@ -137,3 +137,38 @@ mat-card-header {
 	z-index: 10;
 	right: 0;
 }
+
+
+.substory-video-card {
+	height: 100px;
+	width: 100px;
+	margin-right: 12px;
+	margin-bottom: 6px;
+	position:relative;
+}
+
+.substory-video-btn {
+	position: absolute;
+	z-index: 10;
+	right: 0;
+}
+
+.substory-video-grid {
+	margin-top: 16px;
+	width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  position:relative;
+}
+
+.substory-video {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	flex-shrink: 0;
+	vertical-align: middle;
+	align-self: start;
+  position: absolute;
+	z-index: 0;
+}

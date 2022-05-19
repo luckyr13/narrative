@@ -1,12 +1,15 @@
 <h2 mat-dialog-title class="title-text">
-	Upload files <small *ngIf="data.type === 'image'">(Filter: Image)</small>
+	Upload files 
+	<small *ngIf="data.type === 'image'">(Filter: Image)</small>
+	<small *ngIf="data.type === 'video'">(Filter: Video)</small>
+	<small *ngIf="data.type === 'audio'">(Filter: Audio)</small>
 </h2>
 
 <div class="title-buttons">
 	<button
 		mat-icon-button
 		aria-label="Close window"
-		(click)="close()">
+		(click)="close(null)">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -72,5 +75,11 @@
 <mat-dialog-content
 	class="content border-right-special text-center"
 	*ngIf="uploadingFile">
+	<mat-progress-bar
+		color="accent"
+		mode="determinate"
+		[value]="toPercentage(progressObj.uploaded, progressObj.total)"></mat-progress-bar>
 	<mat-spinner color="accent" [diameter]="40"></mat-spinner>
+	<p class="text-center">{{ progressObj.completed}}</p>
+	<p class="text-center" *ngIf="progressObj.uploaded">{{ progressObj.uploaded}}/{{ progressObj.total}}</p>
 </mat-dialog-content>

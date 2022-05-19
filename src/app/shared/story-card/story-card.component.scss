@@ -269,10 +269,18 @@ h2 {
 }
 .story-image-container img {
 	max-width: 100%;
-
 }
 
 .meta {
 	margin-top: 40px;
 	margin-bottom: 12px;
+}
+
+.story-video-container {
+	text-align: center;
+	padding: 20px;
+}
+.story-video-container video {
+	max-width: 80%;
+
 }

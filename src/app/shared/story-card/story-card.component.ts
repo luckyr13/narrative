@@ -65,6 +65,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   */
   storyMaxSizeBytes = 100000;
   storyImageMaxSizeBytes = 3000000;
+  storyVideoMaxSizeBytes = 100000000;
   contentError = '';
 
   maxPreviewSize = 250;
@@ -96,6 +97,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   extractTagsFromPost(post: TransactionMetadata) {
     const tags = post.tags!;
+    if (!tags) {
+      return;
+    }
     for (const t of tags) {
       // Get substories
       if (t.name === 'Substory') {
@@ -297,9 +301,14 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       this._loadContentHelperLoadContent();
     } else if (dataSize <= this.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
       // Load content
-      this._loadContentHelperLoadContent();
+      // this._loadContentHelperLoadContent();
+    } else if (dataSize <= this.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
+      // Load content
+      // this._loadContentHelperLoadContent();
+    } else if (dataSize === undefined) {
+      this.contentError = `Transaction is pending ...`;
     } else {
-      this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes. Size limit for text: ${this.storyMaxSizeBytes}bytes. Story size: ${this.post.dataSize} bytes.`;
+      this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes. Size limit for text: ${this.storyMaxSizeBytes}bytes. Size limit for videos: ${this.storyVideoMaxSizeBytes}bytes. Story size: ${this.post.dataSize} bytes.`;
     }
   }
 

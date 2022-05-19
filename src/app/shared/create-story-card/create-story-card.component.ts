@@ -45,9 +45,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   themeSubscription = Subscription.EMPTY;
   @Input('account') account!: string;
   @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
-  @ViewChild('matButtonImage') matButtonImage!: MatButton;
   @Input('isSubstory') isSubstory!: boolean;
-  substories: {id: string, content: string, type: 'text'|'image', arrId: number}[] = [];
+  substories: {id: string, content: string, type: 'text'|'image'|'audio'|'video'|'', arrId: number}[] = [];
   unsignedTxSubscription = Subscription.EMPTY;
 
   constructor(
@@ -216,16 +215,15 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
       });
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe((tx: string) => { 
-      this.matButtonImage.focus();
-      if (tx) {
+    dialogRef.afterClosed().subscribe((res: {id: string, type:'text'|'image'|'audio'|'video'|''}) => { 
+      if (res) {
         const ids = this.substories.map((v) => {
           return v.arrId;
         });
         const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
         const newId = this.substories.push({
-          id: tx,
-          type: 'image',
+          id: res.id,
+          type: res.type,
           arrId: maxId,
           content: ''
         });
@@ -248,16 +246,15 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     );
 
     // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe((tx: string) => {
-      this.matButtonImage.focus();
-      if (tx) {
+    dialogRef.afterClosed().subscribe((res: { id: string, type: 'text'|'image'|'audio'|'video'|'' }|null|undefined) => {
+      if (res) {
         const ids = this.substories.map((v) => {
           return v.arrId;
         });
         const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
         const newId = this.substories.push({
-          id: tx,
-          type: 'image',
+          id: res.id,
+          type: res.type,
           arrId: maxId,
           content: ''
         });

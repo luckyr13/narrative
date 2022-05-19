@@ -156,6 +156,16 @@
 			  <div class="story-image-container" *ngIf="validateContentType(storyContentType, 'image')">
 				  <img (click)="openStory($event, post.id)" [src]="getFullImgUrlFromTx(post.id)">
 			 	</div>
+			 	<!-- Story type: video  -->
+			  <div 
+			  	(click)="$event.stopPropagation();"
+			  	class="story-video-container" 
+			  	*ngIf="validateContentType(storyContentType, 'video')">
+				  <video  controls preload="none" poster="assets/images/videoPoster.jpg">
+					  <source [src]="getFullImgUrlFromTx(post.id)">
+						Your browser does not support the video tag.
+					</video>
+			 	</div>
 			  
 			  <div 
 			  	*ngIf="!loadingContent && contentError clear-both"

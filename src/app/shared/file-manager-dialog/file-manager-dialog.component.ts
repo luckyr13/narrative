@@ -41,7 +41,7 @@ export class FileManagerDialogComponent implements OnInit, OnDestroy {
   constructor(
     private _dialogRef: MatDialogRef<FileManagerDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
-      type: string,
+      type: 'text'|'image'|'audio'|'video'|'',
       address: string,
     },
     private _utils: UtilsService,
@@ -68,8 +68,8 @@ export class FileManagerDialogComponent implements OnInit, OnDestroy {
     })
   }
 
-  close(tx: string = '') {
-    this._dialogRef.close(tx);
+  close(res: { id: string, type: 'text'|'image'|'audio'|'video'|''}|null|undefined ) {
+    this._dialogRef.close(res);
   }
 
   moreResults() {

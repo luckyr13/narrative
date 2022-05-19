@@ -22,7 +22,7 @@ export class SubmitStoryDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {
       type: string,
       address: string,
-      substories: {id: string, content: string, type: 'text'|'image', arrId: number}[],
+      substories: {id: string, content: string, type: 'text'|'image'|'video'|'audio', arrId: number}[],
       mainStory: string
     },
     private _utils: UtilsService,
@@ -48,6 +48,13 @@ export class SubmitStoryDialogComponent implements OnInit {
       return substory.type === 'image';
     });
     const imagesTxList = imagesSubstories.map((substory) => {
+      return substory.id;
+    });
+
+    const videoSubstories = this.data.substories.filter((substory) => {
+      return substory.type === 'video';
+    });
+    const videosTxList = videoSubstories.map((substory) => {
       return substory.id;
     });
 
@@ -79,11 +86,12 @@ export class SubmitStoryDialogComponent implements OnInit {
         complete: () => {
           this.loadingPostingSubstories = false;
           substoriesTxList.push(...imagesTxList);
+          substoriesTxList.push(...videosTxList);
           this.createMainStory(this.data.mainStory, substoriesTxList, disableDispatch);
         }
       });
     } else {
-      substoriesTxList.push(...imagesTxList);
+      substoriesTxList.push(...videosTxList);
       this.createMainStory(this.data.mainStory, substoriesTxList, disableDispatch);
     }
   }

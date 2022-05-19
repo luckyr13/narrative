@@ -249,7 +249,8 @@ export class ArweaveService {
     key: JWKInterface | "use_wallet",
     tags: {name: string, value: string}[],
     loginMethod: string,
-    disableDispatch: boolean): Promise<Transaction|{id: string, type: string}> {
+    disableDispatch: boolean,
+    externalProgressObj?: {completed: string, uploaded: string, total: string}|undefined|null): Promise<Transaction|{id: string, type: string}> {
     // Check if the login method allows dispatch
     if (!disableDispatch) {
       if (loginMethod !== 'arconnect' && loginMethod !== 'arweavewebwallet') {
@@ -298,6 +299,11 @@ export class ArweaveService {
       let uploader = await this.arweave.transactions.getUploader(transaction);
       while (!uploader.isComplete) {
         await uploader.uploadChunk();
+        if (externalProgressObj) {
+          externalProgressObj.completed = `${uploader.pctComplete}%`;
+          externalProgressObj.uploaded = `${uploader.uploadedChunks}`;
+          externalProgressObj.total = `${uploader.totalChunks}`;
+        }
         console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
       }
     } else if (loginMethod === 'arweavewebwallet' && !disableDispatch) {
@@ -323,6 +329,11 @@ export class ArweaveService {
       let uploader = await this.arweave.transactions.getUploader(transaction);
       while (!uploader.isComplete) {
         await uploader.uploadChunk();
+        if (externalProgressObj) {
+          externalProgressObj.completed = `${uploader.pctComplete}%`;
+          externalProgressObj.uploaded = `${uploader.uploadedChunks}`;
+          externalProgressObj.total = `${uploader.totalChunks}`;
+        }
         console.log(`${uploader.pctComplete}% complete, ${uploader.uploadedChunks}/${uploader.totalChunks}`);
       }
     }
@@ -429,8 +440,9 @@ export class ArweaveService {
       key:  JWKInterface | "use_wallet",
       tags: {name: string, value: string}[],
       method: string,
-      disableDispatch: boolean): Observable<Transaction | {id: string, type: string}> {
-    return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method, disableDispatch));
+      disableDispatch: boolean,
+      externalProgressObj?: {completed: string, uploaded: string, total: string}|undefined|null): Observable<Transaction | {id: string, type: string}> {
+    return from(this._uploadFileToArweave(fileBin, contentType, key, tags, method, disableDispatch, externalProgressObj));
   }
 
   validateAddress(address: string) {

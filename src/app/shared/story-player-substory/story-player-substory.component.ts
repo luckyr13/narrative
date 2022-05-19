@@ -57,6 +57,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   */
   storyMaxSizeBytes = 100000;
   storyImageMaxSizeBytes = 3000000;
+  storyVideoMaxSizeBytes = 100000000;
   contentError = '';
 
   maxPreviewSize = 250;
@@ -118,17 +119,36 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
               return of(fileURL);
+            } else if (t.value.indexOf('video') >= 0) {
+              // Check dataSize first
+              const dataSize = +(tx.dataSize!);
+              if (dataSize > this.storyVideoMaxSizeBytes) {
+                this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
+                this.substoryContent.loading = false;
+                this.loadingSubstoryEvent.emit(false);
+                throw new Error(this.substoryContent.error);
+              }
+
+              let fileURL = `${this._arweave.baseURL}${tx.id}`;
+              fileURL = this._utils.sanitizeFull(`${fileURL}`);
+              this.substoryContent.content = fileURL;
+              this.substoryContent.loading = false;
+                this.loadingSubstoryEvent.emit(false);
+              return of(fileURL);
+            } else if (t.value.indexOf('text') >= 0) {
+              const dataSize = +(tx.dataSize!);
+              if (dataSize > this.storyMaxSizeBytes) {
+                this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
+                this.substoryContent.loading = false;
+                this.loadingSubstoryEvent.emit(false);
+                throw new Error(this.substoryContent.error);
+              }
+              return this.loadContent(tx.id);
             }
           }
         }
-        const dataSize = +(tx.dataSize!);
-        if (dataSize > this.storyMaxSizeBytes) {
-          this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
-          this.substoryContent.loading = false;
-          this.loadingSubstoryEvent.emit(false);
-          throw new Error(this.substoryContent.error);
-        }
-        return this.loadContent(tx.id);
+        
+        throw new Error('Invalid substory type');
       })
     ).subscribe({
       next: () => {

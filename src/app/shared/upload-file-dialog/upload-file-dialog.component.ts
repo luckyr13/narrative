@@ -43,12 +43,17 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
   };
   readFileSubscription = Subscription.EMPTY;
   uploadingFile = false;
+  progressObj: {completed: string, uploaded: string, total: string} = {
+    completed: '0%',
+    uploaded: '',
+    total: ''
+  };
 
 
   constructor(
     private _dialogRef: MatDialogRef<UploadFileDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
-      type: string,
+      type: 'text'|'image'|'audio'|'video'|'',
     },
     private _arweave: ArweaveService,
     private _userAuth: UserAuthService,
@@ -59,11 +64,11 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
 
   }
 
-  close(txId: string = '') {
-    this._dialogRef.close(txId);
+  close(res: { id: string, type: 'text'|'image'|'audio'|'video'|'' }|null|undefined) {
+    this._dialogRef.close(res);
   }
 
-  dropFile(event: Event, type: string) {
+  dropFile(event: Event, type: 'text'|'image'|'audio'|'video'|'') {
     event.preventDefault();
     this.errorMessage01 = '';
     try {
@@ -198,7 +203,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     return method;
   }
 
-  readFileFromInput(inputEvent: Event, type: string) {
+  readFileFromInput(inputEvent: Event, type: 'text'|'image'|'audio'|'video'|'') {
     const target: HTMLInputElement = <HTMLInputElement>(inputEvent.target);
     const files: FileList = target.files!;
     const file = target && files.length ? 
@@ -221,9 +226,14 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  upload(file: File, type: string) {
+  upload(file: File, type: 'text'|'image'|'audio'|'video'|'') {
     this.errorMessage01 = '';
     this.uploadingFile = true;
+    this.progressObj = {
+      completed: '0%',
+      uploaded: '',
+      total: ''
+    };
 
     this.readFileSubscription = this.fileToData(file!, type, true).pipe(
         switchMap((filebuf: ArrayBuffer|string) => {
@@ -232,17 +242,32 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
           const tags: {name: string, value: string}[] = [];
           const disableDispatch = true;
 
-          return this._arweave.uploadFileToArweave(filebuf, file.type, key,tags, loginMethod, disableDispatch);
+          return this._arweave.uploadFileToArweave(
+            filebuf,
+            file.type,
+            key,
+            tags,
+            loginMethod,
+            disableDispatch,
+            this.progressObj);
         })
       ).subscribe({
       next: (tx: Transaction|{id: string, type: string}) => {
-        this.close(tx.id);
+        this.close({ id: tx.id, type: type});
       },
-      error: (error) => {
-        this.errorMessage01 = error;
+      error: (error: any) => {
+        if (error && Object.prototype.hasOwnProperty.call(error, 'message')) {
+          this.errorMessage01 = `${error.message}`;
+        } else {
+          this.errorMessage01 = `${error}`;
+        }
         this.uploadingFile = false;
       },
     });
+  }
+
+  toPercentage(uploaded: string, total: string) {
+    return (+uploaded * 100) / (+total);
   }
 
 
