@@ -305,7 +305,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     } else if (dataSize <= this.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
       // Load content
       // this._loadContentHelperLoadContent();
-    } else if (dataSize === undefined) {
+    } else if (!this.post || this.post.dataSize === undefined) {
       this.contentError = `Transaction is pending ...`;
     } else {
       this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes. Size limit for text: ${this.storyMaxSizeBytes}bytes. Size limit for videos: ${this.storyVideoMaxSizeBytes}bytes. Story size: ${this.post.dataSize} bytes.`;
