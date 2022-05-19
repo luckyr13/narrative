@@ -267,6 +267,9 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.realPreviewSize = `${this.substoryContent.raw}`.length;
     this.substoryContent.content = this.substr(this.substoryContent.raw, this.realPreviewSize);
+    
+    // Intercept click on anchors
+    this.interceptClicks();
   }
 
   getYoutubeUrl(id: string) {
