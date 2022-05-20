@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { UserProfile } from '../../core/interfaces/user-profile';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
+import { FollowDialogComponent } from '../../shared/follow-dialog/follow-dialog.component'; 
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile',
@@ -22,7 +24,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _arweave: ArweaveService,
-    private _auth: UserAuthService) { }
+    private _auth: UserAuthService,
+    private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     // Profile already loaded
@@ -70,6 +73,28 @@ export class ProfileComponent implements OnInit {
     if (this.addressList.indexOf(currentAddress) >= 0) {
       this.editProfileFlag = true;
     }
+  }
+
+  confirmFollowDialog(username:string, wallets: string[]) {
+    const dialogRef = this._dialog.open(
+      FollowDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          content: `Do you really want to follow ${username}?`,
+          closeLabel: 'No',
+          confirmLabel: 'Yes, I want to follow this user',
+          wallets: wallets,
+          username: username
+        }
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((confirm: string) => {
+      
+    });
   }
 
   

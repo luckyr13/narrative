@@ -10,7 +10,7 @@ import { StoryService } from '../../core/services/story.service';
   templateUrl: './submit-story-dialog.component.html',
   styleUrls: ['./submit-story-dialog.component.scss']
 })
-export class SubmitStoryDialogComponent implements OnInit {
+export class SubmitStoryDialogComponent implements OnInit, OnDestroy {
   useDispatch = new FormControl(false);
   loadingPostingSubstories = false;
   loadingPostingMainStory = false;
@@ -126,10 +126,8 @@ export class SubmitStoryDialogComponent implements OnInit {
   }
 
   ngOnDestroy() {
-
+    this.postingSubstoriesSubscription.unsubscribe();
+    this.postingMainStorySubscription.unsubscribe();
   }
-
-
-
 
 }

@@ -40,6 +40,7 @@ import { UploadFileDialogComponent } from './upload-file-dialog/upload-file-dial
 import { SubmitStoryDialogComponent } from './submit-story-dialog/submit-story-dialog.component';
 import { StoryPlayerSubstoryComponent } from './story-player-substory/story-player-substory.component';
 import {TranslateModule} from '@ngx-translate/core';
+import { FollowDialogComponent } from './follow-dialog/follow-dialog.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {TranslateModule} from '@ngx-translate/core';
     FileManagerDialogComponent,
     UploadFileDialogComponent,
     SubmitStoryDialogComponent,
-    StoryPlayerSubstoryComponent
+    StoryPlayerSubstoryComponent,
+    FollowDialogComponent
   ],
   imports: [
     CommonModule,
