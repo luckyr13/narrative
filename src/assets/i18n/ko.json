@@ -4,7 +4,8 @@
 		"SEARCH": "검색",
 		"PROFILE": "Profile",
 		"FRIENDS": "Friends",
-		"SETTINGS": "설정"
+		"SETTINGS": "설정",
+		"NOTIFICATIONS": "Notifications"
 	},
 	"GENERAL": {
 		"BUTTONS": {
@@ -41,7 +42,7 @@
 		"STORY": {
 			"TX_INFO": "TX info",
 			"ID": "Id",
-			"COMMENT": "Comment",
+			"REPLY": "Reply",
 			"REPOST": "Repost",
 			"LIKE": "Like",
 			"SHARE": "Share"

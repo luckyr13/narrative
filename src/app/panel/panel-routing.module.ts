@@ -11,13 +11,13 @@ const routes: Routes = [
 		path: '',
 		children: [
 			{ path: 'search', loadChildren: () => import('../search/search.module').then(m => m.SearchModule) },
-			{ path: 'friends', loadChildren: () => import('../friends/friends.module').then(m => m.FriendsModule) },
+			{ path: 'notifications', loadChildren: () => import('../notifications/notifications.module').then(m => m.NotificationsModule) },
 			{
 				path: 'logout', component: LogoutComponent
 			},
 		],
 	},
-	{ path: ':address', loadChildren: () => import('../users/users.module').then(m => m.UsersModule) },
+	{ path: ':address', loadChildren: () => import('../users/users.module').then(m => m.UsersModule) }
 ];
 
 @NgModule({

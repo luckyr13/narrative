@@ -4,7 +4,8 @@
 		"SEARCH": "搜索",
 		"PROFILE": "Profile",
 		"FRIENDS": "Friends",
-		"SETTINGS": "设置"
+		"SETTINGS": "设置",
+		"NOTIFICATIONS": "Notifications"
 	},
 	"GENERAL": {
 		"BUTTONS": {
@@ -41,7 +42,7 @@
 		"STORY": {
 			"TX_INFO": "TX info",
 			"ID": "Id",
-			"COMMENT": "Comment",
+			"REPLY": "Reply",
 			"REPOST": "Repost",
 			"LIKE": "Like",
 			"SHARE": "Share"

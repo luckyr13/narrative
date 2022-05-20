@@ -4,7 +4,8 @@
 		"SEARCH": "Buscar",
 		"PROFILE": "Perfil",
 		"FRIENDS": "Amigos",
-		"SETTINGS": "Ajustes"
+		"SETTINGS": "Ajustes",
+		"NOTIFICATIONS": "Notificaciones"
 	},
 	"GENERAL": {
 		"BUTTONS": {
@@ -41,7 +42,7 @@
 		"STORY": {
 			"TX_INFO": "Información de TX",
 			"ID": "Id",
-			"COMMENT": "Comentar",
+			"REPLY": "Responder",
 			"REPOST": "Repostear",
 			"LIKE": "Me gusta",
 			"SHARE": "Compartir"

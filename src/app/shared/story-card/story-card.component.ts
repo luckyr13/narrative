@@ -156,7 +156,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     return this._utils.ellipsis(s);
   }
 
-  comment(event: MouseEvent) {
+  reply(event: MouseEvent) {
     event.stopPropagation();
   }
 
