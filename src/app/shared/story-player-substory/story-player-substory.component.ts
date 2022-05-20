@@ -100,10 +100,11 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
           }
         }
 
-        for (const t of tags) {
-          if (t.name === 'Content-Type' && supportedFiles.indexOf(t.value) >= 0) {
-            this.substoryContent.type = t.value;
-            if (t.value.indexOf('image') >= 0) {
+        this.substoryContent.type = tx.dataType ? tx.dataType : '';
+        if (this.substoryContent.type) {
+          if (supportedFiles.indexOf(this.substoryContent.type) >= 0) {
+            this.substoryContent.type = this.substoryContent.type;
+            if (this.substoryContent.type.indexOf('image') >= 0) {
               // Check dataSize first
               const dataSize = +(tx.dataSize!);
               if (dataSize > this.storyImageMaxSizeBytes) {
@@ -119,7 +120,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
               return of(fileURL);
-            } else if (t.value.indexOf('video') >= 0) {
+            } else if (this.substoryContent.type.indexOf('video') >= 0) {
               // Check dataSize first
               const dataSize = +(tx.dataSize!);
               if (dataSize > this.storyVideoMaxSizeBytes) {
@@ -135,7 +136,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
               return of(fileURL);
-            } else if (t.value.indexOf('text') >= 0) {
+            } else if (this.substoryContent.type.indexOf('text') >= 0) {
               const dataSize = +(tx.dataSize!);
               if (dataSize > this.storyMaxSizeBytes) {
                 this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
@@ -146,7 +147,57 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               return this.loadContent(tx.id);
             }
           }
+          
+        } else {
+          for (const t of tags) {
+            if (t.name === 'Content-Type' && supportedFiles.indexOf(t.value) >= 0) {
+              this.substoryContent.type = t.value;
+              if (t.value.indexOf('image') >= 0) {
+                // Check dataSize first
+                const dataSize = +(tx.dataSize!);
+                if (dataSize > this.storyImageMaxSizeBytes) {
+                  this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
+                  this.substoryContent.loading = false;
+                  this.loadingSubstoryEvent.emit(false);
+                  throw new Error(this.substoryContent.error);
+                }
+
+                let fileURL = `${this._arweave.baseURL}${tx.id}`;
+                fileURL = this._utils.sanitizeFull(`${fileURL}`);
+                this.substoryContent.content = fileURL;
+                this.substoryContent.loading = false;
+                  this.loadingSubstoryEvent.emit(false);
+                return of(fileURL);
+              } else if (t.value.indexOf('video') >= 0) {
+                // Check dataSize first
+                const dataSize = +(tx.dataSize!);
+                if (dataSize > this.storyVideoMaxSizeBytes) {
+                  this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
+                  this.substoryContent.loading = false;
+                  this.loadingSubstoryEvent.emit(false);
+                  throw new Error(this.substoryContent.error);
+                }
+
+                let fileURL = `${this._arweave.baseURL}${tx.id}`;
+                fileURL = this._utils.sanitizeFull(`${fileURL}`);
+                this.substoryContent.content = fileURL;
+                this.substoryContent.loading = false;
+                  this.loadingSubstoryEvent.emit(false);
+                return of(fileURL);
+              } else if (t.value.indexOf('text') >= 0) {
+                const dataSize = +(tx.dataSize!);
+                if (dataSize > this.storyMaxSizeBytes) {
+                  this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
+                  this.substoryContent.loading = false;
+                  this.loadingSubstoryEvent.emit(false);
+                  throw new Error(this.substoryContent.error);
+                }
+                return this.loadContent(tx.id);
+              }
+            }
+          }
         }
+        
         
         throw new Error('Invalid substory type');
       })
