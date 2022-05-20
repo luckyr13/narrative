@@ -154,6 +154,9 @@ export class SearchStoryDialogComponent implements OnInit, OnDestroy {
         } else if (this.validateContentType(this.storyContentType, 'image')) {
           this.finalType = 'image';
           this.isValidSubstory = true;
+        } else if (this.validateContentType(this.storyContentType, 'video')) {
+          this.finalType = 'video';
+          this.isValidSubstory = true;
         } else {
           throw new Error('Invalid content type!');
         }
