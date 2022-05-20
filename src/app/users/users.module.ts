@@ -9,6 +9,8 @@ import { LatestStoriesComponent } from './latest-stories/latest-stories.componen
 import { RepliesComponent } from './replies/replies.component';
 import { LikesComponent } from './likes/likes.component';
 import { PendingComponent } from './pending/pending.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FollowingComponent } from './following/following.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { PendingComponent } from './pending/pending.component';
     LatestStoriesComponent,
     RepliesComponent,
     LikesComponent,
-    PendingComponent
+    PendingComponent,
+    FollowersComponent,
+    FollowingComponent
   ],
   imports: [
     CommonModule,
