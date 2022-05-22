@@ -53,6 +53,12 @@
           Your browser does not support the video tag.
         </video>
       </p>
+      <p class="audio-container" *ngIf="finalType === 'audio'">
+        <audio controls preload="none">
+          <source [src]="getFileUrl(txId)">
+          Your browser does not support the audio tag.
+        </audio>
+      </p>
     </div>
     <div *ngIf="error">
         {{ error }}

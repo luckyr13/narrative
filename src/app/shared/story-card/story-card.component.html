@@ -174,7 +174,16 @@
 						Your browser does not support the video tag.
 					</video>
 			 	</div>
-			  
+			 	<!-- Story type: audio  -->
+			  <div 
+			  	(click)="$event.stopPropagation();"
+			  	class="story-audio-container" 
+			  	*ngIf="validateContentType(storyContentType, 'audio')">
+				  <audio controls preload="none">
+					  <source [src]="getFullImgUrlFromTx(post.id)">
+						Your browser does not support the audio tag.
+					</audio>
+			 	</div>
 			  <div 
 			  	*ngIf="!loadingContent && contentError clear-both"
 			  	class="content-error fadeIn">

@@ -104,7 +104,7 @@ export class FollowingComponent implements OnInit , OnDestroy {
 
   moreResults() {
     this.loadingFollowing = true;
-    this._nextResultsSubscription = this._follow.next().subscribe({
+    this._nextResultsSubscription = this._follow.nextFollowing().subscribe({
       next: (followers) => {
         if (!followers || !followers.length) {
           this.moreResultsAvailable = false;

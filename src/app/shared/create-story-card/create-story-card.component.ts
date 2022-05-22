@@ -343,8 +343,4 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     this.substories.splice(i, 1);
   }
 
-  comingSoon() {
-    alert('Coming soon!');
-  }
-
 }

@@ -54,10 +54,13 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   *  Default: 
   *  Story: 100kb = 100000b
   *  Image: 3mb = 3000000b
+  *  Audio: 10mb = 10000000b
+  *  Video: 200mb = 200000000b
   */
   storyMaxSizeBytes = 100000;
   storyImageMaxSizeBytes = 3000000;
-  storyVideoMaxSizeBytes = 100000000;
+  storyVideoMaxSizeBytes = 200000000;
+  storyAudioMaxSizeBytes = 10000000;
   contentError = '';
 
   maxPreviewSize = 250;
@@ -136,7 +139,23 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               fileURL = this._utils.sanitizeFull(`${fileURL}`);
               this.substoryContent.content = fileURL;
               this.substoryContent.loading = false;
+              this.loadingSubstoryEvent.emit(false);
+              return of(fileURL);
+            } else if (this.substoryContent.type.indexOf('audio') >= 0) {
+              // Check dataSize first
+              const dataSize = +(tx.dataSize!);
+              if (dataSize > this.storyAudioMaxSizeBytes) {
+                this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
+                this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
+                throw new Error(this.substoryContent.error);
+              }
+
+              let fileURL = `${this._arweave.baseURL}${tx.id}`;
+              fileURL = this._utils.sanitizeFull(`${fileURL}`);
+              this.substoryContent.content = fileURL;
+              this.substoryContent.loading = false;
+              this.loadingSubstoryEvent.emit(false);
               return of(fileURL);
             } else if (this.substoryContent.type.indexOf('text') >= 0) {
               const dataSize = +(tx.dataSize!);
@@ -185,6 +204,22 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
                 this.substoryContent.content = fileURL;
                 this.substoryContent.loading = false;
                   this.loadingSubstoryEvent.emit(false);
+                return of(fileURL);
+              } else if (t.value.indexOf('audio') >= 0) {
+                // Check dataSize first
+                const dataSize = +(tx.dataSize!);
+                if (dataSize > this.storyAudioMaxSizeBytes) {
+                  this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
+                  this.substoryContent.loading = false;
+                  this.loadingSubstoryEvent.emit(false);
+                  throw new Error(this.substoryContent.error);
+                }
+
+                let fileURL = `${this._arweave.baseURL}${tx.id}`;
+                fileURL = this._utils.sanitizeFull(`${fileURL}`);
+                this.substoryContent.content = fileURL;
+                this.substoryContent.loading = false;
+                this.loadingSubstoryEvent.emit(false);
                 return of(fileURL);
               } else if (t.value.indexOf('text') >= 0) {
                 const dataSize = +(tx.dataSize!);

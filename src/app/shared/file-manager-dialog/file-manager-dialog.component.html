@@ -93,8 +93,11 @@
 			(click)="close({ id: file.id, type: data.type })"
 			*ngFor="let file of files">
 			<mat-card>
-				<div class="card-img-container">
-					<img [src]="getFileUrl(file.id)" alt="Img">
+				<div class="card-audio-container">
+					<audio controls>
+					  <source [src]="getFileUrl(file.id)">
+						Your browser does not support the audio tag.
+					</audio>
 				</div>
 			  <app-arweave-address [address]="file.id" [isAddress]="false">Tx: </app-arweave-address>
 			  <p class="ellipsis nowrap"><strong>Created:</strong> {{ dateFormat(file.blockTimestamp) }}</p>

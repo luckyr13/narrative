@@ -172,3 +172,38 @@ mat-card-header {
   position: absolute;
 	z-index: 0;
 }
+
+
+.substory-audio-grid {
+	margin-top: 16px;
+	width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  position:relative;
+}
+
+.substory-audio {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	flex-shrink: 0;
+	vertical-align: middle;
+	align-self: start;
+  position: absolute;
+	z-index: 0;
+}
+
+.substory-audio-card {
+	height: 100px;
+	width: 100px;
+	margin-right: 12px;
+	margin-bottom: 6px;
+	position:relative;
+}
+
+.substory-audio-btn {
+	position: absolute;
+	z-index: 10;
+	right: 0;
+}

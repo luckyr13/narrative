@@ -62,11 +62,14 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   /*
   *  Default: 
   *  Story: 100kb = 100000b
-  *  Image: 1mb = 1000000b
+  *  Image: 3mb = 3000000b
+  *  Audio: 10mb = 10000000b
+  *  Video: 200mb = 200000000b
   */
   storyMaxSizeBytes = 100000;
   storyImageMaxSizeBytes = 3000000;
-  storyVideoMaxSizeBytes = 100000000;
+  storyVideoMaxSizeBytes = 200000000;
+  storyAudioMaxSizeBytes = 10000000;
   contentError = '';
 
   maxPreviewSize = 250;
@@ -305,12 +308,16 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     } else if (dataSize <= this.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
       // Load content
       // this._loadContentHelperLoadContent();
+    } else if (dataSize <= this.storyAudioMaxSizeBytes && this.validateContentType(this.storyContentType, 'audio')) {
+      // Load content
+      // this._loadContentHelperLoadContent();
     } else if (!this.post || this.post.dataSize === undefined) {
       this.contentError = `Transaction is pending ...`;
     } else {
       this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes.
         Size limit for text: ${this.storyMaxSizeBytes}bytes.
         Size limit for videos: ${this.storyVideoMaxSizeBytes}bytes.
+        Size limit for audio: ${this.storyAudioMaxSizeBytes}bytes.
         Story size: ${this.post.dataSize} bytes.`;
     }
   }

@@ -58,6 +58,13 @@ export class SubmitStoryDialogComponent implements OnInit, OnDestroy {
       return substory.id;
     });
 
+    const audioSubstories = this.data.substories.filter((substory) => {
+      return substory.type === 'audio';
+    });
+    const audiosTxList = audioSubstories.map((substory) => {
+      return substory.id;
+    });
+
     // Substories detected?
     if (this.data.substories && this.data.substories.length) {
       this.loadingPostingSubstories = true;
@@ -87,11 +94,14 @@ export class SubmitStoryDialogComponent implements OnInit, OnDestroy {
           this.loadingPostingSubstories = false;
           substoriesTxList.push(...imagesTxList);
           substoriesTxList.push(...videosTxList);
+          substoriesTxList.push(...audiosTxList);
           this.createMainStory(this.data.mainStory, substoriesTxList, disableDispatch);
         }
       });
     } else {
+      substoriesTxList.push(...imagesTxList);
       substoriesTxList.push(...videosTxList);
+      substoriesTxList.push(...audiosTxList);
       this.createMainStory(this.data.mainStory, substoriesTxList, disableDispatch);
     }
   }
