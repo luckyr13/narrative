@@ -5,13 +5,16 @@ import { ArweaveService } from '../../core/services/arweave.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { FollowDialogComponent } from '../../shared/follow-dialog/follow-dialog.component'; 
 import {MatDialog} from '@angular/material/dialog';
+import { Subscription, switchMap } from 'rxjs';
+import { FollowService } from '../../core/services/follow.service';
+import { NetworkInfoInterface } from 'arweave/web/network';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   profileImage: string = 'assets/images/blank-profile.png';
   username: string = '';
   addressList: string[] = [];
@@ -20,12 +23,19 @@ export class ProfileComponent implements OnInit {
   addressRouteParam = '';
   editProfileFlag = false;
   isLoggedIn = false;
+  maxFollowers = 100;
+  maxFollowing = 100;
+  numFollowers = 0;
+  numFollowing = 0;
+  private _followersSubscription = Subscription.EMPTY;
+  private _followingSubscription = Subscription.EMPTY;
   
   constructor(
     private _route: ActivatedRoute,
     private _arweave: ArweaveService,
     private _auth: UserAuthService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _follow: FollowService) { }
 
   ngOnInit(): void {
     // Profile already loaded
@@ -54,6 +64,9 @@ export class ProfileComponent implements OnInit {
       const currentAddress = this._auth.getMainAddressSnapshot();
       this.isLoggedIn = !!currentAddress;
       this.validateCurrentAddress(currentAddress);
+
+      this.loadFollowers(this.username, this.addressList);
+      this.loadFollowing(this.addressList);
       
     });
 
@@ -95,6 +108,46 @@ export class ProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe((confirm: string) => {
       
     });
+  }
+
+  loadFollowers(username: string, wallets: string|string[]) {
+    this.numFollowers = 0;
+    this._followersSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._follow.getFollowers(username, wallets, this.maxFollowers, currentHeight);
+      }),
+    ).subscribe({
+      next: (followers) => {
+        this.numFollowers = (new Set(followers)).size;
+      },
+      error: (error) => {
+        console.error('ErrFollowers', error);
+      }
+    })
+
+  }
+
+  loadFollowing(from: string[]) {
+    this.numFollowers = 0;
+    this._followingSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._follow.getFollowing(from, this.maxFollowers, currentHeight);
+      }),
+    ).subscribe({
+      next: (following) => {
+        this.numFollowing = (new Set(following)).size;
+      },
+      error: (error) => {
+        console.error('ErrFollowing', error);
+      }
+    })
+  }
+
+  ngOnDestroy() {
+    this._followingSubscription.unsubscribe();
+    this._followersSubscription.unsubscribe();
   }
 
   
