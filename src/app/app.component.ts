@@ -106,6 +106,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
             this._utils.message(`Error: ${error}`, 'error');
           }
         });
+      } else {
+        this._auth.logout();
       }
     });
   }
