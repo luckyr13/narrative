@@ -12,6 +12,7 @@ import { BottomSheetShareComponent } from '../bottom-sheet-share/bottom-sheet-sh
 import { Direction } from '@angular/cdk/bidi';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'; 
 import {MatDialog} from '@angular/material/dialog';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-story-card',
@@ -81,7 +82,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     private _userSettings: UserSettingsService,
     private _utils: UtilsService,
     private _bottomSheetShare: MatBottomSheet,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _location: Location) { }
 
   ngOnInit(): void {
     this.loadVertoProfile();
@@ -366,6 +368,10 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   getFullImgUrlFromTx(tx: string) {
     return `${this._arweave.baseURL}${tx}`;
+  }
+
+  goBack() {
+    this._location.back();
   }
 
 }

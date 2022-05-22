@@ -7,6 +7,7 @@ import { TransactionMetadata } from '../interfaces/transaction-metadata';
 import { UserAuthService } from './user-auth.service';
 import { AppSettingsService } from './app-settings.service';
 import { UtilsService } from '../utils/utils.service';
+import { fieldType } from 'ardb/lib/faces/fields';
 
 @Injectable({
   providedIn: 'root'
@@ -33,13 +34,9 @@ private _ardb: ArdbWrapper;
       { name: 'App-Name', value: this._appSettings.protocolName },
       { name: 'Version', value: this._appSettings.protocolVersion },
       { name: 'Type', value: 'Follow' },
+      { name: 'Username', value: username.trim() },
       ...extraTags
     ];
-    if (username) {
-      tags.push(
-        { name: 'Username', value: username }
-      );
-    }
     const numWallets = wallets.length;
     if (numWallets <= 0) {
       throw new Error('You need to follow at least one address!')
@@ -54,7 +51,15 @@ private _ardb: ArdbWrapper;
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod, disableDispatch);
   }
 
-  getFollowers(from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {
+  getFollowers(
+    username: string,
+    wallets: string[] | string = [],
+    limit?: number,
+    maxHeight?: number): Observable<TransactionMetadata[]> {
+    const users: string[] = [''];
+    if (username.trim()) {
+      users.push(username.trim());
+    }
     const tags = [
       {
         name: "App-Name",
@@ -73,15 +78,16 @@ private _ardb: ArdbWrapper;
         values: ["Follow"]
       },
       {
-        name: "Wallet",
-        values: from
+        name: "Username",
+        values: users
       },
       {
-        name: "Network",
-        values: ["Koii"]
+        name: "Wallet",
+        values: wallets
       }
     ];
-    return this._ardb.searchTransactions([], limit, maxHeight, tags).pipe(
+    const fields: fieldType[] = ['id', 'owner'];
+    return this._ardb.searchTransactions([], limit, maxHeight, tags, fields).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts.map((tx) => {
             const post: TransactionMetadata = {
@@ -91,8 +97,7 @@ private _ardb: ArdbWrapper;
               blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
               dataSize: tx.data ? tx.data.size : undefined,
               dataType: tx.data ? tx.data.type : undefined,
-              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
-              tags: tx.tags
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined
             }
             return post;
           });
@@ -114,10 +119,54 @@ private _ardb: ArdbWrapper;
               dataSize: tx.data ? tx.data.size : undefined,
               dataType: tx.data ? tx.data.type : undefined,
               blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
-              tags: tx.tags
+              tags: tx.tags ? tx.tags : undefined
             }
             return post;
           }) : [];
+          return res;
+        })
+      );
+  }
+
+  getFollowing(
+    from: string[] | string = [],
+    limit?: number,
+    maxHeight?: number): Observable<TransactionMetadata[]> {
+    const tags = [
+      {
+        name: "App-Name",
+        values: [this._appSettings.protocolName]
+      },
+      {
+        name: "Content-Type",
+        values: ["text/plain"]
+      },
+      {
+        name: "Version",
+        values: [this._appSettings.protocolVersion]
+      },
+      {
+        name: "Type",
+        values: ["Follow"]
+      }
+    ];
+    const fields: fieldType[] = ['id', 'owner', 'tags'];
+    return this._ardb.searchTransactions(from, limit, maxHeight, tags, fields).pipe(
+        map((_posts: ArdbTransaction[]) => {
+          const res = _posts.map((tx) => {
+            const post: TransactionMetadata = {
+              id: tx.id,
+              owner: tx.owner.address,
+              blockId: tx.block && tx.block.id ? tx.block.id : '',
+              blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+              dataSize: tx.data ? tx.data.size : undefined,
+              dataType: tx.data ? tx.data.type : undefined,
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags ? tx.tags : undefined
+            }
+            return post;
+          });
+
           return res;
         })
       );

@@ -41,6 +41,7 @@ import { SubmitStoryDialogComponent } from './submit-story-dialog/submit-story-d
 import { StoryPlayerSubstoryComponent } from './story-player-substory/story-player-substory.component';
 import {TranslateModule} from '@ngx-translate/core';
 import { FollowDialogComponent } from './follow-dialog/follow-dialog.component';
+import { UserCardComponent } from './user-card/user-card.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { FollowDialogComponent } from './follow-dialog/follow-dialog.component';
     UploadFileDialogComponent,
     SubmitStoryDialogComponent,
     StoryPlayerSubstoryComponent,
-    FollowDialogComponent
+    FollowDialogComponent,
+    UserCardComponent
   ],
   imports: [
     CommonModule,
@@ -112,7 +114,8 @@ import { FollowDialogComponent } from './follow-dialog/follow-dialog.component';
     MatTooltipModule,
     ArweaveAddressComponent,
     MatDialogModule,
-    TranslateModule
+    TranslateModule,
+    UserCardComponent
   ]
 })
 export class SharedModule { }

@@ -16,8 +16,8 @@
 	*ngIf="data.wallets">
 	<div *ngIf="!loadingFollow && !followTxId">
 		<p>Do you want to follow this user?</p>
-		<p class="text-center wallets" *ngIf="data.wallets.length">
-			+ {{ data.wallets.length }} wallets detected!
+		<p class="text-center" *ngIf="data.username">
+			{{ data.username }}
 		</p>
 		<p class="text-center wallets" *ngFor="let w of data.wallets">
 			{{ w }}

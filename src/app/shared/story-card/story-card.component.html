@@ -84,6 +84,14 @@
 					<div class="profile-secondary-actions text-right">
 						<button
 							mat-icon-button
+							(click)="$event.stopPropagation(); goBack()"
+							color="accent"
+							*ngIf="fullMode"
+							aria-label="Go back">
+		          <mat-icon>arrow_back</mat-icon>
+		        </button>
+						<button
+							mat-icon-button
 							(click)="$event.stopPropagation()"
 							color="accent"
 							aria-label="More options"
@@ -182,7 +190,9 @@
 		      </button>
 			  </div>
 			  <div class="clear-both" *ngIf="substories.length">
-			  	<app-story-player [substories]="substories"></app-story-player>
+			  	<app-story-player
+			  		[substories]="substories"
+			  		[fullMode]="fullMode"></app-story-player>
 			  </div>
 			  <div 
 			  	*ngIf="post && (!post.blockId || post.blockHeight == 0) "
