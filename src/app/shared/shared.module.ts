@@ -42,6 +42,9 @@ import { StoryPlayerSubstoryComponent } from './story-player-substory/story-play
 import {TranslateModule} from '@ngx-translate/core';
 import { FollowDialogComponent } from './follow-dialog/follow-dialog.component';
 import { UserCardComponent } from './user-card/user-card.component';
+import { DonateDialogComponent } from './donate-dialog/donate-dialog.component';
+import {MatSliderModule} from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -60,7 +63,8 @@ import { UserCardComponent } from './user-card/user-card.component';
     SubmitStoryDialogComponent,
     StoryPlayerSubstoryComponent,
     FollowDialogComponent,
-    UserCardComponent
+    UserCardComponent,
+    DonateDialogComponent
   ],
   imports: [
     CommonModule,
@@ -84,7 +88,9 @@ import { UserCardComponent } from './user-card/user-card.component';
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    TranslateModule
+    TranslateModule,
+    MatSliderModule,
+    FormsModule
   ],
   exports: [
   	MatToolbarModule,

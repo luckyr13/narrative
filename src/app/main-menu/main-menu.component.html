@@ -23,6 +23,7 @@
     <div mat-line>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
   </a>
   <a mat-list-item
+    *ngIf="false"
     matRipple
     [routerLink]="['notifications']" 
     [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"

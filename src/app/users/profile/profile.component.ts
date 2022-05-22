@@ -8,6 +8,9 @@ import {MatDialog} from '@angular/material/dialog';
 import { Subscription, switchMap } from 'rxjs';
 import { FollowService } from '../../core/services/follow.service';
 import { NetworkInfoInterface } from 'arweave/web/network';
+import { UserSettingsService } from '../../core/services/user-settings.service';
+import { Direction } from '@angular/cdk/bidi';
+import { DonateDialogComponent } from '../../shared/donate-dialog/donate-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -35,7 +38,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _arweave: ArweaveService,
     private _auth: UserAuthService,
     private _dialog: MatDialog,
-    private _follow: FollowService) { }
+    private _follow: FollowService,
+    private _userSettings: UserSettingsService) { }
 
   ngOnInit(): void {
     // Profile already loaded
@@ -150,6 +154,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._followersSubscription.unsubscribe();
   }
 
+
+  donate() {
+    const defLangCode = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLangCode);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+    const mainAddress = this._auth.getMainAddressSnapshot();
+    const to = this.addressList[0] ? this.addressList[0] : '';
+
+    const dialogRef = this._dialog.open(DonateDialogComponent, {
+      data: {
+        mainAddress,
+        to
+      },
+      direction: direction,
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+    });
+  }
   
 
 }

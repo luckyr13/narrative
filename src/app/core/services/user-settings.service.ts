@@ -128,5 +128,11 @@ export class UserSettingsService {
   isDarkTheme(theme: string) {
     return this.themes[theme].dark;
   }
+
+  getLangObject(langCode: string): LanguageObj|null {
+    const lang = Object.prototype.hasOwnProperty.call(this.languages, langCode) ?
+      this.languages[langCode] : null;
+    return lang;
+  }
   
 }
