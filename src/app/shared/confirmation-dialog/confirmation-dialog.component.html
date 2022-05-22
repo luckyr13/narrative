@@ -5,11 +5,11 @@
   </p>
 </mat-dialog-content>
 <mat-dialog-actions align="start">
-  <button mat-button (click)="close(false)">{{ data.closeLabel }}</button>
+  <button mat-button 
+    cdkFocusInitial (click)="close(false)">{{ data.closeLabel }}</button>
   <div class="spacer"></div>
   <button
   	mat-flat-button
-  	cdkFocusInitial
   	(click)="close(true)"
   	color="accent">{{ data.confirmLabel }}</button>
 </mat-dialog-actions>

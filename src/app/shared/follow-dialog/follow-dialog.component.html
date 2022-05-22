@@ -44,11 +44,10 @@
   <button 
   	mat-button
   	[disabled]="loadingFollow"
-  	(click)="close(false)">Close</button>
+  	cdkFocusInitial (click)="close(false)">Close</button>
   <div class="spacer"></div>
   <button
   	mat-flat-button
-  	cdkFocusInitial
   	(click)="submit()"
   	*ngIf="!followTxId"
   	[disabled]="loadingFollow"
