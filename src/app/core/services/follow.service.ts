@@ -13,14 +13,16 @@ import { fieldType } from 'ardb/lib/faces/fields';
   providedIn: 'root'
 })
 export class FollowService {
-private _ardb: ArdbWrapper;
+  private _ardb1: ArdbWrapper;
+  private _ardb2: ArdbWrapper;
 
   constructor(
     private _arweave: ArweaveService,
     private _userAuth: UserAuthService,
     private _appSettings: AppSettingsService,
     private _utils: UtilsService) {
-    this._ardb = new ArdbWrapper(this._arweave.arweave);
+    this._ardb1 = new ArdbWrapper(this._arweave.arweave);
+    this._ardb2 = new ArdbWrapper(this._arweave.arweave);
   }
 
   follow(
@@ -87,7 +89,7 @@ private _ardb: ArdbWrapper;
       }
     ];
     const fields: fieldType[] = ['id', 'owner'];
-    return this._ardb.searchTransactions([], limit, maxHeight, tags, fields).pipe(
+    return this._ardb1.searchTransactions([], limit, maxHeight, tags, fields).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts.map((tx) => {
             const post: TransactionMetadata = {
@@ -108,7 +110,7 @@ private _ardb: ArdbWrapper;
   }
 
   next(): Observable<TransactionMetadata[]> {
-    return from(this._ardb.next()).pipe(
+    return from(this._ardb1.next()).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts && _posts.length ? _posts.map((tx) => {
             const post: TransactionMetadata = {
@@ -151,7 +153,7 @@ private _ardb: ArdbWrapper;
       }
     ];
     const fields: fieldType[] = ['id', 'owner', 'tags'];
-    return this._ardb.searchTransactions(from, limit, maxHeight, tags, fields).pipe(
+    return this._ardb2.searchTransactions(from, limit, maxHeight, tags, fields).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts.map((tx) => {
             const post: TransactionMetadata = {
@@ -167,6 +169,27 @@ private _ardb: ArdbWrapper;
             return post;
           });
 
+          return res;
+        })
+      );
+  }
+
+  nextFollowing(): Observable<TransactionMetadata[]> {
+    return from(this._ardb2.next()).pipe(
+        map((_posts: ArdbTransaction[]) => {
+          const res = _posts && _posts.length ? _posts.map((tx) => {
+            const post: TransactionMetadata = {
+              id: tx.id,
+              owner: tx.owner.address,
+              blockId: tx.block && tx.block.id ? tx.block.id : '',
+              blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+              dataSize: tx.data ? tx.data.size : undefined,
+              dataType: tx.data ? tx.data.type : undefined,
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags ? tx.tags : undefined
+            }
+            return post;
+          }) : [];
           return res;
         })
       );
