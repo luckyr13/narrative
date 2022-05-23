@@ -45,6 +45,9 @@ import { UserCardComponent } from './user-card/user-card.component';
 import { DonateDialogComponent } from './donate-dialog/donate-dialog.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
+import { ReplyDialogComponent } from './reply-dialog/reply-dialog.component';
+import { LikeDialogComponent } from './like-dialog/like-dialog.component';
+import { RepostDialogComponent } from './repost-dialog/repost-dialog.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,10 @@ import { FormsModule } from '@angular/forms';
     StoryPlayerSubstoryComponent,
     FollowDialogComponent,
     UserCardComponent,
-    DonateDialogComponent
+    DonateDialogComponent,
+    ReplyDialogComponent,
+    LikeDialogComponent,
+    RepostDialogComponent
   ],
   imports: [
     CommonModule,

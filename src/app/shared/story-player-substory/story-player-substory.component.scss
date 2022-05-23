@@ -91,9 +91,11 @@
 .content .video-container {
 	width: 100%;
 	height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -106,11 +108,15 @@
 .content .audio-container {
 	width: 100%;
 	height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
+
+
 
 .content .audio-container video {
 	max-width: 80%;

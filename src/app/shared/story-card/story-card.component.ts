@@ -13,6 +13,9 @@ import { Direction } from '@angular/cdk/bidi';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'; 
 import {MatDialog} from '@angular/material/dialog';
 import { Location } from '@angular/common';
+import { ReplyDialogComponent } from '../reply-dialog/reply-dialog.component';
+import { LikeDialogComponent } from '../like-dialog/like-dialog.component';
+import { RepostDialogComponent } from '../repost-dialog/repost-dialog.component';
 
 @Component({
   selector: 'app-story-card',
@@ -160,14 +163,78 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   reply(event: MouseEvent) {
     event.stopPropagation();
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
+    const dialogRef = this._dialog.open(
+      ReplyDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          // address: this.account
+        },
+        direction: direction
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res) => {
+      
+    });
+  
   }
 
   repost(event: MouseEvent) {
     event.stopPropagation();
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
+    const dialogRef = this._dialog.open(
+      RepostDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: false,
+        data: {
+          // address: this.account
+        },
+        direction: direction
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res) => {
+    });
   }
 
   like(event: MouseEvent) {
     event.stopPropagation();
+
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
+    const dialogRef = this._dialog.open(
+      LikeDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: false,
+        data: {
+          // address: this.account
+        },
+        direction: direction
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((res) => {
+    });
+      
   }
 
   openStory(event: MouseEvent, txId: string) {
@@ -180,9 +247,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   share(event: MouseEvent) {
     event.stopPropagation();
     const defLang = this._userSettings.getDefaultLang();
-    // defLang.writing_system
-    const defLangWritingSystem = 'LTR';
-    let direction: Direction = defLangWritingSystem === 'LTR' ? 
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
       'ltr' : 'rtl';
     const tmpContent = this._utils.sanitizeFull(this.originalRawContent);
     const limit = 200;
@@ -342,6 +408,12 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   }
 
   confirmDialog(href: string) {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    // defLang.writing_system
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       ConfirmationDialogComponent,
       {
@@ -352,7 +424,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
           content: `Do you really want to visit this site? ${href}`,
           closeLabel: 'No',
           confirmLabel: 'Yes, open link in new tab'
-        }
+        },
+        direction: direction
       }
     );
 
