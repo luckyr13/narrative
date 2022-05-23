@@ -13,6 +13,7 @@ import { UtilsService } from '../utils/utils.service';
 })
 export class StoryService {
   private _ardb: ArdbWrapper;
+  private _ardbSingle: ArdbWrapper;
 
   constructor(
     private _arweave: ArweaveService,
@@ -20,6 +21,7 @@ export class StoryService {
     private _appSettings: AppSettingsService,
     private _utils: UtilsService) {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
+    this._ardbSingle = new ArdbWrapper(this._arweave.arweave);
   }
 
   createPost(
@@ -122,7 +124,7 @@ export class StoryService {
   }
 
   getPost(from: string[] | string = [], postId: string): Observable<TransactionMetadata> {
-    return this._ardb.searchOneTransaction(from, postId).pipe(
+    return this._ardbSingle.searchOneTransaction(from, postId).pipe(
         map((tx: ArdbTransaction) => {
           if (!tx) {
             throw new Error('Tx not found!');
@@ -152,6 +154,27 @@ export class StoryService {
       { name: 'Network', value: 'Koii' }
     ];
     return this._arweave.generateSignedTx(msg, 'text/plain', key, tags);
+  }
+
+  getPostById(postId: string): Observable<TransactionMetadata> {
+    return this._ardbSingle.searchOneTransactionById(postId).pipe(
+        map((tx: ArdbTransaction) => {
+          if (!tx) {
+            throw new Error('Tx not found!');
+          }
+          const post: TransactionMetadata = {
+            id: tx.id,
+            owner: tx.owner.address,
+            blockId: tx.block && tx.block.id ? tx.block.id : '',
+            blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+            dataSize: tx.data ? tx.data.size : undefined,
+            dataType: tx.data ? tx.data.type : undefined,
+            blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+            tags: tx.tags
+          }
+          return post;
+        })
+      );
   }
 
 }

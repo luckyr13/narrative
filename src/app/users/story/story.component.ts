@@ -72,7 +72,12 @@ export class StoryComponent implements OnInit {
   loadReplies(storyId: string) {
     this.loadingReplies = true;
     this.replies = [];
-    this._repliesSubscription = this._reply.getReplies(storyId, this._maxReplies).subscribe({
+    this._repliesSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._reply.getReplies(storyId, this._maxReplies, currentHeight)
+      }),
+    ).subscribe({
       next: (replies) => {
         this.replies = replies;
         this.loadingReplies = false;

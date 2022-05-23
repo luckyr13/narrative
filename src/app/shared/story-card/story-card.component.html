@@ -1,5 +1,6 @@
 <mat-card
 	class="post-card fadeIn mat-elevation-z0"
+	*ngIf="post"
 	[routerLink]="['/', profile && profile.username ? profile.username : post.owner, post.id]">
 	<mat-card-content>
 		<div [ngClass]="{ 'card-content': !fullMode } ">

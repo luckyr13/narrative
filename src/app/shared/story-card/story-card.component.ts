@@ -16,6 +16,7 @@ import { Location } from '@angular/common';
 import { ReplyDialogComponent } from '../reply-dialog/reply-dialog.component';
 import { LikeDialogComponent } from '../like-dialog/like-dialog.component';
 import { RepostDialogComponent } from '../repost-dialog/repost-dialog.component';
+import { StoryService } from '../../core/services/story.service';
 
 @Component({
   selector: 'app-story-card',
@@ -24,6 +25,7 @@ import { RepostDialogComponent } from '../repost-dialog/repost-dialog.component'
 })
 export class StoryCardComponent implements OnInit, OnDestroy {
 	@Input('post') post!: TransactionMetadata;
+  @Input('txId') txId: string = '';
   @Input('fullMode') fullMode = false;
   @Input('showActions') showActions = true;
 	loadingContent = false;
@@ -79,7 +81,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   maxPreviewSize = 250;
   realPreviewSize = this.maxPreviewSize;
 
-  // Tx metadata
+  loadingPostMetadata = false;
+  private _postMetadataSubscription = Subscription.EMPTY;
 
 
   constructor(
@@ -90,9 +93,32 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     private _utils: UtilsService,
     private _bottomSheetShare: MatBottomSheet,
     private _dialog: MatDialog,
-    private _location: Location) { }
+    private _location: Location,
+    private _story: StoryService) { }
 
   ngOnInit(): void {
+    if (this.txId) {
+      this.loadPostAndThenData(this.txId);
+    } else {
+      this.loadData();
+    }
+  }
+
+  loadPostAndThenData(tx: string) {
+    this.loadingPostMetadata = true;
+    this._postMetadataSubscription = this._story.getPostById(tx).subscribe({
+      next: (post) => {
+        this.post = post;
+        this.loadData();
+      },
+      error: (error) => {
+        this.loadingPostMetadata = false;
+        this._utils.message(error, 'error');
+      }
+    })
+  }
+
+  loadData() {
     this.loadVertoProfile();
     this.loadContent();
     if (this.post.blockTimestamp) {

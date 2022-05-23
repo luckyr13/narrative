@@ -13,6 +13,7 @@ import ArdbTransaction from 'ardb/lib/models/transaction';
 })
 export class ReplyService {
   private _ardb: ArdbWrapper;
+  private _ardb2: ArdbWrapper;
 
   constructor(
     private _arweave: ArweaveService,
@@ -20,6 +21,7 @@ export class ReplyService {
     private _appSettings: AppSettingsService,
     private _utils: UtilsService) {
     this._ardb = new ArdbWrapper(this._arweave.arweave);
+    this._ardb2 = new ArdbWrapper(this._arweave.arweave);
   }
 
   reply(
@@ -93,6 +95,70 @@ export class ReplyService {
 
   next(): Observable<TransactionMetadata[]> {
     return from(this._ardb.next()).pipe(
+        map((_posts: ArdbTransaction[]) => {
+          const res = _posts && _posts.length ? _posts.map((tx) => {
+            const post: TransactionMetadata = {
+              id: tx.id,
+              owner: tx.owner.address,
+              blockId: tx.block && tx.block.id ? tx.block.id : '',
+              blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+              dataSize: tx.data ? tx.data.size : undefined,
+              dataType: tx.data ? tx.data.type : undefined,
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags
+            }
+            return post;
+          }) : [];
+          return res;
+        })
+      );
+  }
+
+  getRepliesFromUser(
+    from: string[],
+    limit?: number,
+    maxHeight?: number): Observable<TransactionMetadata[]> {
+    const tags = [
+      {
+        name: "App-Name",
+        values: [this._appSettings.protocolName]
+      },
+      {
+        name: "Content-Type",
+        values: ["text/plain"]
+      },
+      {
+        name: "Version",
+        values: [this._appSettings.protocolVersion]
+      },
+      {
+        name: "Type",
+        values: ["Reply"]
+      }
+    ];
+    return this._ardb2.searchTransactions(from, limit, maxHeight, tags).pipe(
+        map((_replies: ArdbTransaction[]) => {
+          const res = _replies.map((tx) => {
+            const reply: TransactionMetadata = {
+              id: tx.id,
+              owner: tx.owner.address,
+              blockId: tx.block && tx.block.id ? tx.block.id : '',
+              blockHeight: tx.block && tx.block.height ? tx.block.height : 0,
+              dataSize: tx.data ? tx.data.size : undefined,
+              dataType: tx.data ? tx.data.type : undefined,
+              blockTimestamp: tx.block && tx.block.timestamp ? tx.block.timestamp : undefined,
+              tags: tx.tags
+            }
+            return reply;
+          });
+
+          return res;
+        })
+      );
+  }
+
+  nextRepliesFromUser(): Observable<TransactionMetadata[]> {
+    return from(this._ardb2.next()).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts && _posts.length ? _posts.map((tx) => {
             const post: TransactionMetadata = {
