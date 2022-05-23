@@ -130,9 +130,7 @@ export class UserSettingsService {
   }
 
   getLangObject(langCode: string): LanguageObj|null {
-    const lang = Object.prototype.hasOwnProperty.call(this.languages, langCode) ?
-      this.languages[langCode] : null;
-    return lang;
+    return this._langService.getLangObject(langCode);
   }
   
 }
