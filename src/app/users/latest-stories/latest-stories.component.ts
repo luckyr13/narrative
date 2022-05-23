@@ -55,7 +55,7 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
         const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
           this.moreResultsCard.nativeElement.scrollTop;
         const padding = 700;
-        if ((scroll > moreResultsPos - padding) && 
+        if ((scroll > moreResultsPos - padding && moreResultsPos) && 
             !this.loadingPosts &&
             this.moreResultsAvailable) {
           this.moreResults();
@@ -83,8 +83,9 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;
+        } else {
+          this.posts.push(...posts);
         }
-        this.posts = posts;
         this.loadingPosts = false;
       },
       error: (error) => {
@@ -101,8 +102,9 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;
+        } else {
+          this.posts.push(...posts);
         }
-        this.posts = this.posts.concat(posts);
         this.loadingPosts = false;
       },
       error: (error) => {

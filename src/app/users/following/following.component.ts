@@ -59,7 +59,7 @@ export class FollowingComponent implements OnInit , OnDestroy {
         const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
           this.moreResultsCard.nativeElement.scrollTop;
         const padding = 700;
-        if ((scroll > moreResultsPos - padding) && 
+        if ((scroll > moreResultsPos - padding && moreResultsPos) && 
             !this.loadingFollowing &&
             this.moreResultsAvailable) {
           this.moreResults();
