@@ -11,6 +11,7 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 import { Direction } from '@angular/cdk/bidi';
 import { DonateDialogComponent } from '../../shared/donate-dialog/donate-dialog.component';
+import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 
 @Component({
   selector: 'app-profile',
@@ -123,7 +124,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }),
     ).subscribe({
       next: (followers) => {
-        this.numFollowers = (new Set(followers)).size;
+        this.numFollowers = (new Set(followers.map(f => f.owner))).size;
       },
       error: (error) => {
         console.error('ErrFollowers', error);
@@ -133,7 +134,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   loadFollowing(from: string[]) {
-    this.numFollowers = 0;
+    this.numFollowing = 0;
     this._followingSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
@@ -141,7 +142,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
       }),
     ).subscribe({
       next: (following) => {
-        this.numFollowing = (new Set(following)).size;
+        const followingTmp: string[] = [];
+        
+        for (const f of following) {
+          const infoAddresses = this.extractTagsFromTx(f);
+          if (infoAddresses.username &&
+              followingTmp.indexOf(infoAddresses.username) < 0) {
+            followingTmp.push(infoAddresses.username);
+            this.numFollowing++;
+          } else if (!infoAddresses.username) {
+            let flagWalletFound = false;
+            for (const w of infoAddresses.wallets) {
+              if (followingTmp.indexOf(w) < 0 && !flagWalletFound) {
+                this.numFollowing++;
+                flagWalletFound = true;
+              }
+              followingTmp.push(w);
+            }
+
+          }
+        }
+
       },
       error: (error) => {
         console.error('ErrFollowing', error);
@@ -174,6 +195,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(async (result) => {
     });
+  }
+
+  extractTagsFromTx(tx: TransactionMetadata): {username: string, wallets: string[]} {
+    const tags = tx && tx.tags ? tx.tags : [];
+    const res: {username: string, wallets: string[]} = { username: '', wallets: []};
+    for (const t of tags) {
+      if (t.name === 'Wallet') {
+        if (this._arweave.validateAddress(t.value)) {
+          res.wallets.push(t.value);
+        } else {
+          console.error('Invalid wallet tag', t);
+        }
+      } else if (t.name === 'Username') {
+        res.username = t.value.trim();
+      }
+    }
+
+    return res;
   }
   
 

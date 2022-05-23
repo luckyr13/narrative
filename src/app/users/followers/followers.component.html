@@ -2,12 +2,12 @@
 <div class="no-results" *ngIf="!followers"> No results.</div>
 <div class="followers-list-container">
 	<div>
-  	<app-user-card *ngFor="let follower of followers" [address]="follower.owner"></app-user-card>
+  	<app-user-card *ngFor="let follower of followers" [address]="follower"></app-user-card>
 	</div>
 </div>
 <div class="more-results-container clear-both">
 	<mat-spinner *ngIf="loadingFollowers" color="accent" diameter="32"></mat-spinner>
-	<div class="no-results" *ngIf="!followers.length && !loadingFollowers">
+	<div class="no-results" *ngIf="!followers.size && !loadingFollowers">
 		There are no followers yet!
 	</div>
 	<mat-card 

@@ -21,7 +21,7 @@ import { FollowService } from '../../core/services/follow.service';
   styleUrls: ['./followers.component.scss']
 })
 export class FollowersComponent implements OnInit , OnDestroy {
-  public followers: TransactionMetadata[] = [];
+  public followers: Set<string> = new Set([]);
   private maxFollowers: number = 10;
   public loadingFollowers = false;
   private _followersSubscription: Subscription = Subscription.EMPTY;
@@ -76,7 +76,7 @@ export class FollowersComponent implements OnInit , OnDestroy {
 
   loadFollowers(username: string, wallets: string[]) {
     this.loadingFollowers = true;
-    this.followers = [];
+    this.followers.clear();
     this._followersSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
@@ -87,7 +87,10 @@ export class FollowersComponent implements OnInit , OnDestroy {
         if (!followers || !followers.length) {
           this.moreResultsAvailable = false;
         }
-        this.followers = followers;
+        console.log(followers)
+        for (const f of followers) {
+          this.followers.add(f.owner);
+        }
         this.loadingFollowers = false;
       },
       error: (error) => {
@@ -105,7 +108,9 @@ export class FollowersComponent implements OnInit , OnDestroy {
         if (!followers || !followers.length) {
           this.moreResultsAvailable = false;
         }
-        this.followers = this.followers.concat(followers);
+        for (const f of followers) {
+          this.followers.add(f.owner);
+        }
         this.loadingFollowers = false;
       },
       error: (error) => {
