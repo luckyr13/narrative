@@ -217,7 +217,7 @@
 	</mat-card-content>
 	<mat-card-actions>
 		<div 
-	  	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0))"
+	  	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0)) && showActions"
 	  	class="fadeIn story-actions">
 	  	<div class="action-btn-wrapper">
         <button 

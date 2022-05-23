@@ -45,7 +45,9 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   themeSubscription = Subscription.EMPTY;
   @Input('account') account!: string;
   @Output('newStoryEvent') newStoryEvent = new EventEmitter<string>();
+  @Output('contentChangeEvent') contentChangeEvent = new EventEmitter<string>();
   @Input('isSubstory') isSubstory!: boolean;
+  @Input('showSubmitButton') showSubmitButton: boolean = true;
   substories: {id: string, content: string, type: 'text'|'image'|'audio'|'video'|'', arrId: number}[] = [];
   unsignedTxSubscription = Subscription.EMPTY;
 
@@ -65,6 +67,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   ngOnInit(): void {
     this.contentSubscription = this.codemirrorWrapper.contentStream.subscribe((content) => {
       this.messageContent = content;
+      this.contentChangeEvent.emit(content);
     });
     this.isDarkTheme = this._userSettings.isDarkTheme(this._userSettings.getDefaultTheme());
     this.themeSubscription = this._userSettings.currentThemeStream.subscribe((theme) => {

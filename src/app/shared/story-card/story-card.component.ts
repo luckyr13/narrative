@@ -23,8 +23,9 @@ import { RepostDialogComponent } from '../repost-dialog/repost-dialog.component'
   styleUrls: ['./story-card.component.scss']
 })
 export class StoryCardComponent implements OnInit, OnDestroy {
-	@Input() post!: TransactionMetadata;
-  @Input() fullMode = false;
+	@Input('post') post!: TransactionMetadata;
+  @Input('fullMode') fullMode = false;
+  @Input('showActions') showActions = true;
 	loadingContent = false;
 	loadingProfile = false;
 	profileImage = 'assets/images/blank-profile.png';
@@ -167,6 +168,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     const defLangObj = this._userSettings.getLangObject(defLang);
     let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
       'ltr' : 'rtl';
+    const myAddress = this._auth.getMainAddressSnapshot();
 
     const dialogRef = this._dialog.open(
       ReplyDialogComponent,
@@ -176,6 +178,12 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         disableClose: true,
         data: {
           // address: this.account
+          myAddress: myAddress,
+          txId: this.post.id,
+          postOwner: this.post.owner,
+          postOwnerUsername: this.profile && this.profile.username ? this.profile.username : '',
+          postOwnerImage: this.profileImage,
+          postContent: this.originalRawContent
         },
         direction: direction
       }

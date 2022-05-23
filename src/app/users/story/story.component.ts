@@ -10,6 +10,7 @@ import { UtilsService } from '../../core/utils/utils.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { UserProfile } from '../../core/interfaces/user-profile';
+import { ReplyService } from '../../core/services/reply.service';
 
 @Component({
   selector: 'app-story',
@@ -21,13 +22,18 @@ export class StoryComponent implements OnInit {
   public loadingPost = false;
   private _postSubscription: Subscription = Subscription.EMPTY;
   public addressList: string[] = [];
+  public loadingReplies = false;
+  public replies: TransactionMetadata[] = [];
+  private _repliesSubscription: Subscription = Subscription.EMPTY;
+  private _maxReplies = 20;
 
   constructor(
     private route: ActivatedRoute,
     private _verto: VertoService,
     private _arweave: ArweaveService,
     private _story: StoryService,
-    private _utils: UtilsService) { }
+    private _utils: UtilsService,
+    private _reply: ReplyService) { }
 
   ngOnInit(): void {
     this.route.data
@@ -38,11 +44,13 @@ export class StoryComponent implements OnInit {
           profile.profile.addresses :
           [profile.address];
         this.loadPost(userAddressList, storyId);
+        this.loadReplies(storyId);
       });
   }
 
   ngOnDestroy() {
     this._postSubscription.unsubscribe();
+    this._repliesSubscription.unsubscribe();
   }
 
   loadPost(from: string|string[], storyId: string) {
@@ -56,6 +64,21 @@ export class StoryComponent implements OnInit {
       },
       error: (error) => {
         this.loadingPost = false;
+        this._utils.message(error, 'error');
+      }
+    })
+  }
+
+  loadReplies(storyId: string) {
+    this.loadingReplies = true;
+    this.replies = [];
+    this._repliesSubscription = this._reply.getReplies(storyId, this._maxReplies).subscribe({
+      next: (replies) => {
+        this.replies = replies;
+        this.loadingReplies = false;
+      },
+      error: (error) => {
+        this.loadingReplies = false;
         this._utils.message(error, 'error');
       }
     })

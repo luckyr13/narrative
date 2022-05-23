@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
-import { FollowService } from '../../core/services/follow.service';
+import { ReplyService } from '../../core/services/reply.service';
 
 @Component({
   selector: 'app-reply-dialog',
@@ -12,41 +12,46 @@ import { FollowService } from '../../core/services/follow.service';
 })
 export class ReplyDialogComponent implements OnInit, OnDestroy {
   useDispatch = new FormControl(false);
-  loadingFollow = false;
-  followSubscription = Subscription.EMPTY;
-  followTxId: string = '';
+  loadingReply = false;
+  private _replySubscription = Subscription.EMPTY;
+  replyTxId: string = '';
+  message: string = '';
 
   constructor(
     private _dialogRef: MatDialogRef<ReplyDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {
-      username: string,
-      wallets: string[]
+      postOwner: string,
+      txId: string,
+      myAddress: string,
+      postOwnerUsername: string,
+      postOwnerImage: string,
+      postContent: string
     },
     private _utils: UtilsService,
-    private _follow: FollowService) { }
+    private _reply: ReplyService) { }
 
 
   ngOnInit(): void {
   }
 
-  close(success: boolean = false) {
-    this._dialogRef.close(success);
+  close(msg: string = '') {
+    this._dialogRef.close(msg);
   }
 
   submit() {
     const disableDispatch = !this.useDispatch.value;
-    this.loadingFollow = true;
-    this.followSubscription = this._follow.follow(
-      this.data.username,
-      this.data.wallets,
+    this.loadingReply = true;
+    this._replySubscription = this._reply.reply(
+      this.data.txId,
+      this.message,
       disableDispatch
     ).subscribe({
       next: (tx) => {
-        this.loadingFollow = false;
-        this.followTxId = tx.id;
+        this.loadingReply = false;
+        this.replyTxId = tx.id;
       },
       error: (error) => {
-        this.loadingFollow = false
+        this.loadingReply = false
         console.error('Error!', error);
         this._utils.message('Error!', 'error');
       }
@@ -56,7 +61,10 @@ export class ReplyDialogComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    this.followSubscription.unsubscribe();
+    this._replySubscription.unsubscribe();
   }
 
+  contentChangeEvent(storyContent: string) {
+    this.message = storyContent;
+  }
 }

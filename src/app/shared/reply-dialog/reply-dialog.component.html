@@ -1,10 +1,10 @@
 <h2 mat-dialog-title class="title-text">
-	Reply user
+	Reply
 </h2>
 <div class="title-buttons">
 	<button
 		mat-icon-button
-		[disabled]="loadingFollow"
+		[disabled]="loadingReply"
 		aria-label="Close window"
 		(click)="close()">
     <mat-icon>close</mat-icon>
@@ -12,27 +12,42 @@
 </div>
 <div class="clear-both"></div>
 <mat-dialog-content
-	class="content border-right-special"
-	*ngIf="data.wallets">
-	<div *ngIf="!loadingFollow && !followTxId">
-		<p>Do you want to reply this user?</p>
-		<p class="text-center" *ngIf="data.username">
-			{{ data.username }}
+	class="content border-right-special">
+	<div *ngIf="!loadingReply && !replyTxId && data.myAddress">
+		<p class="text-center" *ngIf="data.postOwnerImage">
+			<img
+		  	class="avatar"
+		  	mat-card-avatar
+		  	[src]="data.postOwnerImage">
 		</p>
-		<p class="text-center wallets" *ngFor="let w of data.wallets">
-			{{ w }}
+		<p *ngIf="data.postOwner">
+			<strong>{{ data.postOwnerUsername ? data.postOwnerUsername : data.postOwner }}</strong>
 		</p>
+		<p>
+			{{ data.postContent }}
+		</p>
+		<h5 class="reply-subtitle clear-both">
+			Your reply:
+		</h5>
+		<app-create-story-card
+			[showSubmitButton]="false"
+			[isSubstory]="true"
+			[account]="data.myAddress"
+			(contentChangeEvent)="contentChangeEvent($event)"></app-create-story-card>
 		<p class="text-right">
 			<mat-checkbox class="dispatch-chk" [formControl]="useDispatch">
 				Reply for FREE (Dispatch method)
 			</mat-checkbox>
 		</p>
 	</div>
-	<div *ngIf="loadingFollow">
+	<h4 class="text-center" *ngIf="!data.myAddress">
+		Please login first!
+	</h4>
+	<div *ngIf="loadingReply">
 		<p><span>Sending tx ...</span><mat-spinner color="accent" [diameter]="20"></mat-spinner></p>
 	</div>
-	<div *ngIf="!loadingFollow && followTxId">
-		<p>Tx {{followTxId}} created succesfully!</p>
+	<div *ngIf="!loadingReply && replyTxId">
+		<p>Tx {{replyTxId}} created succesfully!</p>
 		<p>
 			Your transaction is gonna be mined in the next minutes. You can take a coffee now! ☕
 		</p>
@@ -42,15 +57,14 @@
 	align="start" >
   <button 
   	mat-button
-  	[disabled]="loadingFollow"
-  	cdkFocusInitial (click)="close(false)">Close</button>
+  	[disabled]="loadingReply"
+  	cdkFocusInitial (click)="close()">Close</button>
   <div class="spacer"></div>
   <button
   	mat-flat-button
   	(click)="submit()"
-  	*ngIf="!followTxId"
-  	[disabled]="loadingFollow"
+  	[disabled]="loadingReply || replyTxId !== '' || message == ''"
   	color="accent">
-  	<span>Yes, I want to follow this user! </span> 
+  	<span>Reply</span> 
   </button>
 </mat-dialog-actions>

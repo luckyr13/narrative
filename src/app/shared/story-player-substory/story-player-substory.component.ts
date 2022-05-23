@@ -111,7 +111,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
             this.substoryContent.type = this.substoryContent.type;
             if (this.substoryContent.type.indexOf('image') >= 0) {
               // Check dataSize first
-              const dataSize = +(tx.dataSize!);
+              const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
               if (dataSize > this.storyImageMaxSizeBytes) {
                 this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
@@ -127,7 +127,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               return of(fileURL);
             } else if (this.substoryContent.type.indexOf('video') >= 0) {
               // Check dataSize first
-              const dataSize = +(tx.dataSize!);
+              const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
               if (dataSize > this.storyVideoMaxSizeBytes) {
                 this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
@@ -143,7 +143,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               return of(fileURL);
             } else if (this.substoryContent.type.indexOf('audio') >= 0) {
               // Check dataSize first
-              const dataSize = +(tx.dataSize!);
+              const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
               if (dataSize > this.storyAudioMaxSizeBytes) {
                 this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
@@ -158,7 +158,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               this.loadingSubstoryEvent.emit(false);
               return of(fileURL);
             } else if (this.substoryContent.type.indexOf('text') >= 0) {
-              const dataSize = +(tx.dataSize!);
+              const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
               if (dataSize > this.storyMaxSizeBytes) {
                 this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
@@ -175,7 +175,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               this.substoryContent.type = t.value;
               if (t.value.indexOf('image') >= 0) {
                 // Check dataSize first
-                const dataSize = +(tx.dataSize!);
+                const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
                 if (dataSize > this.storyImageMaxSizeBytes) {
                   this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
@@ -191,7 +191,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
                 return of(fileURL);
               } else if (t.value.indexOf('video') >= 0) {
                 // Check dataSize first
-                const dataSize = +(tx.dataSize!);
+                const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
                 if (dataSize > this.storyVideoMaxSizeBytes) {
                   this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
@@ -207,7 +207,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
                 return of(fileURL);
               } else if (t.value.indexOf('audio') >= 0) {
                 // Check dataSize first
-                const dataSize = +(tx.dataSize!);
+                const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
                 if (dataSize > this.storyAudioMaxSizeBytes) {
                   this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
@@ -222,7 +222,7 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
                 this.loadingSubstoryEvent.emit(false);
                 return of(fileURL);
               } else if (t.value.indexOf('text') >= 0) {
-                const dataSize = +(tx.dataSize!);
+                const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
                 if (dataSize > this.storyMaxSizeBytes) {
                   this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
