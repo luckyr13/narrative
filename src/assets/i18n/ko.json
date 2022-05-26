@@ -37,7 +37,9 @@
 			"CREATE_SUBSTORY": "Create substory",
 			"SEARCH_SUBSTORY": "Search substory",
 			"UPLOAD_FILE": "Upload file",
-			"FILE_MANAGER": "File manager"
+			"FILE_MANAGER": "File manager",
+			"RECORD_VIDEO": "Record video",
+			"RECORD_AUDIO": "Record audio"
 		},
 		"STORY": {
 			"TX_INFO": "TX info",

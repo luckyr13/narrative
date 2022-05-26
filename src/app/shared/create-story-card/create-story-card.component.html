@@ -156,6 +156,10 @@
 				<mat-icon class="material-icons-outlined">videocam</mat-icon>
 			</button>
 			<mat-menu #matMenuVideo="matMenu">
+				<button mat-menu-item (click)="recordVideo()">
+			    <mat-icon color="warn">videocam</mat-icon>
+			    <span>{{ 'GENERAL.CREATE_STORY.RECORD_VIDEO' | translate }}</span>
+			  </button>
 			  <button mat-menu-item (click)="uploadFile('video')">
 			    <mat-icon>cloud_upload</mat-icon>
 			    <span>{{ 'GENERAL.CREATE_STORY.UPLOAD_FILE' | translate }}</span>
@@ -173,6 +177,10 @@
 				<mat-icon class="material-icons-outlined">mic</mat-icon>
 			</button>
 			<mat-menu #matMenuAudio="matMenu">
+				<button mat-menu-item (click)="recordAudio()">
+			    <mat-icon color="warn">mic</mat-icon>
+			    <span>{{ 'GENERAL.CREATE_STORY.RECORD_AUDIO' | translate }}</span>
+			  </button>
 			  <button mat-menu-item (click)="uploadFile('audio')">
 			    <mat-icon>cloud_upload</mat-icon>
 			    <span>{{ 'GENERAL.CREATE_STORY.UPLOAD_FILE' | translate }}</span>

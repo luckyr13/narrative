@@ -37,7 +37,9 @@
 			"CREATE_SUBSTORY": "Crear sub-historia",
 			"SEARCH_SUBSTORY": "Buscar sub-historia",
 			"UPLOAD_FILE": "Subir archivo",
-			"FILE_MANAGER": "Administrador de Archivos"
+			"FILE_MANAGER": "Administrador de Archivos",
+			"RECORD_VIDEO": "Grabar video",
+			"RECORD_AUDIO": "Grabar audio"
 		},
 		"STORY": {
 			"TX_INFO": "Información de TX",

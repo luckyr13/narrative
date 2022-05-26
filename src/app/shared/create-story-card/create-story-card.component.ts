@@ -21,7 +21,8 @@ import { SubmitStoryDialogComponent } from '../submit-story-dialog/submit-story-
 import Transaction from 'arweave/web/lib/transaction';
 import { ArbundlesService } from '../../core/services/arbundles.service';
 import {TranslateService} from '@ngx-translate/core';
-
+import { RecordVideoDialogComponent } from '../record-video-dialog/record-video-dialog.component'; 
+import { RecordAudioDialogComponent } from '../record-audio-dialog/record-audio-dialog.component'; 
 
 @Component({
   selector: 'app-create-story-card',
@@ -344,6 +345,62 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     }
 
     this.substories.splice(i, 1);
+  }
+
+  recordVideo() {
+    const dialogRef = this._dialog.open(
+      RecordVideoDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          address: this.account
+        }
+      });
+
+    dialogRef.afterClosed().subscribe((res: {id: string, type:'text'|'image'|'audio'|'video'|''}) => { 
+      if (res) {
+        const ids = this.substories.map((v) => {
+          return v.arrId;
+        });
+        const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
+        const newId = this.substories.push({
+          id: res.id,
+          type: res.type,
+          arrId: maxId,
+          content: ''
+        });
+      }
+    });
+  }
+
+  recordAudio() {
+    const dialogRef = this._dialog.open(
+      RecordAudioDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: true,
+        data: {
+          address: this.account
+        }
+      });
+
+    dialogRef.afterClosed().subscribe((res: {id: string, type:'text'|'image'|'audio'|'video'|''}) => { 
+      if (res) {
+        const ids = this.substories.map((v) => {
+          return v.arrId;
+        });
+        const maxId = ids && ids.length ? Math.max(...ids) + 1 : 0;
+        const newId = this.substories.push({
+          id: res.id,
+          type: res.type,
+          arrId: maxId,
+          content: ''
+        });
+      }
+    });
   }
 
 }

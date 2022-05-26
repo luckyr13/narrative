@@ -48,6 +48,8 @@ import { FormsModule } from '@angular/forms';
 import { ReplyDialogComponent } from './reply-dialog/reply-dialog.component';
 import { LikeDialogComponent } from './like-dialog/like-dialog.component';
 import { RepostDialogComponent } from './repost-dialog/repost-dialog.component';
+import { RecordVideoDialogComponent } from './record-video-dialog/record-video-dialog.component';
+import { RecordAudioDialogComponent } from './record-audio-dialog/record-audio-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import { RepostDialogComponent } from './repost-dialog/repost-dialog.component';
     DonateDialogComponent,
     ReplyDialogComponent,
     LikeDialogComponent,
-    RepostDialogComponent
+    RepostDialogComponent,
+    RecordVideoDialogComponent,
+    RecordAudioDialogComponent
   ],
   imports: [
     CommonModule,
