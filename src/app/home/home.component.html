@@ -5,6 +5,14 @@
     		<mat-icon>house</mat-icon>
   		</button>
   		<span>{{ 'MAIN_MENU.HOME' | translate }}</span>
+  		<div class="spacer"></div>
+  		<button
+  			class="btn-filter"
+  			mat-flat-button
+  			*ngIf="account">
+    		<mat-icon class="material-icons-outlined">filter_alt</mat-icon>
+    		<span>Filter</span>
+  		</button>
 	  </mat-toolbar>
 	</p>
 	<div class="col-body fadeIn">
