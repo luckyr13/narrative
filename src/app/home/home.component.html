@@ -9,6 +9,7 @@
   		<button
   			class="btn-filter"
   			mat-flat-button
+  			(click)="openFilterDialog()"
   			*ngIf="account">
     		<mat-icon class="material-icons-outlined">filter_alt</mat-icon>
     		<span>Filter</span>

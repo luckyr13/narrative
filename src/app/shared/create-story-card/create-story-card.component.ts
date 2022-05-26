@@ -353,7 +353,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
       {
         restoreFocus: false,
         autoFocus: false,
-        disableClose: true,
+        disableClose: false,
         data: {
           address: this.account
         }
@@ -381,7 +381,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
       {
         restoreFocus: false,
         autoFocus: false,
-        disableClose: true,
+        disableClose: false,
         data: {
           address: this.account
         }

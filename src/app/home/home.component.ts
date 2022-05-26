@@ -11,6 +11,8 @@ import { UtilsService } from '../core/utils/utils.service';
 import { ArweaveService } from '../core/services/arweave.service';
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { PendingStoriesService } from '../core/services/pending-stories.service';
+import { FilterDialogComponent } from '../shared/filter-dialog/filter-dialog.component'; 
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   templateUrl: './home.component.html',
@@ -35,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _appSettings: AppSettingsService,
     private _utils: UtilsService,
     private _arweave: ArweaveService,
-    private _ngZone: NgZone) {
+    private _ngZone: NgZone,
+    private _dialog: MatDialog) {
     this.version = this._appSettings.appVersion;
   }
 
@@ -155,6 +158,23 @@ export class HomeComponent implements OnInit, OnDestroy {
       owner: this.account
     };
     this.posts.unshift(txMeta);
+  }
+
+  openFilterDialog() {
+    const dialogRef = this._dialog.open(
+      FilterDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: false,
+        data: {
+          address: this.account
+        }
+      });
+
+    dialogRef.afterClosed().subscribe(() => { 
+      
+    });
   }
 
 }
