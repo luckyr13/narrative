@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserInterface } from '@verto/js/dist/common/faces';
@@ -17,7 +17,7 @@ import { ReplyService } from '../../core/services/reply.service';
   templateUrl: './story.component.html',
   styleUrls: ['./story.component.scss']
 })
-export class StoryComponent implements OnInit {
+export class StoryComponent implements OnInit, OnDestroy {
   public post: TransactionMetadata|null = null;
   public loadingPost = false;
   private _postSubscription: Subscription = Subscription.EMPTY;
@@ -25,7 +25,10 @@ export class StoryComponent implements OnInit {
   public loadingReplies = false;
   public replies: TransactionMetadata[] = [];
   private _repliesSubscription: Subscription = Subscription.EMPTY;
-  private _maxReplies = 20;
+  private _nextRepliesSubscription: Subscription = Subscription.EMPTY;
+  private _maxReplies = 10;
+  moreResultsAvailable = true;
+  @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,6 +54,7 @@ export class StoryComponent implements OnInit {
   ngOnDestroy() {
     this._postSubscription.unsubscribe();
     this._repliesSubscription.unsubscribe();
+    this._nextRepliesSubscription.unsubscribe();
   }
 
   loadPost(from: string|string[], storyId: string) {
@@ -84,6 +88,25 @@ export class StoryComponent implements OnInit {
       },
       error: (error) => {
         this.loadingReplies = false;
+        this._utils.message(error, 'error');
+      }
+    })
+  }
+
+  moreReplies() {
+    this.loadingReplies = true;
+    this._nextRepliesSubscription = this._reply.next().subscribe({
+      next: (replies) => {
+        if (!replies || !replies.length) {
+          this.moreResultsAvailable = false;
+        } else {
+          this.replies.push(...replies);
+        }
+        this.loadingReplies = false;
+      },
+      error: (error) => {
+        this.loadingReplies = false;
+        this.moreResultsAvailable = false;
         this._utils.message(error, 'error');
       }
     })

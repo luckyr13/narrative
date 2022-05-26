@@ -6,7 +6,7 @@
 <div class="no-results" *ngIf="!loadingReplies && !replies.length">
 	No replies.
 </div>
-<div class="post-list-container" *ngIf="post && !loadingPost && !loadingReplies">
+<div class="post-list-container" *ngIf="post && !loadingPost">
 	<app-story-card
 		*ngFor="let reply of replies"
 		[post]="reply"
@@ -14,4 +14,17 @@
 </div>
 <div class="more-results-container">
 	<mat-spinner *ngIf="loadingPost || loadingReplies" color="accent" diameter="32"></mat-spinner>
+	<div class="no-results" *ngIf="!replies.length && !loadingReplies">
+		{{ 'GENERAL.LABELS.NO_RESULTS' | translate }}
+	</div>
+	<mat-card 
+		#moreResultsCard 
+		[style.visibility]="!loadingReplies && moreResultsAvailable ? 'visible' : 'hidden'"
+		class="more-results-card mat-elevation-z0"
+		matRipple
+		(click)="moreReplies()" >
+	  <mat-card-content class="more-results text-center">
+			{{ 'GENERAL.LABELS.SHOW_OLDER_RESULTS' | translate }}
+	  </mat-card-content>
+	</mat-card>
 </div>
