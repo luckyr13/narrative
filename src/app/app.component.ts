@@ -142,7 +142,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   passwordDialog() {
     const dialogRef = this.dialog.open(PasswordDialogComponent, {
       data: {
-        title: 'Introduce your password',
+        title: 'Resume session',
         confirmLabel: 'Login',
         closeLabel: 'Cancel'
       },

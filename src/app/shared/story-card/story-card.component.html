@@ -112,6 +112,17 @@
 				              class="small-username-2">Id: </app-arweave-address>
 				          </div>
 				        </mat-list-item>
+				        <mat-list-item 
+				        	class="tx-metadata-chips"
+				        	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0))">
+						  		<h4 class="meta" matLine>Tx metadata:</h4>
+						  		<span matLine *ngIf="application">Application: {{ application }} </span>
+									<span matLine *ngIf="appName" >App-Name: {{ appName }}</span>
+									<span matLine *ngIf="service">Service: {{ service }} </span>
+									<span matLine *ngIf="storyType" >Story type: {{ storyType }}</span>
+									<span matLine *ngIf="storyContentType" >Content type: {{ storyContentType }}</span>
+									<span matLine *ngIf="owner" >Owner: {{ owner }}</span>
+				        </mat-list-item>
 				      </mat-list>
 						</mat-menu>
 					</div>
@@ -261,17 +272,7 @@
 	      </button>
 	  	</div>
 	  </div>
-	  <div
-	  	class="clear-both tx-metadata-chips"
-	  	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0)) && fullMode">
-	  		<h4 class="meta">Tx metadata:</h4>
-	  		<span *ngIf="application">Application: {{ application }} </span>
-				<span *ngIf="appName" >App-Name: {{ appName }}</span>
-				<span *ngIf="service">Service: {{ service }} </span>
-				<span *ngIf="storyType" >Story type: {{ storyType }}</span>
-				<span *ngIf="storyContentType" >Content type: {{ storyContentType }}</span>
-				<span *ngIf="owner" >Owner: {{ owner }}</span>
-		</div>
+	  
 	</mat-card-actions>
 </mat-card>
 <mat-divider></mat-divider>

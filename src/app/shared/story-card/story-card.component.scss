@@ -252,8 +252,6 @@ h2 {
 	text-decoration: underline;
 }
 .tx-metadata-chips {
-	margin-top: 22px;
-	margin-bottom: 20px;
 }
 
 .tx-metadata-chips span {
@@ -262,6 +260,8 @@ h2 {
 	color: white;
 	padding: 4px;
 	margin-left: 4px;
+	display: block;
+	margin-bottom: 4px;
 }
 
 .story-image-container {
@@ -273,8 +273,7 @@ h2 {
 }
 
 .meta {
-	margin-top: 40px;
-	margin-bottom: 12px;
+	margin-bottom: 12px !important;
 }
 
 .story-video-container {

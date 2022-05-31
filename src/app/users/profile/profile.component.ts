@@ -138,7 +138,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._followingSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._follow.getFollowing(from, this.maxFollowers, currentHeight);
+        return this._follow.getFollowing(from, this.maxFollowing, currentHeight);
       }),
     ).subscribe({
       next: (following) => {
