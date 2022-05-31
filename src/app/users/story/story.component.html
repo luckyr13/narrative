@@ -20,7 +20,7 @@
 	</div>
 	<mat-card 
 		#moreResultsCard 
-		[style.visibility]="!loadingReplies && moreResultsAvailable ? 'visible' : 'hidden'"
+		[style.visibility]="!loadingReplies && moreResultsAvailable && replies.length ? 'visible' : 'hidden'"
 		class="more-results-card mat-elevation-z0"
 		matRipple
 		(click)="moreReplies()" >
