@@ -51,6 +51,7 @@ import { RepostDialogComponent } from './repost-dialog/repost-dialog.component';
 import { RecordVideoDialogComponent } from './record-video-dialog/record-video-dialog.component';
 import { RecordAudioDialogComponent } from './record-audio-dialog/record-audio-dialog.component';
 import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
+import { PasswordDialogComponent } from './password-dialog/password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
     RepostDialogComponent,
     RecordVideoDialogComponent,
     RecordAudioDialogComponent,
-    FilterDialogComponent
+    FilterDialogComponent,
+    PasswordDialogComponent
   ],
   imports: [
     CommonModule,

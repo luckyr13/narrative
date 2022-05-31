@@ -8,6 +8,7 @@ import { TransactionStatusResponse } from 'arweave/web/transactions';
 import Transaction from 'arweave/web/lib/transaction';
 import { JWKInterface } from 'arweave/web/lib/wallet';
 import { ArweaveWebWallet } from 'arweave-wallet-connector';
+import { AddressKey } from '../interfaces/address-key';
 declare const window: any;
 
 export const arweaveAddressLength = 43;
@@ -130,12 +131,14 @@ export class ArweaveService {
   /*
   *  @dev Login by keyfile
   */
-  uploadKeyFile(inputEvent: any): Observable<any> {
-    let method = new Observable<any>((subscriber) => {
+  uploadKeyFile(inputEvent: Event): Observable<AddressKey>
+  {
+    let method = new Observable<AddressKey>((subscriber) => {
        // Transform .json file into key
        try {
-        const file = inputEvent.target.files.length ? 
-          inputEvent.target.files[0] : null;
+        const target = inputEvent.target as HTMLInputElement;
+        const file = target.files && target.files.length ? 
+          target.files[0] : null;
 
         const freader = new FileReader();
         freader.onload = async (_keyFile) => {
@@ -150,7 +153,7 @@ export class ArweaveService {
             subscriber.next(tmp_res);
             subscriber.complete();
           } catch (error) {
-            throw Error('Error loading key');
+            subscriber.error('Error loading key');
           }
         }
 
@@ -158,8 +161,11 @@ export class ArweaveService {
           throw Error('Error reading file');
         }
 
-        freader.readAsText(file);
-
+        if (file) {
+          freader.readAsText(file);
+        } else {
+          throw Error('Empty file!');
+        }
        } catch (error) {
          subscriber.error(error);
        }
