@@ -27,8 +27,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   addressRouteParam = '';
   editProfileFlag = false;
   isLoggedIn = false;
-  maxFollowers = 100;
-  maxFollowing = 100;
+  maxFollowers = 50;
+  maxFollowing = 50;
   numFollowers = 0;
   numFollowing = 0;
   private _followersSubscription = Subscription.EMPTY;

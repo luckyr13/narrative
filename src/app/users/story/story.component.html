@@ -2,9 +2,9 @@
 <div class="post-list-container" *ngIf="post && !loadingPost">
 	<app-story-card [post]="post" [fullMode]="true"></app-story-card>
 </div>
-<h3 class="likes-subtitle">
+<h3 class="likes-subtitle text-center">
 	<mat-icon aria-label="Likes" color="warn">favorite</mat-icon>
-	0 Likes
+	{{ likes.length >= maxLikes ? '+' : '' }}{{ likes.length }} Likes
 </h3>
 <h3 class="replies-subtitle">Replies:</h3>
 <div class="post-list-container" *ngIf="post && !loadingPost">

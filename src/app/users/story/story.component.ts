@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/co
 import { ArweaveService } from '../../core/services/arweave.service';
 import { VertoService } from '../../core/services/verto.service';
 import { UserInterface } from '@verto/js/dist/common/faces';
-import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, Params, Data } from '@angular/router';
 import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { StoryService } from '../../core/services/story.service';
@@ -11,6 +11,7 @@ import { TransactionMetadata } from '../../core/interfaces/transaction-metadata'
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { UserProfile } from '../../core/interfaces/user-profile';
 import { ReplyService } from '../../core/services/reply.service';
+import { LikeService } from '../../core/services/like.service';
 
 @Component({
   selector: 'app-story',
@@ -30,17 +31,23 @@ export class StoryComponent implements OnInit, OnDestroy {
   moreResultsAvailable = true;
   @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
+  public loadingLikes = false;
+  public likes: TransactionMetadata[] = [];
+  private _likesSubscription: Subscription = Subscription.EMPTY;
+  public maxLikes = 50;
+
   constructor(
     private route: ActivatedRoute,
     private _verto: VertoService,
     private _arweave: ArweaveService,
     private _story: StoryService,
     private _utils: UtilsService,
-    private _reply: ReplyService) { }
+    private _reply: ReplyService,
+    private _like: LikeService) { }
 
   ngOnInit(): void {
     this.route.data
-      .subscribe(data => {
+      .subscribe((data: Data) => {
         const storyId = this.route.snapshot.paramMap.get('storyId')!;
         const profile: UserProfile = data['profile'];
         const userAddressList = profile.profile ?
@@ -48,6 +55,7 @@ export class StoryComponent implements OnInit, OnDestroy {
           [profile.address];
         this.loadPost(userAddressList, storyId);
         this.loadReplies(storyId);
+        this.loadLikes(storyId);
       });
   }
 
@@ -55,6 +63,7 @@ export class StoryComponent implements OnInit, OnDestroy {
     this._postSubscription.unsubscribe();
     this._repliesSubscription.unsubscribe();
     this._nextRepliesSubscription.unsubscribe();
+    this._likesSubscription.unsubscribe();
   }
 
   loadPost(from: string|string[], storyId: string) {
@@ -107,6 +116,30 @@ export class StoryComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.loadingReplies = false;
         this.moreResultsAvailable = false;
+        this._utils.message(error, 'error');
+      }
+    })
+  }
+
+  loadLikes(storyId: string) {
+    this.loadingReplies = true;
+    this.likes = [];
+    this._repliesSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._like.getStoryLikes(storyId, this.maxLikes, currentHeight)
+      }),
+    ).subscribe({
+      next: (likes) => {
+        for (const lk of likes) {
+          if (!this.likes.find(v => v.id === lk.id)) {
+            this.likes.push(lk);
+          }
+        }
+        this.loadingLikes = false;
+      },
+      error: (error) => {
+        this.loadingLikes = false;
         this._utils.message(error, 'error');
       }
     })
