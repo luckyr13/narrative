@@ -156,7 +156,7 @@ export class LikeService {
       );
   }
 
-  nextRepliesFromUser(): Observable<TransactionMetadata[]> {
+  nextLikesFromUser(): Observable<TransactionMetadata[]> {
     return from(this._ardb2.next()).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts && _posts.length ? _posts.map((tx) => {

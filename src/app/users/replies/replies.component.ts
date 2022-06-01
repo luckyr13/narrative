@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
-import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, Params, Data } from '@angular/router';
 import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { UtilsService } from '../../core/utils/utils.service';
@@ -35,7 +35,7 @@ export class RepliesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.data
-      .subscribe(data => {
+      .subscribe((data: Data) => {
         const storyId = this.route.snapshot.paramMap.get('storyId')!;
         const profile: UserProfile = data['profile'];
         const userAddressList = profile.profile && profile.profile.addresses ?
