@@ -252,15 +252,22 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     const defLangObj = this._userSettings.getLangObject(defLang);
     let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
       'ltr' : 'rtl';
+    const myAddress = this._auth.getMainAddressSnapshot();
 
     const dialogRef = this._dialog.open(
       LikeDialogComponent,
       {
         restoreFocus: false,
         autoFocus: false,
-        disableClose: false,
+        disableClose: true,
         data: {
           // address: this.account
+          myAddress: myAddress,
+          txId: this.post.id,
+          postOwner: this.post.owner,
+          postOwnerUsername: this.profile && this.profile.username ? this.profile.username : '',
+          postOwnerImage: this.profileImage,
+          postContent: this.originalRawContent
         },
         direction: direction
       }

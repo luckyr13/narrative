@@ -1,1 +1,63 @@
-<p>Coming soon!</p>
+<h2 mat-dialog-title class="title-text">
+	Like
+</h2>
+<div class="title-buttons">
+	<button
+		mat-icon-button
+		[disabled]="loadingLike"
+		aria-label="Close window"
+		(click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="clear-both"></div>
+<mat-dialog-content
+	class="content border-right-special">
+	<div *ngIf="!loadingLike && !likeTxId && data.myAddress">
+		<p class="text-center" *ngIf="data.postOwnerImage">
+			<img
+		  	class="avatar"
+		  	mat-card-avatar
+		  	[src]="data.postOwnerImage">
+		</p>
+		<p *ngIf="data.postOwner">
+			<strong>{{ data.postOwnerUsername ? data.postOwnerUsername : data.postOwner }}</strong>
+		</p>
+		<p>
+			{{ data.postContent }}
+		</p>
+		<p class="text-right">
+			<mat-checkbox class="dispatch-chk" [formControl]="useDispatch">
+				Reply for FREE (Dispatch method)
+			</mat-checkbox>
+		</p>
+	</div>
+	<h4 class="text-center" *ngIf="!data.myAddress">
+		Please login first!
+	</h4>
+	<div *ngIf="loadingLike">
+		<p><span>Sending tx ...</span><mat-spinner color="accent" [diameter]="20"></mat-spinner></p>
+	</div>
+	<div *ngIf="!loadingLike && likeTxId">
+		<p>Tx {{likeTxId}} created succesfully!</p>
+		<p>
+			Your transaction is gonna be mined in the next minutes. You can take a coffee now! ☕
+		</p>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions 
+	align="start" >
+  <button 
+  	mat-button
+  	[disabled]="loadingLike"
+  	cdkFocusInitial (click)="close()">Close</button>
+  <div class="spacer"></div>
+  <button
+  	mat-flat-button
+  	class="like-btn"
+  	(click)="submit()"
+  	[disabled]="loadingLike || likeTxId !== '' || !data.myAddress"
+  	color="accent">
+  	<mat-icon>favorite</mat-icon><span>Like</span> 
+  </button>
+</mat-dialog-actions>
