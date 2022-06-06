@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { ArweaveService, arweaveAddressLength } from '../../core/services/arweave.service';
 import { SearchService } from '../../core/services/search.service';
 import { UtilsService } from '../../core/utils/utils.service';
@@ -13,8 +13,8 @@ import { TransactionMetadata } from '../../core/interfaces/transaction-metadata'
   styleUrls: ['./search-story-dialog.component.scss']
 })
 export class SearchStoryDialogComponent implements OnInit, OnDestroy {
-  searchForm: FormGroup = new FormGroup({
-    'query': new FormControl(
+  searchForm: UntypedFormGroup = new UntypedFormGroup({
+    'query': new UntypedFormControl(
       '',
       [
         Validators.required,

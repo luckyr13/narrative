@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { TrendingComponent } from './trending/trending.component';
 import { SearchService } from '../core/services/search.service';
 
@@ -10,8 +10,8 @@ import { SearchService } from '../core/services/search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  searchForm: FormGroup = new FormGroup({
-    'query': new FormControl('', [])
+  searchForm: UntypedFormGroup = new UntypedFormGroup({
+    'query': new UntypedFormControl('', [])
   });
   defaultLang: any;
 

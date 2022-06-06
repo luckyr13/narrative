@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { ReplyService } from '../../core/services/reply.service';
@@ -11,7 +11,7 @@ import { ReplyService } from '../../core/services/reply.service';
   styleUrls: ['./reply-dialog.component.scss']
 })
 export class ReplyDialogComponent implements OnInit, OnDestroy {
-  useDispatch = new FormControl(false);
+  useDispatch = new UntypedFormControl(false);
   loadingReply = false;
   private _replySubscription = Subscription.EMPTY;
   replyTxId: string = '';

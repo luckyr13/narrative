@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { FollowService } from '../../core/services/follow.service';
@@ -11,7 +11,7 @@ import { FollowService } from '../../core/services/follow.service';
   styleUrls: ['./follow-dialog.component.scss']
 })
 export class FollowDialogComponent implements OnInit, OnDestroy {
-  useDispatch = new FormControl(false);
+  useDispatch = new UntypedFormControl(false);
   loadingFollow = false;
   followSubscription = Subscription.EMPTY;
   followTxId: string = '';

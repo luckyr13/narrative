@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-password-dialog',
@@ -10,8 +10,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class PasswordDialogComponent implements OnInit {
   hide = true;
 
-  passwordForm: FormGroup = new FormGroup({
-    password: new FormControl('', [Validators.required])
+  passwordForm: UntypedFormGroup = new UntypedFormGroup({
+    password: new UntypedFormControl('', [Validators.required])
   });
   constructor(
     private _dialogRef: MatDialogRef<PasswordDialogComponent>,

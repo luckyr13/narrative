@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { LikeService } from '../../core/services/like.service';
@@ -11,7 +11,7 @@ import { LikeService } from '../../core/services/like.service';
   styleUrls: ['./like-dialog.component.scss']
 })
 export class LikeDialogComponent implements OnInit, OnDestroy {
-  useDispatch = new FormControl(false);
+  useDispatch = new UntypedFormControl(false);
   loadingLike = false;
   private _likeSubscription = Subscription.EMPTY;
   likeTxId: string = '';
