@@ -21,7 +21,8 @@ export class PendingStoriesService {
   }
 
 
-  getLatestPosts(from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {
+  getLatestPosts(
+    from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {
     const tags = [
       {
         name: "App-Name",
@@ -37,7 +38,7 @@ export class PendingStoriesService {
       },
       {
         name: "Type",
-        values: ["Story"]
+        values: ["Story", "Repost"]
       },
       /*
       // Koii filter
