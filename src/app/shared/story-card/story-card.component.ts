@@ -422,7 +422,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     this.owner = this.post.owner;
     this.storyContentType = this.post.dataType ? this.post.dataType : '';
     this.extractTagsFromPost(this.post);
-    if (this.storyType === 'Story' || this.storyType === 'Reply') { 
+    if (this.storyType === 'Story' || 
+        this.storyType === 'Reply' || 
+        this.storyType === 'Substory') { 
       if (dataSize <= this.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
         this._loadContentHelperLoadContent(this.post.id);
       } else if (dataSize <= this.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
@@ -446,7 +448,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     } else if (this.storyType === 'Repost' && this.repostId !== '' && !recurLv) {
       this.isReposted = true;
       this.loadPostAndThenData(this.repostId, recurLv + 1);
-    } else {
+    } else if (this.storyType !== '') {
       this.contentError = `Unknown type 👽`;
     }
   }
