@@ -77,7 +77,10 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
         const tmpFrom = typeof from === 'string' ? [from] : from;
-        return this._story.getLatestPosts(tmpFrom, this.maxPosts, currentHeight);
+        const includeReposts = true;
+        return this._story.getLatestPosts(
+          tmpFrom, this.maxPosts, currentHeight, includeReposts
+        );
       })
     ).subscribe({
       next: (posts) => {

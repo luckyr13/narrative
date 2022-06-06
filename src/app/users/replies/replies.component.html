@@ -1,7 +1,10 @@
 <div class="post-list-container">
 	<ng-container
 		*ngFor="let reply of replies">
-		<h4 class="label-replied">{{mainUsername}} replied:</h4>
+		<h4 class="label-replied">
+			<mat-icon aria-label="Likes" color="accent">reply</mat-icon>
+			{{mainUsername}} replied:
+		</h4>
 		<app-story-card
 			[post]="reply"
 			[fullMode]="false"></app-story-card>

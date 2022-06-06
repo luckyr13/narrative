@@ -1,5 +1,5 @@
 <h2 mat-dialog-title class="title-text">
-	Like
+	{{ 'GENERAL.STORY.LIKE' | translate }}
 </h2>
 <div class="title-buttons">
 	<button
@@ -58,6 +58,6 @@
   	(click)="submit()"
   	[disabled]="loadingLike || likeTxId !== '' || !data.myAddress"
   	color="accent">
-  	<mat-icon>favorite</mat-icon><span>Like</span> 
+  	<mat-icon color="warn">favorite</mat-icon><span>{{ 'GENERAL.STORY.LIKE' | translate }}</span> 
   </button>
 </mat-dialog-actions>

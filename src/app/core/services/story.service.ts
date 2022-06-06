@@ -55,7 +55,11 @@ export class StoryService {
     return this._arweave.uploadFileToArweave(msg, 'text/plain', key, tags, loginMethod, disableDispatch);
   }
 
-  getLatestPosts(from: string[] | string = [], limit?: number, maxHeight?: number): Observable<TransactionMetadata[]> {
+  getLatestPosts(
+    from: string[] | string = [],
+    limit?: number,
+    maxHeight?: number,
+    includeReposts?: boolean): Observable<TransactionMetadata[]> {
   	const tags = [
   		{
         name: "App-Name",
@@ -81,6 +85,10 @@ export class StoryService {
       },
       */
   	];
+
+    if (includeReposts) {
+      tags[3].values.push('Repost');
+    }
   	return this._ardb.searchTransactions(from, limit, maxHeight, tags).pipe(
         map((_posts: ArdbTransaction[]) => {
           const res = _posts.map((tx) => {

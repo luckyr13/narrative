@@ -1,5 +1,5 @@
 <h2 mat-dialog-title class="title-text">
-	Reply
+	{{ 'GENERAL.STORY.REPLY' | translate }}
 </h2>
 <div class="title-buttons">
 	<button
@@ -40,7 +40,7 @@
 			</mat-checkbox>
 		</p>
 	</div>
-	<h4 class="text-center" *ngIf="!data.myAddress">
+	<h4 class="text-center login-first" *ngIf="!data.myAddress">
 		Please login first!
 	</h4>
 	<div *ngIf="loadingReply">
@@ -62,9 +62,10 @@
   <div class="spacer"></div>
   <button
   	mat-flat-button
+  	class="reply-btn"
   	(click)="submit()"
   	[disabled]="loadingReply || replyTxId !== '' || message == ''"
   	color="accent">
-  	<span>Reply</span> 
+  	<mat-icon>reply</mat-icon><span>{{ 'GENERAL.STORY.REPLY' | translate }}</span>
   </button>
 </mat-dialog-actions>

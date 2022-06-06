@@ -84,6 +84,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   loadingPostMetadata = false;
   private _postMetadataSubscription = Subscription.EMPTY;
 
+  repostId: string = '';
+  isReposted = false;
 
   constructor(
     private _verto: VertoService,
@@ -99,17 +101,17 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.txId) {
       this.loadPostAndThenData(this.txId);
-    } else {
+    } else if (this.post) {
       this.loadData();
     }
   }
 
-  loadPostAndThenData(tx: string) {
+  loadPostAndThenData(tx: string, recurLv = 0) {
     this.loadingPostMetadata = true;
     this._postMetadataSubscription = this._story.getPostById(tx).subscribe({
       next: (post) => {
         this.post = post;
-        this.loadData();
+        this.loadData(recurLv);
       },
       error: (error) => {
         this.loadingPostMetadata = false;
@@ -118,9 +120,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     })
   }
 
-  loadData() {
+  loadData(recurLv = 0) {
     this.loadVertoProfile();
-    this.loadContent();
+    this.loadContent(recurLv);
     if (this.post.blockTimestamp) {
       this.post.blockTimestamp = this._utils.dateFormat(this.post.blockTimestamp);
     }
@@ -147,9 +149,15 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       } else if (t.name === 'Service') {
         this.application = t.value;
       } else if (t.name === 'Type') {
-        this.storyType = t.value;        
+        this.storyType = t.value;
       } else if (t.name === 'Content-Type' && !this.storyContentType) {
         this.storyContentType = t.value;
+      } else if (t.name === 'Story-Id') {
+        if (this._arweave.validateAddress(t.value)) {
+          this.repostId = t.value;
+        } else {
+          console.error('Invalid Repost Story Id', t);
+        }
       }
     }
   }
@@ -157,6 +165,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   loadVertoProfile() {
     const account = this.post.owner;
     this.loadingProfile = true;
+    this.profile = null;
     this.profileSubscription = this._verto.getProfile(account).subscribe({
       next: (profile: UserInterface|undefined) => {
         this.profileImage = 'assets/images/blank-profile.png';
@@ -227,6 +236,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     const defLangObj = this._userSettings.getLangObject(defLang);
     let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
       'ltr' : 'rtl';
+    const myAddress = this._auth.getMainAddressSnapshot();
 
     const dialogRef = this._dialog.open(
       RepostDialogComponent,
@@ -235,7 +245,12 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         autoFocus: false,
         disableClose: false,
         data: {
-          // address: this.account
+          myAddress: myAddress,
+          txId: this.post.id,
+          postOwner: this.post.owner,
+          postOwnerUsername: this.profile && this.profile.username ? this.profile.username : '',
+          postOwnerImage: this.profileImage,
+          postContent: this.originalRawContent
         },
         direction: direction
       }
@@ -357,9 +372,9 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     return detectedYouTubeIds;
   }
 
-  _loadContentHelperLoadContent() {
+  _loadContentHelperLoadContent(_postId: string) {
     this.loadingContent = true;
-    this.contentSubscription = this._arweave.getDataAsString(this.post.id).subscribe({
+    this.contentSubscription = this._arweave.getDataAsString(_postId).subscribe({
       next: (data: string|Uint8Array) => {
         // this.content = this._utils.sanitize(`${data}`);
         this.originalRawContent = this._utils.sanitizeFull(`${data}`);
@@ -400,32 +415,39 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     return (this._utils.sanitize(s.substr(0, length)) + ellipsis);
   }
 
-  loadContent() {
+  loadContent(recurLv = 0) {
     const dataSize = this.post.dataSize ? +(this.post.dataSize) : 0;
     // Read tags and
     // fill substories array
     this.owner = this.post.owner;
     this.storyContentType = this.post.dataType ? this.post.dataType : '';
     this.extractTagsFromPost(this.post);
-    if (dataSize <= this.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
-      this._loadContentHelperLoadContent();
-    } else if (dataSize <= this.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
-      // Load content
-      // this._loadContentHelperLoadContent();
-    } else if (dataSize <= this.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
-      // Load content
-      // this._loadContentHelperLoadContent();
-    } else if (dataSize <= this.storyAudioMaxSizeBytes && this.validateContentType(this.storyContentType, 'audio')) {
-      // Load content
-      // this._loadContentHelperLoadContent();
-    } else if (!this.post || this.post.dataSize === undefined) {
-      this.contentError = `Transaction is pending ...`;
+    if (this.storyType === 'Story' || this.storyType === 'Reply') { 
+      if (dataSize <= this.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
+        this._loadContentHelperLoadContent(this.post.id);
+      } else if (dataSize <= this.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
+        // Load content
+        // this._loadContentHelperLoadContent();
+      } else if (dataSize <= this.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
+        // Load content
+        // this._loadContentHelperLoadContent();
+      } else if (dataSize <= this.storyAudioMaxSizeBytes && this.validateContentType(this.storyContentType, 'audio')) {
+        // Load content
+        // this._loadContentHelperLoadContent();
+      } else if (!this.post || this.post.dataSize === undefined) {
+        this.contentError = `Transaction is pending ...`;
+      } else {
+        this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes.
+          Size limit for text: ${this.storyMaxSizeBytes}bytes.
+          Size limit for videos: ${this.storyVideoMaxSizeBytes}bytes.
+          Size limit for audio: ${this.storyAudioMaxSizeBytes}bytes.
+          Story size: ${this.post.dataSize} bytes.`;
+      }
+    } else if (this.storyType === 'Repost' && this.repostId !== '' && !recurLv) {
+      this.isReposted = true;
+      this.loadPostAndThenData(this.repostId, recurLv + 1);
     } else {
-      this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes.
-        Size limit for text: ${this.storyMaxSizeBytes}bytes.
-        Size limit for videos: ${this.storyVideoMaxSizeBytes}bytes.
-        Size limit for audio: ${this.storyAudioMaxSizeBytes}bytes.
-        Story size: ${this.post.dataSize} bytes.`;
+      this.contentError = `Unknown type 👽`;
     }
   }
 
