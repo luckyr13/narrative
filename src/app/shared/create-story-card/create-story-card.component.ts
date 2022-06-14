@@ -19,7 +19,6 @@ import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-
 import { UploadFileDialogComponent } from '../upload-file-dialog/upload-file-dialog.component';
 import { SubmitStoryDialogComponent } from '../submit-story-dialog/submit-story-dialog.component';
 import Transaction from 'arweave/web/lib/transaction';
-import { ArbundlesService } from '../../core/services/arbundles.service';
 import {TranslateService} from '@ngx-translate/core';
 import { RecordVideoDialogComponent } from '../record-video-dialog/record-video-dialog.component'; 
 import { RecordAudioDialogComponent } from '../record-audio-dialog/record-audio-dialog.component'; 
@@ -60,7 +59,6 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     private _userSettings: UserSettingsService,
     private _utils: UtilsService,
     private _dialog: MatDialog,
-    private _arbundles: ArbundlesService,
     private _translate: TranslateService) {
     this.codemirrorWrapper = new CodeMirrorWrapper();
   }
