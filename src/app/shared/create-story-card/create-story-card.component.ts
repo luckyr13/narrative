@@ -22,6 +22,7 @@ import Transaction from 'arweave/web/lib/transaction';
 import {TranslateService} from '@ngx-translate/core';
 import { RecordVideoDialogComponent } from '../record-video-dialog/record-video-dialog.component'; 
 import { RecordAudioDialogComponent } from '../record-audio-dialog/record-audio-dialog.component'; 
+import { Direction } from '@angular/cdk/bidi';
 
 @Component({
   selector: 'app-create-story-card',
@@ -159,6 +160,10 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     this.loadingCreatePost = true;
     this.codemirrorWrapper.editable(false);
 
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
 
     const dialogRef = this._dialog.open(
       SubmitStoryDialogComponent,
@@ -170,7 +175,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
           address: this.account,
           substories: this.substories,
           mainStory: this.messageContent
-        }
+        },
+        direction: direction
       }
     );
 
@@ -204,6 +210,11 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   }
 
   fileManager(type: string) {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       FileManagerDialogComponent,
       {
@@ -213,7 +224,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         data: {
           type: type,
           address: this.account
-        }
+        },
+        direction: direction
       });
 
     // Manually restore focus to the menu trigger
@@ -234,6 +246,11 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   }
 
   uploadFile(type: string) {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       UploadFileDialogComponent,
       {
@@ -243,7 +260,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         data: {
           type: type,
           address: this.account
-        }
+        },
+        direction: direction
       }
     );
 
@@ -265,6 +283,11 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   }
 
   addSubstory() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       NewStoryDialogComponent,
       {
@@ -273,7 +296,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         disableClose: true,
         data: {
           address: this.account
-        }
+        },
+        direction: direction
       }
     );
 
@@ -294,6 +318,10 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   }
 
   searchStory() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
     const dialogRef = this._dialog.open(
       SearchStoryDialogComponent,
       {
@@ -302,7 +330,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         disableClose: true,
         data: {
           // address: this.account
-        }
+        },
+        direction: direction
       }
     );
 
@@ -346,6 +375,11 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   }
 
   recordVideo() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       RecordVideoDialogComponent,
       {
@@ -354,7 +388,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         disableClose: false,
         data: {
           address: this.account
-        }
+        },
+        direction: direction
       });
 
     dialogRef.afterClosed().subscribe((res: {id: string, type:'text'|'image'|'audio'|'video'|''}) => { 
@@ -374,6 +409,11 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   }
 
   recordAudio() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       RecordAudioDialogComponent,
       {
@@ -382,7 +422,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         disableClose: false,
         data: {
           address: this.account
-        }
+        },
+        direction: direction
       });
 
     dialogRef.afterClosed().subscribe((res: {id: string, type:'text'|'image'|'audio'|'video'|''}) => { 

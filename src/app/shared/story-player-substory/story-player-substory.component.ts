@@ -10,6 +10,8 @@ import { UtilsService } from '../../core/utils/utils.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component'; 
 import {MatDialog} from '@angular/material/dialog';
 import { SafeResourceUrl } from '@angular/platform-browser';
+import { Direction } from '@angular/cdk/bidi';
+import { UserSettingsService } from '../../core/services/user-settings.service';
 
 @Component({
   selector: 'app-story-player-substory',
@@ -72,7 +74,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     private _substory: SubstoryService,
     private _arweave: ArweaveService,
     private _utils: UtilsService,
-    private _dialog: MatDialog) {
+    private _dialog: MatDialog,
+    private _userSettings: UserSettingsService) {
   }
 
   ngOnInit(): void {
@@ -327,6 +330,11 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   }
 
   confirmDialog(href: string) {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       ConfirmationDialogComponent,
       {
@@ -337,7 +345,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
           content: `Do you really want to visit this site? ${href}`,
           closeLabel: 'No',
           confirmLabel: 'Yes, open link in new tab'
-        }
+        },
+        direction: direction
       }
     );
 

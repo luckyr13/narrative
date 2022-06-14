@@ -13,6 +13,8 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 import { PendingStoriesService } from '../core/services/pending-stories.service';
 import { FilterDialogComponent } from '../shared/filter-dialog/filter-dialog.component'; 
 import { MatDialog } from '@angular/material/dialog';
+import { Direction } from '@angular/cdk/bidi';
+import { UserSettingsService } from '../core/services/user-settings.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -38,7 +40,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private _utils: UtilsService,
     private _arweave: ArweaveService,
     private _ngZone: NgZone,
-    private _dialog: MatDialog) {
+    private _dialog: MatDialog,
+    private _userSettings: UserSettingsService) {
     this.version = this._appSettings.appVersion;
   }
 
@@ -161,6 +164,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   openFilterDialog() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       FilterDialogComponent,
       {
@@ -169,7 +177,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         disableClose: false,
         data: {
           address: this.account
-        }
+        },
+        direction: direction
       });
 
     dialogRef.afterClosed().subscribe(() => { 

@@ -11,6 +11,8 @@ import {
 } from '../../shared/password-dialog/password-dialog.component';
 import { SubtleCryptoService } from '../../core/utils/subtle-crypto.service';
 import * as b64 from 'base64-js';
+import { UserSettingsService } from '../../core/services/user-settings.service';
+import { Direction } from '@angular/cdk/bidi';
 
 @Component({
   selector: 'app-bottom-sheet-login',
@@ -29,7 +31,8 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
     private _bottomSheetRef: MatBottomSheetRef<BottomSheetLoginComponent>,
     private _router: Router,
     private _dialog: MatDialog,
-    private _crypto: SubtleCryptoService
+    private _crypto: SubtleCryptoService, 
+    private _userSettings: UserSettingsService
   ) {}
 
   ngOnInit(): void {
@@ -92,13 +95,19 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
   }
 
   setPasswordDialog(tmpAddress: AddressKey) {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(PasswordDialogComponent, {
       data: {
         title: 'Set password',
         confirmLabel: 'Set password',
         closeLabel: 'Cancel'
       },
-      disableClose: true
+      disableClose: true,
+      direction: direction
     });
     dialogRef.afterClosed().subscribe(password => {
       if (password) {

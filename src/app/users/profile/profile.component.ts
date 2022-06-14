@@ -94,6 +94,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   confirmFollowDialog(username:string, wallets: string[]) {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
     const dialogRef = this._dialog.open(
       FollowDialogComponent,
       {
@@ -106,7 +111,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           confirmLabel: 'Yes, I want to follow this user',
           wallets: wallets,
           username: username
-        }
+        },
+        direction: direction
       }
     );
 
