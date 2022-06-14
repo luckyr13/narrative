@@ -46,7 +46,7 @@ export class UserSettingsService {
       dtheme = settings.theme;
       this.setTheme(dtheme);
     } else {
-      this.setTheme('light-blue-theme');
+      this.setTheme('light-pink-theme');
     }
     if (settings && Object.prototype.hasOwnProperty.call(settings, 'lang')) {
       dlang = settings.lang;
