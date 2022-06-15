@@ -20,21 +20,6 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
   errorMessage01: string = '';
   dragFileActive = false;
   enterCounter = 0;
-  supportedFiles: Record<string, string[]> = {
-    'image': [
-      'image/gif', 'image/png',
-      'image/jpeg', 'image/bmp',
-      'image/webp'
-    ],
-    'audio': [
-      'audio/midi', 'audio/mpeg',
-      'audio/webm', 'audio/ogg',
-      'audio/wav'
-    ],
-    'video': [
-      'video/webm', 'video/ogg', 'video/mp4'
-    ]
-  };
   @ViewChild('fileInput') fileInput!: ElementRef;
   file: {name: string, size: number, type: string } = {
     name: '',
@@ -48,7 +33,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     uploaded: '',
     total: ''
   };
-
+  supportedFiles: Record<string, string[]> = {};
 
   constructor(
     private _dialogRef: MatDialogRef<UploadFileDialogComponent>,
@@ -57,7 +42,9 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     },
     private _arweave: ArweaveService,
     private _userAuth: UserAuthService,
-    private _appSettings: AppSettingsService) { }
+    private _appSettings: AppSettingsService) {
+    this.supportedFiles = this._appSettings.supportedFiles;
+  }
 
 
   ngOnInit(): void {
@@ -213,12 +200,12 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
   }
 
   getSupportedFilesAsStr(type: string) {
-    return this.supportedFiles[type].join(',');
+    return this._appSettings.supportedFiles[type].join(',');
   }
 
   validateFileType(type: string, fileType: string) {
-    if (type in this.supportedFiles) {
-      if (this.supportedFiles[type].indexOf(fileType) < 0) {
+    if (type in this._appSettings.supportedFiles) {
+      if (this._appSettings.supportedFiles[type].indexOf(fileType) < 0) {
         throw new Error(`${fileType} is not of type ${type}`);
       }
     } else {

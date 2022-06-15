@@ -17,6 +17,7 @@ import { ReplyDialogComponent } from '../reply-dialog/reply-dialog.component';
 import { LikeDialogComponent } from '../like-dialog/like-dialog.component';
 import { RepostDialogComponent } from '../repost-dialog/repost-dialog.component';
 import { StoryService } from '../../core/services/story.service';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-story-card',
@@ -46,36 +47,6 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   owner: string = '';
   storyType: string = '';
   storyContentType: string = '';
-  supportedFiles: Record<string, string[]> = {
-    'image': [
-      'image/gif', 'image/png',
-      'image/jpeg', 'image/bmp',
-      'image/webp'
-    ],
-    'audio': [
-      'audio/midi', 'audio/mpeg',
-      'audio/webm', 'audio/ogg',
-      'audio/wav'
-    ],
-    'video': [
-      'video/webm', 'video/ogg', 'video/mp4'
-    ],
-    'text': [
-      'text/plain'
-    ],
-  };
-
-  /*
-  *  Default: 
-  *  Story: 100kb = 100000b
-  *  Image: 3mb = 3000000b
-  *  Audio: 10mb = 10000000b
-  *  Video: 200mb = 200000000b
-  */
-  storyMaxSizeBytes = 100000;
-  storyImageMaxSizeBytes = 3000000;
-  storyVideoMaxSizeBytes = 200000000;
-  storyAudioMaxSizeBytes = 10000000;
   contentError = '';
 
   maxPreviewSize = 250;
@@ -96,7 +67,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     private _bottomSheetShare: MatBottomSheet,
     private _dialog: MatDialog,
     private _location: Location,
-    private _story: StoryService) { }
+    private _story: StoryService,
+    private _appSettings: AppSettingsService) { }
 
   ngOnInit(): void {
     if (this.txId) {
@@ -218,7 +190,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
           postOwner: this.post.owner,
           postOwnerUsername: this.profile && this.profile.username ? this.profile.username : '',
           postOwnerImage: this.profileImage,
-          postContent: this.originalRawContent
+          postContent: this.originalRawContent,
+          contentType: this.storyContentType
         },
         direction: direction
       }
@@ -425,24 +398,24 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     if (this.storyType === 'Story' || 
         this.storyType === 'Reply' || 
         this.storyType === 'Substory') { 
-      if (dataSize <= this.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
+      if (dataSize <= this._appSettings.storyMaxSizeBytes && this.validateContentType(this.storyContentType, 'text')) {// Load content
         this._loadContentHelperLoadContent(this.post.id);
-      } else if (dataSize <= this.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
+      } else if (dataSize <= this._appSettings.storyImageMaxSizeBytes && this.validateContentType(this.storyContentType, 'image')) {
         // Load content
         // this._loadContentHelperLoadContent();
-      } else if (dataSize <= this.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
+      } else if (dataSize <= this._appSettings.storyVideoMaxSizeBytes && this.validateContentType(this.storyContentType, 'video')) {
         // Load content
         // this._loadContentHelperLoadContent();
-      } else if (dataSize <= this.storyAudioMaxSizeBytes && this.validateContentType(this.storyContentType, 'audio')) {
+      } else if (dataSize <= this._appSettings.storyAudioMaxSizeBytes && this.validateContentType(this.storyContentType, 'audio')) {
         // Load content
         // this._loadContentHelperLoadContent();
       } else if (!this.post || this.post.dataSize === undefined) {
         this.contentError = `Transaction is pending ...`;
       } else {
-        this.contentError = `Story is too big to be displayed. Size limit for images: ${this.storyImageMaxSizeBytes}bytes.
-          Size limit for text: ${this.storyMaxSizeBytes}bytes.
-          Size limit for videos: ${this.storyVideoMaxSizeBytes}bytes.
-          Size limit for audio: ${this.storyAudioMaxSizeBytes}bytes.
+        this.contentError = `Story is too big to be displayed. Size limit for images: ${this._appSettings.storyImageMaxSizeBytes}bytes.
+          Size limit for text: ${this._appSettings.storyMaxSizeBytes}bytes.
+          Size limit for videos: ${this._appSettings.storyVideoMaxSizeBytes}bytes.
+          Size limit for audio: ${this._appSettings.storyAudioMaxSizeBytes}bytes.
           Story size: ${this.post.dataSize} bytes.`;
       }
     } else if (this.storyType === 'Repost' && this.repostId !== '' && !recurLv) {
@@ -505,8 +478,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   validateContentType(contentType: string, desiredType: 'image'|'audio'|'video'|'text') {
     return (
-      Object.prototype.hasOwnProperty.call(this.supportedFiles, desiredType) ?
-      this.supportedFiles[desiredType].indexOf(contentType) >= 0 :
+      Object.prototype.hasOwnProperty.call(this._appSettings.supportedFiles, desiredType) ?
+      this._appSettings.supportedFiles[desiredType].indexOf(contentType) >= 0 :
       false
     );
   }

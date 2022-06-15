@@ -6,6 +6,7 @@ import { SearchService } from '../../core/services/search.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { Subscription, switchMap, of } from 'rxjs';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-search-story-dialog',
@@ -24,24 +25,6 @@ export class SearchStoryDialogComponent implements OnInit, OnDestroy {
     )
   });
   resultsSubscription = Subscription.EMPTY;
-  supportedFiles: Record<string, string[]> = {
-    'image': [
-      'image/gif', 'image/png',
-      'image/jpeg', 'image/bmp',
-      'image/webp'
-    ],
-    'audio': [
-      'audio/midi', 'audio/mpeg',
-      'audio/webm', 'audio/ogg',
-      'audio/wav'
-    ],
-    'video': [
-      'video/webm', 'video/ogg', 'video/mp4'
-    ],
-    'text': [
-      'text/plain'
-    ],
-  };
   appName: string = '';
   application: string = '';
   storyType: string = '';
@@ -67,7 +50,8 @@ export class SearchStoryDialogComponent implements OnInit, OnDestroy {
     */
     private _arweave: ArweaveService,
     private _search: SearchService,
-    private _utils: UtilsService,) { }
+    private _utils: UtilsService,
+    private _appSettings: AppSettingsService) { }
 
 
   ngOnInit(): void {
@@ -127,8 +111,8 @@ export class SearchStoryDialogComponent implements OnInit, OnDestroy {
 
   validateContentType(contentType: string, desiredType: 'image'|'audio'|'video'|'text') {
     return (
-      Object.prototype.hasOwnProperty.call(this.supportedFiles, desiredType) ?
-      this.supportedFiles[desiredType].indexOf(contentType) >= 0 :
+      Object.prototype.hasOwnProperty.call(this._appSettings.supportedFiles, desiredType) ?
+      this._appSettings.supportedFiles[desiredType].indexOf(contentType) >= 0 :
       false
     );
   }

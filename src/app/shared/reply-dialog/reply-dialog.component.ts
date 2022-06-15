@@ -4,6 +4,7 @@ import { UntypedFormControl } from '@angular/forms';
 import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { ReplyService } from '../../core/services/reply.service';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-reply-dialog',
@@ -25,10 +26,12 @@ export class ReplyDialogComponent implements OnInit, OnDestroy {
       myAddress: string,
       postOwnerUsername: string,
       postOwnerImage: string,
-      postContent: string
+      postContent: string,
+      contentType: string
     },
     private _utils: UtilsService,
-    private _reply: ReplyService) { }
+    private _reply: ReplyService,
+    private _appSettings: AppSettingsService) { }
 
 
   ngOnInit(): void {
@@ -66,5 +69,13 @@ export class ReplyDialogComponent implements OnInit, OnDestroy {
 
   contentChangeEvent(storyContent: string) {
     this.message = storyContent;
+  }
+
+  validateContentType(contentType: string, desiredType: 'image'|'audio'|'video'|'text') {
+    return (
+      Object.prototype.hasOwnProperty.call(this._appSettings.supportedFiles, desiredType) ?
+      this._appSettings.supportedFiles[desiredType].indexOf(contentType) >= 0 :
+      false
+    );
   }
 }

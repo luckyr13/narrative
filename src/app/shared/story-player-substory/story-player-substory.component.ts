@@ -12,6 +12,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { Direction } from '@angular/cdk/bidi';
 import { UserSettingsService } from '../../core/services/user-settings.service';
+import { AppSettingsService } from '../../core/services/app-settings.service';
 
 @Component({
   selector: 'app-story-player-substory',
@@ -31,38 +32,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
   substoryContentSubscription = Subscription.EMPTY;
   @Input('substory') substory!: { id: string, type: string};
   @Output() loadingSubstoryEvent = new EventEmitter<boolean>();
-  supportedFiles: Record<string, string[]> = {
-    'image': [
-      'image/gif', 'image/png',
-      'image/jpeg', 'image/bmp',
-      'image/webp'
-    ],
-    'audio': [
-      'audio/midi', 'audio/mpeg',
-      'audio/webm', 'audio/ogg',
-      'audio/wav'
-    ],
-    'video': [
-      'video/webm', 'video/ogg', 'video/mp4'
-    ],
-    'text': [
-      'text/plain'
-    ],
-  };
   @ViewChild('contentContainer') contentContainer!: ElementRef;
   owner: string = '';
-
-  /*
-  *  Default: 
-  *  Story: 100kb = 100000b
-  *  Image: 3mb = 3000000b
-  *  Audio: 10mb = 10000000b
-  *  Video: 200mb = 200000000b
-  */
-  storyMaxSizeBytes = 100000;
-  storyImageMaxSizeBytes = 3000000;
-  storyVideoMaxSizeBytes = 200000000;
-  storyAudioMaxSizeBytes = 10000000;
   contentError = '';
 
   maxPreviewSize = 250;
@@ -75,7 +46,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
     private _arweave: ArweaveService,
     private _utils: UtilsService,
     private _dialog: MatDialog,
-    private _userSettings: UserSettingsService) {
+    private _userSettings: UserSettingsService,
+    private _appSettings: AppSettingsService) {
   }
 
   ngOnInit(): void {
@@ -102,8 +74,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
 
         this.owner = tx.owner;
 
-        for (const sfCat of Object.keys(this.supportedFiles)) {
-          for (const sf of this.supportedFiles[sfCat]) {
+        for (const sfCat of Object.keys(this._appSettings.supportedFiles)) {
+          for (const sf of this._appSettings.supportedFiles[sfCat]) {
             supportedFiles.push(sf);
           }
         }
@@ -115,8 +87,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
             if (this.substoryContent.type.indexOf('image') >= 0) {
               // Check dataSize first
               const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-              if (dataSize > this.storyImageMaxSizeBytes) {
-                this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
+              if (dataSize > this._appSettings.storyImageMaxSizeBytes) {
+                this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this._appSettings.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
                 throw new Error(this.substoryContent.error);
@@ -131,8 +103,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
             } else if (this.substoryContent.type.indexOf('video') >= 0) {
               // Check dataSize first
               const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-              if (dataSize > this.storyVideoMaxSizeBytes) {
-                this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
+              if (dataSize > this._appSettings.storyVideoMaxSizeBytes) {
+                this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this._appSettings.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
                 throw new Error(this.substoryContent.error);
@@ -147,8 +119,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
             } else if (this.substoryContent.type.indexOf('audio') >= 0) {
               // Check dataSize first
               const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-              if (dataSize > this.storyAudioMaxSizeBytes) {
-                this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
+              if (dataSize > this._appSettings.storyAudioMaxSizeBytes) {
+                this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this._appSettings.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
                 throw new Error(this.substoryContent.error);
@@ -162,8 +134,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               return of(fileURL);
             } else if (this.substoryContent.type.indexOf('text') >= 0) {
               const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-              if (dataSize > this.storyMaxSizeBytes) {
-                this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
+              if (dataSize > this._appSettings.storyMaxSizeBytes) {
+                this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this._appSettings.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
                 this.substoryContent.loading = false;
                 this.loadingSubstoryEvent.emit(false);
                 throw new Error(this.substoryContent.error);
@@ -179,8 +151,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               if (t.value.indexOf('image') >= 0) {
                 // Check dataSize first
                 const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-                if (dataSize > this.storyImageMaxSizeBytes) {
-                  this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
+                if (dataSize > this._appSettings.storyImageMaxSizeBytes) {
+                  this.substoryContent.error = `Image is too big to be displayed. Size limit: ${this._appSettings.storyImageMaxSizeBytes}bytes. Image size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
                   this.loadingSubstoryEvent.emit(false);
                   throw new Error(this.substoryContent.error);
@@ -195,8 +167,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               } else if (t.value.indexOf('video') >= 0) {
                 // Check dataSize first
                 const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-                if (dataSize > this.storyVideoMaxSizeBytes) {
-                  this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
+                if (dataSize > this._appSettings.storyVideoMaxSizeBytes) {
+                  this.substoryContent.error = `Video is too big to be displayed. Size limit: ${this._appSettings.storyVideoMaxSizeBytes}bytes. Video size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
                   this.loadingSubstoryEvent.emit(false);
                   throw new Error(this.substoryContent.error);
@@ -211,8 +183,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
               } else if (t.value.indexOf('audio') >= 0) {
                 // Check dataSize first
                 const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-                if (dataSize > this.storyAudioMaxSizeBytes) {
-                  this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
+                if (dataSize > this._appSettings.storyAudioMaxSizeBytes) {
+                  this.substoryContent.error = `Audio is too big to be displayed. Size limit: ${this._appSettings.storyAudioMaxSizeBytes}bytes. Audio size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
                   this.loadingSubstoryEvent.emit(false);
                   throw new Error(this.substoryContent.error);
@@ -226,8 +198,8 @@ export class StoryPlayerSubstoryComponent implements OnInit, OnDestroy {
                 return of(fileURL);
               } else if (t.value.indexOf('text') >= 0) {
                 const dataSize = tx.dataSize ? +(tx.dataSize) : 0;
-                if (dataSize > this.storyMaxSizeBytes) {
-                  this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
+                if (dataSize > this._appSettings.storyMaxSizeBytes) {
+                  this.substoryContent.error = `Story is too big to be displayed. Size limit: ${this._appSettings.storyMaxSizeBytes}bytes. Story size: ${dataSize} bytes.`;
                   this.substoryContent.loading = false;
                   this.loadingSubstoryEvent.emit(false);
                   throw new Error(this.substoryContent.error);
