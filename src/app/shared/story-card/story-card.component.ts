@@ -48,7 +48,6 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   storyType: string = '';
   storyContentType: string = '';
   contentError = '';
-  sizeError = false;
 
   maxPreviewSize = 250;
   realPreviewSize = this.maxPreviewSize;
@@ -418,13 +417,12 @@ export class StoryCardComponent implements OnInit, OnDestroy {
           Size limit for videos: ${this._appSettings.storyVideoMaxSizeBytes}bytes.
           Size limit for audio: ${this._appSettings.storyAudioMaxSizeBytes}bytes.
           Story size: ${this.post.dataSize} bytes.`;
-        this.sizeError = true;
       }
     } else if (this.storyType === 'Repost' && this.repostId !== '' && !recurLv) {
       this.isReposted = true;
       this.loadPostAndThenData(this.repostId, recurLv + 1);
-    } else if (this.storyType !== '') {
-      console.error(`Unknown type 👽 ${this.post.id}`);
+    } else if (this.storyType !== 'Repost' && this.storyType !== '') {
+      this.contentError = `Unknown story type 👽 ${this.post.id} - ${this.storyType}`;
     }
   }
 
