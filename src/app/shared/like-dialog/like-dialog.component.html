@@ -1,16 +1,3 @@
-<h2 mat-dialog-title class="title-text">
-	{{ 'GENERAL.STORY.LIKE' | translate }}
-</h2>
-<div class="title-buttons">
-	<button
-		mat-icon-button
-		[disabled]="loadingLike"
-		aria-label="Close window"
-		(click)="close()">
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
-<div class="clear-both"></div>
 <mat-dialog-content
 	class="content border-right-special">
 	<div *ngIf="!loadingLike && !likeTxId && data.myAddress">
@@ -32,9 +19,9 @@
 			</mat-checkbox>
 		</p>
 	</div>
-	<h4 class="text-center" *ngIf="!data.myAddress">
+	<h3 class="text-center" *ngIf="!data.myAddress">
 		Please login first!
-	</h4>
+	</h3>
 	<div *ngIf="loadingLike">
 		<p><span>Sending tx ...</span><mat-spinner color="accent" [diameter]="20"></mat-spinner></p>
 	</div>
