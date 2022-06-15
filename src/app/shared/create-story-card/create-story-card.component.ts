@@ -225,7 +225,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
           type: type,
           address: this.account
         },
-        direction: direction
+        direction: direction,
+        width: '800px'
       });
 
     // Manually restore focus to the menu trigger
@@ -261,7 +262,8 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
           type: type,
           address: this.account
         },
-        direction: direction
+        direction: direction,
+        width: '800px'
       }
     );
 

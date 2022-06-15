@@ -20,7 +20,7 @@ import { FollowService } from '../../core/services/follow.service';
   templateUrl: './followers.component.html',
   styleUrls: ['./followers.component.scss']
 })
-export class FollowersComponent implements OnInit , OnDestroy {
+export class FollowersComponent implements OnInit, OnDestroy {
   public followers: Set<string> = new Set([]);
   private maxFollowers: number = 10;
   public loadingFollowers = false;

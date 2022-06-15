@@ -178,7 +178,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         data: {
           address: this.account
         },
-        direction: direction
+        direction: direction,
+        width: '420px'
       });
 
     dialogRef.afterClosed().subscribe(() => { 

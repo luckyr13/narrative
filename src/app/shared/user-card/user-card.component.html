@@ -9,7 +9,7 @@
   </mat-card-header>
   <mat-card-content>
   	<img class="default-img" mat-card-avatar *ngIf="!profile" [src]="getImageUrl('')">
-		<app-arweave-address matLine [address]="address">Main address: </app-arweave-address>
+		<app-arweave-address matLine [address]="address"></app-arweave-address>
 		<ng-container 
 			*ngIf="profile && profile.addresses">
 			<app-arweave-address

@@ -1,1 +1,76 @@
-<p>Coming soon ❤️❤️</p>
+<mat-dialog-content class="content">
+	<mat-tab-group color="accent" mat-align-tabs="center">
+	  <mat-tab label="Following">
+	  	<div>
+				<div *ngFor="let f of following" class="following-list-col">
+					<div class="col-chk">
+						<section class="text-center">
+				      <mat-checkbox></mat-checkbox>
+				    </section>
+					</div>
+			  	<app-user-card 
+			  		[disableNavigateToProfile]="true"
+			  		[address]="f"
+			  		class="col-user-card"></app-user-card>
+				</div>
+				<div class="more-results-container clear-both">
+					<mat-spinner *ngIf="loadingFollowing" color="accent" diameter="32"></mat-spinner>
+					<div class="no-results" *ngIf="!following.size && !loadingFollowing">
+						You are not following anyone yet!
+					</div>
+					<mat-card 
+						[style.visibility]="!loadingFollowing && moreResultsAvailableFollowing ? 'visible' : 'hidden'"
+						class="more-results-card mat-elevation-z0"
+						matRipple
+						(click)="moreResultsFollowing()" >
+					  <mat-card-content class="more-results text-center">
+							Show more results
+					  </mat-card-content>
+					</mat-card>
+				</div>
+		  </div>
+		</mat-tab>
+	  <mat-tab label="Followers">
+	  	<div>
+				<div *ngFor="let follower of followers" class="followers-list-col">
+			  	<div class="col-chk">
+						<section class="text-center">
+				      <mat-checkbox></mat-checkbox>
+				    </section>
+					</div>
+			  	<app-user-card 
+			  		[disableNavigateToProfile]="true"
+			  		[address]="follower"
+			  		class="col-user-card"></app-user-card>
+				</div>
+				<div class="more-results-container clear-both">
+					<mat-spinner *ngIf="loadingFollowers" color="accent" diameter="32"></mat-spinner>
+					<div class="no-results" *ngIf="!followers.size && !loadingFollowers">
+						You have no followers yet!
+					</div>
+					<mat-card 
+						[style.visibility]="!loadingFollowers && moreResultsAvailableFollowers ? 'visible' : 'hidden'"
+						class="more-results-card mat-elevation-z0"
+						matRipple
+						(click)="moreResultsFollowers()" >
+					  <mat-card-content class="more-results text-center">
+							Show more results
+					  </mat-card-content>
+					</mat-card>
+				</div>
+		  </div>
+	  </mat-tab>
+	</mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions 
+	align="start">
+  <button 
+  	mat-button
+  	cdkFocusInitial (click)="close()">Close</button>
+  <div class="spacer"></div>
+  <button
+  	mat-flat-button
+  	color="accent">
+  	<span>Apply</span> 
+  </button>
+</mat-dialog-actions>
