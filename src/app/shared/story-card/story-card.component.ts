@@ -223,7 +223,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
           postOwner: this.post.owner,
           postOwnerUsername: this.profile && this.profile.username ? this.profile.username : '',
           postOwnerImage: this.profileImage,
-          postContent: this.originalRawContent
+          postContent: this.originalRawContent,
+          contentType: this.storyContentType
         },
         direction: direction
       }
@@ -255,7 +256,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
           postOwner: this.post.owner,
           postOwnerUsername: this.profile && this.profile.username ? this.profile.username : '',
           postOwnerImage: this.profileImage,
-          postContent: this.originalRawContent
+          postContent: this.originalRawContent,
+          contentType: this.storyContentType
         },
         direction: direction
       }

@@ -81,7 +81,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
         } else {
           this.loadingLogin = false;
           this._bottomSheetRef.dismiss(address);
-          this._utils.message('Connection successful!', 'success');
+          this._utils.message('Welcome!', 'success');
         }
         
   		},
@@ -126,7 +126,7 @@ export class BottomSheetLoginComponent implements OnInit, OnDestroy {
               encodedKey);
             this.loadingLogin = false;
             this._bottomSheetRef.dismiss(tmpAddress.address);
-            this._utils.message('Connection successful!', 'success');
+            this._utils.message('Welcome!', 'success');
           },
           error: (error) => {
             this._utils.message(error, 'error');

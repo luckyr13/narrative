@@ -5,6 +5,7 @@ import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { ReplyService } from '../../core/services/reply.service';
 import { AppSettingsService } from '../../core/services/app-settings.service';
+import { ArweaveService } from '../../core/services/arweave.service';
 
 @Component({
   selector: 'app-reply-dialog',
@@ -31,7 +32,8 @@ export class ReplyDialogComponent implements OnInit, OnDestroy {
     },
     private _utils: UtilsService,
     private _reply: ReplyService,
-    private _appSettings: AppSettingsService) { }
+    private _appSettings: AppSettingsService,
+    private _arweave: ArweaveService) { }
 
 
   ngOnInit(): void {
@@ -78,4 +80,15 @@ export class ReplyDialogComponent implements OnInit, OnDestroy {
       false
     );
   }
+
+  getFullImgUrlFromTx(tx: string) {
+    return `${this._arweave.baseURL}${tx}`;
+  }
+
+  openLink(event: MouseEvent, txId: string) {
+    event.stopPropagation();
+    const url = `${this._arweave.baseURL}${txId}`;
+    window.open(url, '_blank');
+  }
+ 
 }

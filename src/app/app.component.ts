@@ -114,7 +114,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           stayLoggedIn
         ).subscribe({
           next: (address: string|AddressKey) => {
-            this._utils.message('Connection successful!', 'success');
+            this._utils.message('Welcome!', 'success');
           },
           error: (error) => {
             this._utils.message(`Error: ${error}`, 'error');

@@ -4,6 +4,8 @@ import { UntypedFormControl } from '@angular/forms';
 import { from, Observable, Subscription, concatMap, of } from 'rxjs';
 import { UtilsService } from '../../core/utils/utils.service';
 import { LikeService } from '../../core/services/like.service';
+import { AppSettingsService } from '../../core/services/app-settings.service';
+import { ArweaveService } from '../../core/services/arweave.service';
 
 @Component({
   selector: 'app-like-dialog',
@@ -24,10 +26,13 @@ export class LikeDialogComponent implements OnInit, OnDestroy {
       myAddress: string,
       postOwnerUsername: string,
       postOwnerImage: string,
-      postContent: string
+      postContent: string,
+      contentType: string
     },
     private _utils: UtilsService,
-    private _like: LikeService) { }
+    private _like: LikeService,
+    private _appSettings: AppSettingsService,
+    private _arweave: ArweaveService) { }
 
 
   ngOnInit(): void {
@@ -54,12 +59,28 @@ export class LikeDialogComponent implements OnInit, OnDestroy {
         this._utils.message('Error!', 'error');
       }
     });
-       
   }
-
 
   ngOnDestroy() {
     this._likeSubscription.unsubscribe();
+  }
+
+  validateContentType(contentType: string, desiredType: 'image'|'audio'|'video'|'text') {
+    return (
+      Object.prototype.hasOwnProperty.call(this._appSettings.supportedFiles, desiredType) ?
+      this._appSettings.supportedFiles[desiredType].indexOf(contentType) >= 0 :
+      false
+    );
+  }
+
+  getFullImgUrlFromTx(tx: string) {
+    return `${this._arweave.baseURL}${tx}`;
+  }
+
+  openLink(event: MouseEvent, txId: string) {
+    event.stopPropagation();
+    const url = `${this._arweave.baseURL}${txId}`;
+    window.open(url, '_blank');
   }
 
 }

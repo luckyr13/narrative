@@ -27,7 +27,7 @@
 
 @media (min-width: 820px) {
 	.content {
-		min-width: 680px;
+		min-width: 666px;
 	}
 }
 
@@ -56,4 +56,25 @@
 
 .like-btn span {
 	margin-left: 6px;
+}
+.story-image-container {
+	text-align: center;
+	padding: 20px;
+}
+.story-image-container img {
+	max-width: 50%;
+}
+.story-video-container {
+	text-align: center;
+	padding: 20px;
+}
+.story-video-container video {
+	max-width: 50%;
+}
+.story-audio-container {
+	text-align: center;
+	padding: 20px;
+}
+.story-audio-container video {
+	max-width: 50%;
 }
