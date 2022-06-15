@@ -210,7 +210,8 @@
 	        	mat-icon-button
 	        	class="btn-open-anyway"
 	        	(click)="openStory($event, post.id)"
-	        	aria-label="Open in new window" matTooltip="Open in new window">
+	        	aria-label="Open in new window" matTooltip="Open in new window"
+	        	*ngIf="sizeError">
 	        	<mat-icon class="material-icons-outlined">open_in_new</mat-icon>
 		      </button>
 			  </div>
