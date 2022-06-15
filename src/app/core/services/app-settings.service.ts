@@ -8,7 +8,7 @@ declare const document: any;
 })
 export class AppSettingsService {
 	appName = 'Narrative';
-	appVersion = '0.3.5';
+	appVersion = '0.3.6';
 
   // Dev protocol
   // protocolVersion = '0.0-dev';
@@ -22,11 +22,42 @@ export class AppSettingsService {
   private _showMainToolbar: Subject<boolean> = new Subject<boolean>();
   public showMainToolbar$ = this._showMainToolbar.asObservable();
 
-		// Observable string sources
+	// Observable string sources
   private _scrollTopSource = new Subject<number>();
 
   // Observable string streams
   public scrollTopStream = this._scrollTopSource.asObservable();
+
+  supportedFiles: Record<string, string[]> = {
+    'image': [
+      'image/gif', 'image/png',
+      'image/jpeg', 'image/bmp',
+      'image/webp'
+    ],
+    'audio': [
+      'audio/midi', 'audio/mpeg',
+      'audio/webm', 'audio/ogg',
+      'audio/wav'
+    ],
+    'video': [
+      'video/webm', 'video/ogg', 'video/mp4'
+    ],
+    'text': [
+      'text/plain'
+    ],
+  };
+
+  /*
+  *  Default: 
+  *  Story: 100kb = 100000b
+  *  Image: 3mb = 3000000b
+  *  Audio: 10mb = 10000000b
+  *  Video: 200mb = 200000000b
+  */
+  storyMaxSizeBytes = 100000;
+  storyImageMaxSizeBytes = 3000000;
+  storyVideoMaxSizeBytes = 200000000;
+  storyAudioMaxSizeBytes = 10000000;
 
   public updateScrollTop(_scroll: number) {
     this._scrollTopSource.next(_scroll);
