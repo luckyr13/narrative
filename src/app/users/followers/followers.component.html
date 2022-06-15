@@ -1,8 +1,8 @@
 <h2>Followers</h2>
 <div class="no-results" *ngIf="!followers"> No results.</div>
 <div class="followers-list-container">
-	<div>
-  	<app-user-card *ngFor="let follower of followers" [address]="follower"></app-user-card>
+	<div *ngFor="let follower of followers" class="followers-list-col">
+  	<app-user-card [address]="follower"></app-user-card>
 	</div>
 </div>
 <div class="more-results-container clear-both">
