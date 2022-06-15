@@ -20,8 +20,7 @@ export class ArdbWrapper {
     limit: number = 100,
     maxHeight: number = 0,
     tags: Array<{name: string, values: string|string[]}>,
-    fields: fieldType|fieldType[]=[],
-    excludeFields: fieldType|fieldType[]=['anchor', 'signature']): Observable<ArdbTransaction[]> {
+    fields: fieldType|fieldType[]=[]): Observable<ArdbTransaction[]> {
     const obs = new Observable<ArdbTransaction[]>((subscriber) => {
       if (from.length) {
         this.ardb.search('transactions')
@@ -30,7 +29,6 @@ export class ArdbWrapper {
           .max(maxHeight)
           .tags(tags)
           .only(fields)
-          .exclude(excludeFields)
           .find().then((res: ArdbTransaction[]|ArdbBlock[]) => {
             subscriber.next(<ArdbTransaction[]>res);
             subscriber.complete();
@@ -44,7 +42,6 @@ export class ArdbWrapper {
           .max(maxHeight)
           .tags(tags)
           .only(fields)
-          .exclude(excludeFields)
           .find().then((res: ArdbTransaction[]|ArdbBlock[]) => {
             subscriber.next(<ArdbTransaction[]>res);
             subscriber.complete();
