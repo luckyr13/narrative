@@ -52,6 +52,7 @@ import { RecordVideoDialogComponent } from './record-video-dialog/record-video-d
 import { RecordAudioDialogComponent } from './record-audio-dialog/record-audio-dialog.component';
 import { FilterDialogComponent } from './filter-dialog/filter-dialog.component';
 import { PasswordDialogComponent } from './password-dialog/password-dialog.component';
+import { ViewLikesDialogComponent } from './view-likes-dialog/view-likes-dialog.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { PasswordDialogComponent } from './password-dialog/password-dialog.compo
     RecordVideoDialogComponent,
     RecordAudioDialogComponent,
     FilterDialogComponent,
-    PasswordDialogComponent
+    PasswordDialogComponent,
+    ViewLikesDialogComponent
   ],
   imports: [
     CommonModule,

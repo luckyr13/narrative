@@ -1,4 +1,7 @@
-<mat-card class="user-card mat-elevation-z0" [routerLink]="['/', address]">
+<mat-card 
+	class="user-card mat-elevation-z0"
+	[routerLink]="disableNavigateToProfile ? [] : ['/', address]">
+	<mat-progress-bar mode="buffer" color="accent" *ngIf="loadingProfile"></mat-progress-bar>
 	<mat-card-header *ngIf="profile">
   	<img mat-card-avatar [src]="getImageUrl(profile.image!)">
     <mat-card-title *ngIf="profile.name">{{ profile.name }}</mat-card-title>

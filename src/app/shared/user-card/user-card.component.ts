@@ -14,19 +14,24 @@ export class UserCardComponent implements OnInit, OnDestroy {
   profile: UserInterface|null|undefined = null;
   private _profileSubscription = Subscription.EMPTY;
   defaultProfileImage = 'assets/images/blank-profile.png';
-   
+  loadingProfile = false;
+  @Input('disableNavigateToProfile') disableNavigateToProfile = false;
+
   constructor(
     private _verto: VertoService,
     private _arweave: ArweaveService
   ) { }
 
   ngOnInit(): void {
+    this.loadingProfile = true;
     this._profileSubscription = this._verto.getProfile(this.address).subscribe({
       next: (profile) => {
         this.profile = profile;
+        this.loadingProfile = false;
       },
       error: (error) => {
         console.error('ErrProfile:', error);
+        this.loadingProfile = false;
       }
     });
   }

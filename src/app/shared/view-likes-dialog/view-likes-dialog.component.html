@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Likes</h1>
+<mat-dialog-content
+	class="content border-right-special">
+	<mat-spinner *ngIf="loadingLikes" color="accent" diameter="42"></mat-spinner>
+	<ng-container *ngFor="let address of likeAddressList; index as i">
+		<span class="list-number">{{ i + 1 }}</span> <app-user-card
+		(click)="close()"
+		[address]="address"></app-user-card>
+		<mat-divider></mat-divider>
+	</ng-container>
+	<p *ngIf="!loadingLikes && !likeAddressList.length">
+		No results.
+	</p>
+</mat-dialog-content>
+<mat-dialog-actions 
+	align="end" >
+  <button 
+  	mat-button
+  	cdkFocusInitial (click)="close()">Close</button>
+</mat-dialog-actions>

@@ -12,6 +12,10 @@ import { NetworkInfoInterface } from 'arweave/web/network';
 import { UserProfile } from '../../core/interfaces/user-profile';
 import { ReplyService } from '../../core/services/reply.service';
 import { LikeService } from '../../core/services/like.service';
+import { ViewLikesDialogComponent } from '../../shared/view-likes-dialog/view-likes-dialog.component'; 
+import { Direction } from '@angular/cdk/bidi';
+import { UserSettingsService } from '../../core/services/user-settings.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-story',
@@ -43,7 +47,9 @@ export class StoryComponent implements OnInit, OnDestroy {
     private _story: StoryService,
     private _utils: UtilsService,
     private _reply: ReplyService,
-    private _like: LikeService) { }
+    private _like: LikeService,
+    private _userSettings: UserSettingsService,
+    private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.route.data
@@ -143,6 +149,29 @@ export class StoryComponent implements OnInit, OnDestroy {
         this._utils.message(error, 'error');
       }
     })
+  }
+
+  viewLikes() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
+    const dialogRef = this._dialog.open(
+      ViewLikesDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: false,
+        data: {
+          postId: this.post ? this.post.id : 0
+        },
+        direction: direction
+      });
+
+    dialogRef.afterClosed().subscribe(() => { 
+     
+    });
   }
 
 
