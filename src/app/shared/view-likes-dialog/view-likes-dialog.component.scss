@@ -37,9 +37,10 @@
 }
 
 .list-number {
-	position: absolute;
 	font-weight: bold;
 	z-index: 100;
 	font-size: 12px;
 	font-style: italic;
+	width: 100%;
+	padding: 10px;
 }

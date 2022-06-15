@@ -17,7 +17,7 @@ export class ViewLikesDialogComponent implements OnInit, OnDestroy {
   private _likesSubscription = Subscription.EMPTY;
   private _nextLikesSubscription = Subscription.EMPTY;
   private _maxLikes = 10;
-  public likeAddressList: string[] = [];
+  public likesList: TransactionMetadata[] = [];
   moreResultsAvailable = true;
 
   constructor(
@@ -35,7 +35,7 @@ export class ViewLikesDialogComponent implements OnInit, OnDestroy {
 
   loadLikes() {
     this.loadingLikes = true;
-    this.likeAddressList = [];
+    this.likesList = [];
     const postId = this.data.postId;
     this._likesSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
@@ -47,8 +47,7 @@ export class ViewLikesDialogComponent implements OnInit, OnDestroy {
         if (!replies || !replies.length) {
           this.moreResultsAvailable = false;
         }
-        const rList = replies.map(v => v.owner);
-        this.likeAddressList.push(...rList);
+        this.likesList.push(...replies);
         this.loadingLikes = false;
       },
       error: (error) => {
@@ -65,6 +64,11 @@ export class ViewLikesDialogComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._likesSubscription.unsubscribe();
     this._nextLikesSubscription.unsubscribe();
+  }
+
+  timestampToDate(t: number|undefined|string) {
+    t = t ? t : '';
+    return this._utils.dateFormat(t);
   }
 
 }
