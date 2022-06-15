@@ -43,11 +43,11 @@ export class ViewLikesDialogComponent implements OnInit, OnDestroy {
         return this._like.getStoryLikes(postId, this._maxLikes, currentHeight)
       })
     ).subscribe({
-      next: (replies) => {
-        if (!replies || !replies.length) {
+      next: (likes) => {
+        if (!likes || !likes.length) {
           this.moreResultsAvailable = false;
         }
-        this.likesList.push(...replies);
+        this.likesList.push(...likes);
         this.loadingLikes = false;
       },
       error: (error) => {
@@ -69,6 +69,23 @@ export class ViewLikesDialogComponent implements OnInit, OnDestroy {
   timestampToDate(t: number|undefined|string) {
     t = t ? t : '';
     return this._utils.dateFormat(t);
+  }
+
+  moreResults() {
+    this.loadingLikes = true;
+    this._nextLikesSubscription = this._like.next().subscribe({
+      next: (likes) => {
+        if (!likes || !likes.length) {
+          this.moreResultsAvailable = false;
+        }
+        this.likesList.push(...likes);
+        this.loadingLikes = false;
+      },
+      error: (error) => {
+        this.loadingLikes = false;
+        this._utils.message(error, 'error');
+      }
+    })
   }
 
 }

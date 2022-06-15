@@ -44,3 +44,24 @@
 	width: 100%;
 	padding: 10px;
 }
+.more-results {
+  font-weight: bold;
+  font-style: italic;
+}
+.more-results-card {
+  cursor: pointer;
+  border-radius: 0px;
+  width: 100%;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.more-results-container {
+  padding-top: 20px;
+}
+
+.no-results {
+  padding: 20px;
+  text-align: center;
+  font-style: italic;
+}

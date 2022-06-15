@@ -58,7 +58,7 @@ export class PendingComponent implements OnInit, OnDestroy {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;
         }
-        this.posts = posts;
+        this.posts.push(...posts);
         this.loadingPosts = false;
       },
       error: (error) => {
@@ -71,13 +71,12 @@ export class PendingComponent implements OnInit, OnDestroy {
 
   moreResults() {
     this.loadingPosts = true;
-    console.log('next!')
     this._nextResultsSubscription = this._story.next().subscribe({
       next: (posts) => {
         if (!posts || !posts.length) {
           this.moreResultsAvailable = false;
         }
-        this.posts = this.posts.concat(posts);
+        this.posts.push(...posts);
         this.loadingPosts = false;
       },
       error: (error) => {

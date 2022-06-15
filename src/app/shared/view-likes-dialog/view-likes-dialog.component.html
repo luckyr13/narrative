@@ -1,7 +1,6 @@
 <h1 mat-dialog-title>Likes</h1>
 <mat-dialog-content
 	class="content border-right-special">
-	<mat-spinner *ngIf="loadingLikes" color="accent" diameter="42"></mat-spinner>
 	<ng-container *ngFor="let tx of likesList">
 		<app-user-card
 		(click)="close()"
@@ -9,9 +8,17 @@
 		<div class="list-number text-right">{{ timestampToDate(tx.blockTimestamp) }}</div>
 		<mat-divider></mat-divider>
 	</ng-container>
-	<p *ngIf="!loadingLikes && !likesList.length">
-		No results.
-	</p>
+	<div class="more-results-container">
+		<mat-spinner *ngIf="loadingLikes" color="accent" diameter="32"></mat-spinner>
+		<div class="no-results" *ngIf="!likesList.length && !loadingLikes">
+			No results.
+		</div>
+		<mat-card class="more-results-card mat-elevation-z0" matRipple *ngIf="!loadingLikes && moreResultsAvailable" (click)="moreResults()" >
+		  <mat-card-content class="more-results text-center">
+				Show more
+		  </mat-card-content>
+		</mat-card>
+	</div>
 </mat-dialog-content>
 <mat-dialog-actions 
 	align="end" >
