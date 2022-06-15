@@ -8,6 +8,7 @@
     <mat-card-subtitle *ngIf="profile.username">{{ profile.username }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
+  	<img class="default-img" mat-card-avatar *ngIf="!profile" [src]="getImageUrl('')">
 		<app-arweave-address matLine [address]="address">Main address: </app-arweave-address>
 		<ng-container 
 			*ngIf="profile && profile.addresses">

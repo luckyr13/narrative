@@ -36,7 +36,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   codemirrorWrapper: CodeMirrorWrapper;
   loadingData = false;
   profileSubscription: Subscription = Subscription.EMPTY;
-  profileImage: string = 'assets/images/blank-profile.png';
+  profileImage: string = 'assets/images/blank-profile.jpg';
   nickname: string = '';
   messageContent: string = '';
   contentSubscription: Subscription = Subscription.EMPTY;
@@ -77,7 +77,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
 
   loadVertoProfile(account: string) {
     this.loadingData = true;
-    this.profileImage = 'assets/images/blank-profile.png';
+    this.profileImage = 'assets/images/blank-profile.jpg';
     this.nickname = '';
     account = account.trim();
     

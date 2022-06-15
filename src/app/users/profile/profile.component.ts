@@ -19,7 +19,7 @@ import { TransactionMetadata } from '../../core/interfaces/transaction-metadata'
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  profileImage: string = 'assets/images/blank-profile.png';
+  profileImage: string = 'assets/images/blank-profile.jpg';
   username: string = '';
   addressList: string[] = [];
   bio: string = '';
@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._route.data
     .subscribe(data => {
       const profile: UserProfile = data['profile'];
-      this.profileImage = 'assets/images/blank-profile.png';
+      this.profileImage = 'assets/images/blank-profile.jpg';
       this.username = '';
       this.bio = '';
       this.addressList = [];

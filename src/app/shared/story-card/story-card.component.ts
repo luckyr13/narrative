@@ -31,7 +31,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   @Input('showActions') showActions = true;
 	loadingContent = false;
 	loadingProfile = false;
-	profileImage = 'assets/images/blank-profile.png';
+	profileImage = 'assets/images/blank-profile.jpg';
   profileSubscription = Subscription.EMPTY;
   contentSubscription = Subscription.EMPTY;
   profile: UserInterface|null = null;
@@ -140,7 +140,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
     this.profile = null;
     this.profileSubscription = this._verto.getProfile(account).subscribe({
       next: (profile: UserInterface|undefined) => {
-        this.profileImage = 'assets/images/blank-profile.png';
+        this.profileImage = 'assets/images/blank-profile.jpg';
         
         if (profile) {
           if (profile.image) {

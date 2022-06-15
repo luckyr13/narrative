@@ -26,7 +26,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
   private _vertoProfileSubscription: Subscription = Subscription.EMPTY;
   private maxPosts: number = 10;
   profiles: UserInterface[] = [];
-  defaultProfileImage = 'assets/images/blank-profile.png';
+  defaultProfileImage = 'assets/images/blank-profile.jpg';
 
   constructor(
     private _route: ActivatedRoute,

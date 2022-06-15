@@ -13,7 +13,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
   @Input('address') address: string = '';
   profile: UserInterface|null|undefined = null;
   private _profileSubscription = Subscription.EMPTY;
-  defaultProfileImage = 'assets/images/blank-profile.png';
+  defaultProfileImage = 'assets/images/blank-profile.jpg';
   loadingProfile = false;
   @Input('disableNavigateToProfile') disableNavigateToProfile = false;
 
