@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadingPosts = true;
     this.account = this._auth.getMainAddressSnapshot();
 
     this._auth.account$.subscribe((account) => {
@@ -68,17 +67,47 @@ export class HomeComponent implements OnInit, OnDestroy {
       })
     });
 
+
+    this.loadPosts();
+
+    this._auth.account$.subscribe((_account) => {
+      this.account = _account;
+    });
+
+
+    this._appSettings.scrollTopStream.subscribe((scroll) => {
+      this._ngZone.run(() => {
+        const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
+          this.moreResultsCard.nativeElement.scrollTop;
+        const padding = 700;
+        if ((scroll > moreResultsPos - padding && moreResultsPos) && 
+            !this.loadingPosts &&
+            this.moreResultsAvailable) {
+          this.moreResults();
+        }
+      });
+      
+    })
+
+  }
+
+  loadPosts(addressList: string[] = []) {
+    this.loadingPosts = true;
+    this.posts = [];
+    if (this.account && !addressList.length) {
+      addressList.push(this.account);
+    }
     this._postSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._story.getLatestPosts([], this.maxPosts, currentHeight);
+        return this._story.getLatestPosts(addressList, this.maxPosts, currentHeight);
       }),
       mergeMap((latestPosts) => {
         if (!this.account) {
           return of(latestPosts);
         }
         return this._pendingStories.getPendingPosts(
-          [this.account], undefined, undefined
+          addressList, undefined, undefined
         ).pipe(
           map((pendingPosts) => {
             const res = pendingPosts.filter((v) => {
@@ -108,26 +137,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this._utils.message(error, 'error');
       }
     });
-
-    this._auth.account$.subscribe((_account) => {
-      this.account = _account;
-    });
-
-
-    this._appSettings.scrollTopStream.subscribe((scroll) => {
-      this._ngZone.run(() => {
-        const moreResultsPos = this.moreResultsCard.nativeElement.offsetTop -
-          this.moreResultsCard.nativeElement.scrollTop;
-        const padding = 700;
-        if ((scroll > moreResultsPos - padding && moreResultsPos) && 
-            !this.loadingPosts &&
-            this.moreResultsAvailable) {
-          this.moreResults();
-        }
-      });
-      
-    })
-
   }
 
   moreResults() {
@@ -182,8 +191,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         width: '420px'
       });
 
-    dialogRef.afterClosed().subscribe(() => { 
-      
+    dialogRef.afterClosed().subscribe((addressList: string[]) => {
+      this.loadPosts(addressList);
     });
   }
 

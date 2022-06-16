@@ -8,6 +8,8 @@ import { ArweaveService } from '../../core/services/arweave.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { VertoService } from '../../core/services/verto.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-filter-dialog',
@@ -29,6 +31,7 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
   private _followingSubscription = Subscription.EMPTY;
   private _nextResultsFollowingSubscription = Subscription.EMPTY;
   public moreResultsAvailableFollowing = true;
+  public filterForm: FormGroup;
 
   constructor(
     private _arweave: ArweaveService,
@@ -38,7 +41,33 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: {
       address: string
     },
-    private _verto: VertoService) { }
+    private _verto: VertoService,
+    private _fb: FormBuilder) {
+    this.filterForm = this._fb.group({
+      following: this._fb.group({
+        aliases: this._fb.array([])
+      }),
+      followers: this._fb.group({
+        aliases: this._fb.array([])
+      })
+    });
+  }
+
+  get aliasesFollowing() {
+    return this.filterForm.get('following')!.get('aliases') as FormArray;
+  }
+
+  addAliasFollowing(s: string) {
+    this.aliasesFollowing.push(this._fb.control(s));
+  }
+
+  get aliasesFollowers() {
+    return this.filterForm.get('followers')!.get('aliases') as FormArray;
+  }
+
+  addAliasFollowers(s: string) {
+    this.aliasesFollowers.push(this._fb.control(s));
+  }
 
   ngOnInit(): void {
     this._profileSubscription = this._verto.getProfile(this.data.address).subscribe({
@@ -59,8 +88,8 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
     });
   }
 
-  close() {
-    this._dialogRef.close();
+  close(addressList: string[] = []) {
+    this._dialogRef.close(addressList);
   }
 
   loadFollowers(username: string, wallets: string[]) {
@@ -77,6 +106,9 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
           this.moreResultsAvailableFollowers = false;
         }
         for (const f of followers) {
+          if (!this.followers.has(f.owner)) {
+            this.addAliasFollowers('');
+          }
           this.followers.add(f.owner);
         }
         this.loadingFollowers = false;
@@ -97,6 +129,9 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
           this.moreResultsAvailableFollowers = false;
         }
         for (const f of followers) {
+          if (!this.followers.has(f.owner)) {
+            this.addAliasFollowers('');
+          }
           this.followers.add(f.owner);
         }
         this.loadingFollowers = false;
@@ -134,6 +169,9 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
           for (const t of tags) {
             if (t.name === 'Wallet') {
               if (this._arweave.validateAddress(t.value)) {
+                if (!this.following.has(t.value)) {
+                  this.addAliasFollowing('');
+                }
                 this.following.add(t.value);
               } else {
                 console.error('Invalid Substory tag', t);
@@ -163,6 +201,9 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
           for (const t of tags) {
             if (t.name === 'Wallet') {
               if (this._arweave.validateAddress(t.value)) {
+                if (!this.following.has(t.value)) {
+                  this.addAliasFollowing('');
+                }
                 this.following.add(t.value);
               } else {
                 console.error('Invalid Substory tag', t);
@@ -177,6 +218,34 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
         this._utils.message(error, 'error');
       }
     })
+  }
+
+  onSubmit() {
+    for (const following of this.aliasesFollowing.controls) {
+      if (this._arweave.validateAddress(following.value)) {
+        this.addressList.add(following.value);
+      }
+    }
+    for (const follower of this.aliasesFollowers.controls) {
+      if (this._arweave.validateAddress(follower.value)) {
+        this.addressList.add(follower.value);
+      }
+    }
+    this.close(Array.from(this.addressList));
+  }
+
+  followingChange(ev: MatCheckboxChange, i: number, s: string) {
+    this.aliasesFollowing.controls[i].setValue('');
+    if (ev.checked) {
+      this.aliasesFollowing.controls[i].setValue(s);
+    }
+  }
+
+  followersChange(ev: MatCheckboxChange, i: number, s: string) {
+    this.aliasesFollowers.controls[i].setValue('');
+    if (ev.checked) {
+      this.aliasesFollowers.controls[i].setValue(s);
+    }
   }
 
 }
