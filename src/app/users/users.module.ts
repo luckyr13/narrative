@@ -11,6 +11,7 @@ import { LikesComponent } from './likes/likes.component';
 import { PendingComponent } from './pending/pending.component';
 import { FollowersComponent } from './followers/followers.component';
 import { FollowingComponent } from './following/following.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { FollowingComponent } from './following/following.component';
     LikesComponent,
     PendingComponent,
     FollowersComponent,
-    FollowingComponent
+    FollowingComponent,
+    EditProfileComponent
   ],
   imports: [
     CommonModule,

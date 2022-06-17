@@ -28,7 +28,10 @@
 	    <button [routerLink]="['/', 'logout']" mat-stroked-button>
 	    	<mat-icon color="warn">logout</mat-icon> Log out
 	    </button>
-	    <button mat-stroked-button><mat-icon color="accent">edit</mat-icon> Edit Profile</button>
+	    <button
+	    	mat-stroked-button
+	    	[routerLink]="['/', username || addressList[0], 'edit']">
+	    	<mat-icon color="accent">edit</mat-icon> Edit Profile</button>
 		</div>
 		<div class="profile-actions" *ngIf="!editProfileFlag && isLoggedIn">
 	    <button mat-stroked-button (click)="confirmFollowDialog(username, addressList)">
