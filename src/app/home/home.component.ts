@@ -94,9 +94,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   loadPosts(addressList: string[] = []) {
     this.loadingPosts = true;
     this.posts = [];
-    if (this.account && !addressList.length) {
-      addressList.push(this.account);
-    }
+    
     this._postSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
@@ -192,7 +190,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       });
 
     dialogRef.afterClosed().subscribe((addressList: string[]) => {
-      this.loadPosts(addressList);
+      if (addressList && addressList.length) {
+        this.loadPosts(addressList);
+      }
     });
   }
 

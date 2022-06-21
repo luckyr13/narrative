@@ -12,7 +12,6 @@ import { UserSettingsService } from '../../core/services/user-settings.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatMenuTrigger} from '@angular/material/menu';
-import {MatButton} from '@angular/material/button';
 import { NewStoryDialogComponent } from '../new-story-dialog/new-story-dialog.component'; 
 import { SearchStoryDialogComponent } from '../search-story-dialog/search-story-dialog.component';
 import { FileManagerDialogComponent } from '../file-manager-dialog/file-manager-dialog.component'; 
