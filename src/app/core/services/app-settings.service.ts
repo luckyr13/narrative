@@ -8,7 +8,7 @@ declare const document: any;
 })
 export class AppSettingsService {
 	appName = 'Narrative';
-	appVersion = '0.3.9';
+	appVersion = '0.4.0';
 
   // Dev protocol
   // protocolVersion = '0.0-dev';
