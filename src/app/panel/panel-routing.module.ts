@@ -7,14 +7,9 @@ const routes: Routes = [
 		path: 'settings',
 		loadChildren: () => import('../settings/settings.module').then(m => m.SettingsModule)
 	},
+	{ path: 'search', loadChildren: () => import('../search/search.module').then(m => m.SearchModule) },
 	{
-		path: '',
-		children: [
-			{ path: 'search', loadChildren: () => import('../search/search.module').then(m => m.SearchModule) },
-			{
-				path: 'logout', component: LogoutComponent
-			},
-		],
+		path: 'logout', component: LogoutComponent
 	},
 	{ path: ':address', loadChildren: () => import('../users/users.module').then(m => m.UsersModule) }
 ];
