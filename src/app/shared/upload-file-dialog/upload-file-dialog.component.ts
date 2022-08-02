@@ -5,6 +5,8 @@ import { ArweaveService } from '../../core/services/arweave.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { AppSettingsService } from '../../core/services/app-settings.service';
 import Transaction from 'arweave/web/lib/transaction';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { UntypedFormControl } from '@angular/forms';
 
 /*
 *  Based on Drag and Drop tutorial:
@@ -21,19 +23,24 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
   dragFileActive = false;
   enterCounter = 0;
   @ViewChild('fileInput') fileInput!: ElementRef;
-  file: {name: string, size: number, type: string } = {
+  file: { name: string, size: number, type: string, buffer: SafeUrl|ArrayBuffer|string|null, file: File|null } = {
     name: '',
     size: 0,
-    type: ''
+    type: '',
+    buffer: null,
+    file: null
   };
   readFileSubscription = Subscription.EMPTY;
   uploadingFile = false;
+  filePreview = false;
   progressObj: {completed: string, uploaded: string, total: string} = {
     completed: '0%',
     uploaded: '',
     total: ''
   };
   supportedFiles: Record<string, string[]> = {};
+  dataSizeLimitDispatch = 0;
+  useDispatch = new UntypedFormControl(false);
 
   constructor(
     private _dialogRef: MatDialogRef<UploadFileDialogComponent>,
@@ -42,8 +49,10 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     },
     private _arweave: ArweaveService,
     private _userAuth: UserAuthService,
-    private _appSettings: AppSettingsService) {
+    private _appSettings: AppSettingsService,
+    private domSanitizer: DomSanitizer) {
     this.supportedFiles = this._appSettings.supportedFiles;
+    this.dataSizeLimitDispatch = this._arweave.dataSizeLimitDispatch;
   }
 
 
@@ -85,7 +94,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
         file = dataTransferApi.files[0];
       }
 
-      this.upload(file, type);
+      this.preview(file, type);
     } catch (err) {
       console.error(err);
       this.errorMessage01 = `${err}`;
@@ -154,10 +163,11 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
         freader.onload = async () => {
           try {
             const tmp_res: string = freader.result!.toString();
-            
             this.file.name = file.name;
             this.file.size = file.size;
             this.file.type = file.type;
+            this.file.buffer = this.domSanitizer.bypassSecurityTrustUrl(tmp_res);
+            this.file.file = file;
 
             if (toArrayBuffer) {
               subscriber.next(freader.result!);
@@ -196,7 +206,7 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     const file = target && files.length ? 
       files[0] : null;
 
-    this.upload(file!, type);
+    this.preview(file!, type);
   }
 
   getSupportedFilesAsStr(type: string) {
@@ -213,25 +223,51 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  upload(file: File, type: 'text'|'image'|'audio'|'video'|'') {
+  preview(file: File, type: 'text'|'image'|'audio'|'video'|'') {
     this.errorMessage01 = '';
+    this.uploadingFile = false;
+    this.filePreview = true;
+
+    this.readFileSubscription = this.fileToData(file!, type).subscribe({
+      next: (filebuf: ArrayBuffer|string) => {
+        
+      },
+      error: (error: any) => {
+        if (error && Object.prototype.hasOwnProperty.call(error, 'message')) {
+          this.errorMessage01 = `${error.message}`;
+        } else {
+          this.errorMessage01 = `${error}`;
+        }
+        this.filePreview = false;
+        this.useDispatch.setValue(false);
+      },
+    });
+  }
+
+  upload(type: 'text'|'image'|'audio'|'video'|'') {
+    this.errorMessage01 = '';
+    this.filePreview = false;
     this.uploadingFile = true;
     this.progressObj = {
       completed: '0%',
       uploaded: '',
       total: ''
     };
+    const file: File|null = this.file.file;
 
     this.readFileSubscription = this.fileToData(file!, type, true).pipe(
         switchMap((filebuf: ArrayBuffer|string) => {
           const key = this._userAuth.getPrivateKey();
           const loginMethod = this._userAuth.loginMethod;
           const tags: {name: string, value: string}[] = [];
-          const disableDispatch = true;
+          let disableDispatch = true;
 
+          if (file!.size <= this.dataSizeLimitDispatch) {
+            disableDispatch = !this.useDispatch.value;
+          }
           return this._arweave.uploadFileToArweave(
             filebuf,
-            file.type,
+            file!.type,
             key,
             tags,
             loginMethod,
@@ -249,12 +285,27 @@ export class UploadFileDialogComponent implements OnInit, OnDestroy {
           this.errorMessage01 = `${error}`;
         }
         this.uploadingFile = false;
+        this.useDispatch.setValue(false);
       },
     });
   }
 
   toPercentage(uploaded: string, total: string) {
     return (+uploaded * 100) / (+total);
+  }
+
+  cancel() {
+    this.errorMessage01 = '';
+    this.filePreview = false;
+    this.uploadingFile = false;
+    this.useDispatch.setValue(false);
+    this.file = {
+      name: '',
+      size: 0,
+      type: '',
+      buffer: null,
+      file: null
+    };
   }
 
 

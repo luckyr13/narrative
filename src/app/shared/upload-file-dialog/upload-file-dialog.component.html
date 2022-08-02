@@ -15,7 +15,7 @@
 </div>
 <div class="clear-both"></div>
 <mat-dialog-content
-	*ngIf="!uploadingFile"
+	*ngIf="!uploadingFile && !filePreview"
 	class="content border-right-special"
 	(drop)="dropFile($event, data.type);"
 	(dragover)="dragOverFile($event);"
@@ -71,6 +71,36 @@
 	<p class="footer-text">
 		Using this tool implies that you agree to Narrative's Terms of Service and Community Guidelines. 
 	</p>
+</mat-dialog-content>
+<mat-dialog-content
+	class="content border-right-special text-center"
+	*ngIf="filePreview">
+	<h3>File preview</h3>
+	<ng-container *ngIf="data.type === 'image'">
+		<img [src]="file.buffer">
+	</ng-container>
+	<ng-container *ngIf="data.type === 'video'">
+		<video [src]="file.buffer" controls>
+			Your browser doesn't support video
+		</video>
+	</ng-container>
+	<ng-container *ngIf="data.type === 'audio'">
+		<audio [src]="file.buffer" controls>
+			Your browser doesn't support audio
+		</audio>
+	</ng-container>
+	<div class="text-center">
+		<p>
+			Size: {{ file.size }} bytes
+		</p>
+		<p class="text-center" *ngIf="file.size <= dataSizeLimitDispatch">
+			<mat-checkbox class="dispatch-chk" [formControl]="useDispatch">
+				Upload file for FREE (Dispatch method)
+			</mat-checkbox>
+		</p>
+		<button mat-button (click)="upload(data.type)">Upload now</button>
+		<button class="cancel-btn" mat-button color="warn" (click)="cancel()">Cancel</button>
+	</div>
 </mat-dialog-content>
 <mat-dialog-content
 	class="content border-right-special text-center"
