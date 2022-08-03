@@ -77,6 +77,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
   getStoriesIfFrom(fromAddr: string[], height: number) {
     if (fromAddr.length) {
       return this._story.getLatestPosts(fromAddr, this.maxPosts, height);
+    } else {
+      // clear query
+      this._story.resetArDB();
     }
 
     return of([]);

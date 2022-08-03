@@ -48,6 +48,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   storyType: string = '';
   storyContentType: string = '';
   contentError = '';
+  storyVersion: string = '';
 
   maxPreviewSize = 250;
   realPreviewSize = this.maxPreviewSize;
@@ -124,6 +125,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         this.storyType = t.value;
       } else if (t.name === 'Content-Type' && !this.storyContentType) {
         this.storyContentType = t.value;
+      } else if (t.name === 'Version') {
+        this.storyVersion = t.value;
       } else if (t.name === 'Story-Id') {
         if (this._arweave.validateAddress(t.value)) {
           this.repostId = t.value;

@@ -68,11 +68,11 @@ export class StoryService {
       {
         name: "Content-Type",
         values: ["text/plain"]
-      },
+      },/*
       {
         name: "Version",
         values: [this._appSettings.protocolVersion]
-      },
+      },*/
       {
         name: "Type",
         values: ["Story"]
@@ -87,7 +87,7 @@ export class StoryService {
   	];
 
     if (includeReposts) {
-      tags[3].values.push('Repost');
+      tags[2].values.push('Repost');
     }
   	return this._ardb.searchTransactions(from, limit, maxHeight, tags).pipe(
         map((_posts: ArdbTransaction[]) => {
@@ -183,6 +183,10 @@ export class StoryService {
           return post;
         })
       );
+  }
+
+  resetArDB() {
+    this._ardb = new ArdbWrapper(this._arweave.arweave);
   }
 
 }

@@ -57,11 +57,11 @@ export class LikeService {
       {
         name: "Content-Type",
         values: ["text/plain"]
-      },
+      },/*
       {
         name: "Version",
         values: [this._appSettings.protocolVersion]
-      },
+      },*/
       {
         name: "Type",
         values: ["Like"]
@@ -125,11 +125,11 @@ export class LikeService {
       {
         name: "Content-Type",
         values: ["text/plain"]
-      },
+      },/*
       {
         name: "Version",
         values: [this._appSettings.protocolVersion]
-      },
+      },*/
       {
         name: "Type",
         values: ["Like"]

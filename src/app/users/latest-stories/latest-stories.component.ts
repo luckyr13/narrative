@@ -84,7 +84,7 @@ export class LatestStoriesComponent implements OnInit, OnDestroy {
       })
     ).subscribe({
       next: (posts) => {
-        if (!posts || !posts.length) {
+        if (!posts || !(posts && posts.length)) {
           this.moreResultsAvailable = false;
         } else {
           this.posts.push(...posts);
