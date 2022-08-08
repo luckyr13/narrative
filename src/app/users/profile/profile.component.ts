@@ -190,6 +190,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._followingSubscription.unsubscribe();
     this._followersSubscription.unsubscribe();
+    this._profileSubscription.unsubscribe();
   }
 
 
