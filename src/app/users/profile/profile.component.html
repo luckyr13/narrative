@@ -15,15 +15,19 @@
 				[address]="address" class="small-username address"></app-arweave-address>
 			<ng-container *ngIf="username" >
 				<a [routerLink]="['/', username, 'followers']" 
-          class="small-username user-link">{{ numFollowers >= maxFollowers ? '+' : '' }} {{ numFollowers }} Followers</a>
+          class="small-username user-link">
+          {{ numFollowers > maxFollowers ? '+' + maxFollowers : numFollowers }} Followers</a>
         <a [routerLink]="['/', username, 'following']" 
-          class="small-username user-link">{{ numFollowing >= maxFollowing ? '+' : '' }} {{ numFollowing }} Following</a>
+          class="small-username user-link">
+          {{ numFollowing > maxFollowing ? '+' + maxFollowing : numFollowing }} Following</a>
 			</ng-container>
 			<ng-container *ngIf="!username && addressList[0]" >
 				<a [routerLink]="['/', addressList[0], 'followers']" 
-          class="small-username user-link">{{ numFollowers >= maxFollowers ? '+' : '' }} {{ numFollowers }} Followers</a>
+          class="small-username user-link">
+          {{ numFollowers > maxFollowers ? '+' + maxFollowers : numFollowers }} Followers</a>
         <a [routerLink]="['/', addressList[0], 'following']" 
-          class="small-username user-link">{{ numFollowing >= maxFollowing ? '+' : '' }} {{ numFollowing }} Following</a>
+          class="small-username user-link">
+          {{ numFollowing > maxFollowing ? '+' + maxFollowing : numFollowing }} Following</a>
 			</ng-container>
 		</div>
 		<div class="profile-actions" *ngIf="editProfileFlag">

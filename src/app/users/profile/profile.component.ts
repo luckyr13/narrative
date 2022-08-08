@@ -29,8 +29,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   addressRouteParam = '';
   editProfileFlag = false;
   isLoggedIn = false;
-  maxFollowers = 50;
-  maxFollowing = 50;
+  maxFollowers = 9;
+  maxFollowing = 9;
+  maxFollowersQuery = 20;
+  maxFollowingQuery = 20;
   numFollowers = 0;
   numFollowing = 0;
   private _followersSubscription = Subscription.EMPTY;
@@ -135,7 +137,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._followersSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._follow.getFollowers(username, wallets, this.maxFollowers, currentHeight);
+        return this._follow.getFollowers(username, wallets, this.maxFollowersQuery, currentHeight);
       }),
     ).subscribe({
       next: (followers) => {
@@ -153,7 +155,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this._followingSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._follow.getFollowing(from, this.maxFollowing, currentHeight);
+        return this._follow.getFollowing(from, this.maxFollowingQuery, currentHeight);
       }),
     ).subscribe({
       next: (following) => {
