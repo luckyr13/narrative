@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserProfile } from '../../core/interfaces/user-profile';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
@@ -12,6 +12,8 @@ import { UserSettingsService } from '../../core/services/user-settings.service';
 import { Direction } from '@angular/cdk/bidi';
 import { DonateDialogComponent } from '../../shared/donate-dialog/donate-dialog.component';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
+import { ProfileService } from '../../core/services/profile.service';
+import { UtilsService } from '../../core/utils/utils.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,6 +35,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   numFollowing = 0;
   private _followersSubscription = Subscription.EMPTY;
   private _followingSubscription = Subscription.EMPTY;
+  private _profileSubscription = Subscription.EMPTY;
+  bannerImage = '';
+  bannerTx = '';
   
   constructor(
     private _route: ActivatedRoute,
@@ -40,7 +45,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private _auth: UserAuthService,
     private _dialog: MatDialog,
     private _follow: FollowService,
-    private _userSettings: UserSettingsService) { }
+    private _userSettings: UserSettingsService,
+    private _router: Router,
+    private _profile: ProfileService,
+    private _utils: UtilsService) { }
 
   ngOnInit(): void {
     // Profile already loaded
@@ -72,6 +80,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
       this.loadFollowers(this.username, this.addressList);
       this.loadFollowing(this.addressList);
+      this.loadBannerImage(this.addressList);
       
     });
 
@@ -220,6 +229,55 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     return res;
   }
-  
 
+  scrollToEditPage() {
+    this._router.navigate(['/', this.username || this.addressList[0], 'edit']);
+  }
+
+
+  getImageUrl(txId: string) {
+    if (txId) {
+      return `${this._arweave.baseURL}${txId}`;
+    }
+    return '';
+  }
+  
+  loadBannerImage(from: string|string[]) {
+    const limit = 10;
+    this._profileSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._profile.getBannerImg(from, limit, currentHeight);
+      })
+    ).subscribe({
+      next: (tx: TransactionMetadata[]) => {
+        const txFirst = tx[0];
+        const tags = txFirst && txFirst.tags ? txFirst.tags : [];
+        const img = this._utils.sanitizeFull(this.findTag(tags, 'Img-Src-Id')); 
+        this.bannerImage = '';
+        this.bannerTx = '';
+
+        if (img && this._arweave.validateAddress(img)) {
+          this.bannerImage = this.getImageUrl(img);
+          this.bannerTx = img;
+        }
+
+
+      },
+      error: (error) => {
+        console.error('BannerImg', error);
+      }
+    });
+  }
+
+  findTag(tags: {name: string, value: string}[], needle: string): string {
+    for (const t of tags) {
+      // Get metadata
+      if (t.name === needle) {
+        const value = t.value ? t.value.trim() : '';
+        return value;
+      }
+    }
+    return '';
+  }
 }

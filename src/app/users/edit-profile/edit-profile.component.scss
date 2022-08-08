@@ -3,7 +3,10 @@ h2, h4, p {
 }
 .profile-header {
   height: 180px;
-  margin-bottom: 20px;
+  background-image: none;
+  background-position: center !important; 
+  background-repeat: no-repeat !important; 
+  background-size: cover !important;
 }
 .profile-header.frozen {
   background: #403B4A;  /* fallback for old browsers */
@@ -13,11 +16,15 @@ background: linear-gradient(to right, #E7E9BB, #403B4A); /* W3C, IE 10+/ Edge, F
 }
 
 .action-panel{
-
+  margin-top: 20px;
 }
 .action-panel button {
 	margin-left: 20px;
+	margin-bottom: 12px;
 }
 .profile-container {
 	padding: 20px;
+}
+
+.progress-bar-header {
 }

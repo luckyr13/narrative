@@ -1,5 +1,7 @@
 <div class="fadeIn">
-	<div class="profile-header mat-elevation-z2 frozen"></div>
+	<div 
+		[ngStyle]="{'background-image': bannerImage ? 'url(' + bannerImage + ')' : ''}"
+		class="profile-header mat-elevation-z2 frozen"></div>
 	<div class="profile-subheader">
 		<div class="profile-img ">
 			<img class="avatar border-same-as-background mat-elevation-z2" mat-card-avatar [src]="profileImage">
@@ -30,7 +32,7 @@
 	    </button>
 	    <button
 	    	mat-stroked-button
-	    	[routerLink]="['/', username || addressList[0], 'edit']">
+	    	(click)="scrollToEditPage()">
 	    	<mat-icon color="accent">edit</mat-icon> Edit Profile</button>
 		</div>
 		<div class="profile-actions" *ngIf="!editProfileFlag && isLoggedIn">
