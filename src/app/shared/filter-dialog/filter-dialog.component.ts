@@ -6,7 +6,7 @@ import { AppSettingsService } from '../../core/services/app-settings.service';
 import { FollowService } from '../../core/services/follow.service';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UtilsService } from '../../core/utils/utils.service';
-import { VertoService } from '../../core/services/verto.service';
+import { ProfileService } from '../../core/services/profile.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -41,7 +41,7 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: {
       address: string
     },
-    private _verto: VertoService,
+    private _profile: ProfileService,
     private _fb: FormBuilder) {
     this.filterForm = this._fb.group({
       following: this._fb.group({
@@ -70,16 +70,16 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._profileSubscription = this._verto.getProfile(this.data.address).subscribe({
+    this._profileSubscription = this._profile.getProfileByAddress(this.data.address).subscribe({
       next: (profile) => {
-        const userAddressList = profile ?
-          profile.addresses :
+        const userAddressList = profile && profile.address ?
+          [profile.address] :
           [this.data.address];
-        const username = profile ?
+        const username = profile && profile.username ?
           profile.username :
           '';
-        this.loadFollowers(username, userAddressList);
-        this.loadFollowing(username, userAddressList);
+        this.loadFollowers(userAddressList);
+        this.loadFollowing(userAddressList);
           
       },
       error: (err) => {
@@ -92,13 +92,13 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
     this._dialogRef.close(addressList);
   }
 
-  loadFollowers(username: string, wallets: string[]) {
+  loadFollowers(wallets: string[]) {
     this.loadingFollowers = true;
     this.followers.clear();
     this._followersSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._follow.getFollowers(username, wallets, this.maxFollowers, currentHeight);
+        return this._follow.getFollowers(wallets, this.maxFollowers, currentHeight);
       })
     ).subscribe({
       next: (followers) => {
@@ -151,7 +151,7 @@ export class FilterDialogComponent implements OnInit, OnDestroy {
     this._nextResultsFollowingSubscription.unsubscribe();
   }
 
-  loadFollowing(username: string, wallets: string[]) {
+  loadFollowing(wallets: string[]) {
     this.loadingFollowing = true;
     this.following.clear();
     this._followingSubscription = this._arweave.getNetworkInfo().pipe(

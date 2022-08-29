@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
-import { VertoService } from '../../core/services/verto.service';
-import { UserInterface } from '@verto/js/dist/common/faces';
+import { ProfileService } from '../../core/services/profile.service';
 import { Router, ActivatedRoute, ParamMap, Params, Data } from '@angular/router';
 import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
@@ -43,7 +42,7 @@ export class StoryComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private _verto: VertoService,
+    private _profile: ProfileService,
     private _arweave: ArweaveService,
     private _story: StoryService,
     private _utils: UtilsService,

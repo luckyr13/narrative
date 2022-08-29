@@ -3,9 +3,8 @@ import {
   ViewChild, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription, of } from 'rxjs';
 import { CodeMirrorWrapper } from '../../core/classes/codemirror-wrapper';
-import { UserInterface } from '@verto/js/dist/common/faces';
 import { ArweaveService } from '../../core/services/arweave.service';
-import { VertoService } from '../../core/services/verto.service';
+import { ProfileService } from '../../core/services/profile.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { StoryService } from '../../core/services/story.service';
 import { UserSettingsService } from '../../core/services/user-settings.service';
@@ -22,6 +21,7 @@ import {TranslateService} from '@ngx-translate/core';
 import { RecordVideoDialogComponent } from '../record-video-dialog/record-video-dialog.component'; 
 import { RecordAudioDialogComponent } from '../record-audio-dialog/record-audio-dialog.component'; 
 import { Direction } from '@angular/cdk/bidi';
+import { UserProfile } from '../../core/interfaces/user-profile';
 
 @Component({
   selector: 'app-create-story-card',
@@ -52,7 +52,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
   unsignedTxSubscription = Subscription.EMPTY;
 
   constructor(
-    private _verto: VertoService,
+    private _profile: ProfileService,
     private _arweave: ArweaveService,
     private _auth: UserAuthService,
     private _story: StoryService,
@@ -74,17 +74,17 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
     });
   }
 
-  loadVertoProfile(account: string) {
+  loadProfile(account: string) {
     this.loadingData = true;
     this.profileImage = 'assets/images/blank-profile.jpg';
     this.nickname = '';
     account = account.trim();
     
-    this.profileSubscription = this._verto.getProfile(account).subscribe({
-        next: (profile: UserInterface|undefined) => {
+    this.profileSubscription = this._profile.getProfileByAddress(account).subscribe({
+        next: (profile) => {
           if (profile) {
-            if (profile.image) {
-              this.profileImage = `${this._arweave.baseURL}${profile.image}`;
+            if (profile.avatarURL) {
+              this.profileImage = profile.avatarURL;
             }
             if (profile.username) {
               this.nickname = profile.username;
@@ -130,7 +130,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
         this._utils.message(error, 'error');
       },
       complete: () => {
-        this.loadVertoProfile(this.account);
+        this.loadProfile(this.account);
       }
     });
   }
@@ -198,7 +198,7 @@ export class CreateStoryCardComponent implements OnInit, OnDestroy, AfterContent
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['account'].previousValue != this.account) {
-      this.loadVertoProfile(changes['account'].currentValue);
+      this.loadProfile(changes['account'].currentValue);
     }
   }
 

@@ -27,7 +27,6 @@
     "@codemirror/view": "^6.1.2",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
-    "@verto/js": "^1.0.0",
     "ardb": "^1.1.10",
     "arverify": "^0.0.11",
     "arweave": "^1.11.4",
