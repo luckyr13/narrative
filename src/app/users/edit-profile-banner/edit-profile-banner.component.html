@@ -2,7 +2,7 @@
 <div class="profile-container" *ngIf="mainAddress && isValidUser()">
 	<h4>Banner image</h4>
 	<p>The image at the top of your profile.</p>
-	<div class="profile-header mat-elevation-z2 pacific-dream"
+	<div class="profile-header mat-elevation-z2 frozen"
 		[ngStyle]="{'background-image': bannerImage ? 'url(' + bannerImage + ')' : ''}"></div>
 	<mat-progress-bar 
 		*ngIf="loadingSavingNewBannerImage"
