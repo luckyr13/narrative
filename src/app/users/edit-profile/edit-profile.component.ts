@@ -14,6 +14,11 @@ import { switchMap } from 'rxjs/operators';
 import { UtilsService } from '../../core/utils/utils.service';
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
+import { 
+  FormGroup, FormControl, Validators} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { UserProfile } from '../../core/interfaces/user-profile';
+import { ArProfile } from 'arweave-account';
 
 @Component({
   selector: 'app-edit-profile',
@@ -22,12 +27,30 @@ import { TransactionMetadata } from '../../core/interfaces/transaction-metadata'
 })
 export class EditProfileComponent implements OnInit, OnDestroy {
   mainAddress = '';
-  bannerImage = '';
-  bannerTx = '';
-  saveNewBannerImage = false;
-  loadingSavingNewBannerImage = false;
-  subscriptionSavingNewBannerImage = Subscription.EMPTY;
-  private _profileSubscription = Subscription.EMPTY;
+  loginMethod = '';
+  addressFromRoute = '';
+  validatingUsername = false;
+  errorMsgUsername = '';
+  profile: UserProfile|undefined = undefined;
+  private _loadingProfileSubscription = Subscription.EMPTY;
+  profileImage = 'assets/images/blank-profile.jpg';
+  profileImageTX = '';
+  loadingSavingProfile = false;
+  private _savingProfileSubscription = Subscription.EMPTY;
+  profileFrm = new FormGroup({
+    'username': new FormControl('', {
+      validators: [Validators.required]
+    }),
+    'name': new FormControl(''),
+    'bio': new FormControl(''),
+    'twitter': new FormControl(''),
+    'github': new FormControl(''),
+    'instagram': new FormControl(''),
+    'facebook': new FormControl(''),
+    'youtube': new FormControl(''),
+    'discord': new FormControl('')
+  });
+  defaultProfileImage = 'assets/images/blank-profile.jpg';
 
   constructor(
     private _userSettings: UserSettingsService,
@@ -36,16 +59,85 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     private _arweave: ArweaveService,
     private _appSettings: AppSettingsService,
     private _profile: ProfileService,
-    private _utils: UtilsService) { }
+    private _utils: UtilsService,
+    private _route: ActivatedRoute) { }
+
+  get username() {
+    return this.profileFrm.get('username')!;
+  }
+  get name() {
+    return this.profileFrm.get('name')!;
+  }
+  get bio() {
+    return this.profileFrm.get('bio')!;
+  }
+  get twitter() {
+    return this.profileFrm.get('twitter')!;
+  }
+  get facebook() {
+    return this.profileFrm.get('facebook')!;
+  }
+  get github() {
+    return this.profileFrm.get('github')!;
+  }
+  get instagram() {
+    return this.profileFrm.get('instagram')!;
+  }
+  get youtube() {
+    return this.profileFrm.get('youtube')!;
+  }
+  get discord() {
+    return this.profileFrm.get('discord')!;
+  }
 
   ngOnInit(): void {
+    this._appSettings.scrollTo('ww-mat-sidenav-main-content', 400);
     this.mainAddress = this._auth.getMainAddressSnapshot();
+    this.loginMethod = this._auth.loginMethod;
+    this._route.parent!.data.subscribe((data) => {
+      const profileObj = data && Object.prototype.hasOwnProperty.call(data, 'profile') ?
+        data['profile'] : {};
+      const address = profileObj && profileObj.hasOwnProperty('address') ?
+        profileObj['address'] : '';
+      const profile = profileObj && profileObj.hasOwnProperty('profile') && 
+        profileObj['profile'] ?
+        profileObj['profile'] : {};
+      this.addressFromRoute = address;
+      this.profile = profile;
+      this.fillProfileFrm(profile);
+
+    });
+
     this._auth.account$.subscribe((account: string) => {
       this.mainAddress = account;
-      this.loadBannerImage(this.mainAddress);
+      this.loginMethod = this._auth.loginMethod;
+      if (account) {
+        this.loadProfile(this.mainAddress);
+      } else {
+        this.resetFrmValues();
+      }
     });
-    this._appSettings.scrollTo('ww-mat-sidenav-main-content', 400);
-    this.loadBannerImage(this.mainAddress);
+    
+  }
+
+  isValidUser() {
+    let res = false;
+    const profileAddresses = this.profile && this.profile.address ?
+      [this.profile.address] : [];
+    const username = this.profile && this.profile.username ?
+      this.profile.username : '';
+    if (((this.addressFromRoute === username ||
+          profileAddresses.findIndex(v => v === this.addressFromRoute) >= 0) &&
+          profileAddresses.findIndex(v => v === this.mainAddress) >= 0) ||
+        this.addressFromRoute === this.mainAddress) {
+      res = true;
+    }
+    return res;
+  }
+
+  ngOnDestroy() {
+    this._loadingProfileSubscription.unsubscribe();
+    this._savingProfileSubscription.unsubscribe();
   }
 
   fileManager(type: string) {
@@ -77,9 +169,8 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           content: ''
         };
 
-        this.saveNewBannerImage = true;
-        this.bannerImage = this.getImageUrl(obj.id);
-        this.bannerTx = obj.id;
+        this.profileImage = this.getProfileImageUrl(obj.id);
+        this.profileImageTX = obj.id;
       }
     });
   }
@@ -113,118 +204,147 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           type: res.type,
           content: ''
         };
-        this.saveNewBannerImage = true;
-        this.bannerImage = this.getImageUrl(obj.id);
-        this.bannerTx = obj.id;
+        this.profileImage = this.getProfileImageUrl(obj.id);
+        this.profileImageTX = obj.id;
       }
     });
   }
 
-  saveBannerImage() {
-    const defLang = this._userSettings.getDefaultLang();
-    const defLangObj = this._userSettings.getLangObject(defLang);
-    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
-      'ltr' : 'rtl';
-    this.loadingSavingNewBannerImage = false;
-
-    const dialogRef = this._dialog.open(
-      ConfirmationDispatchDialogComponent,
-      {
-        restoreFocus: false,
-        autoFocus: false,
-        disableClose: true,
-        data: {
-          address: this.mainAddress,
-          msg: `Confirm new banner image? (A new tx is gonna be created). New image: ${this.bannerTx}`,
-          dataSize: 100
-        },
-        direction: direction,
-        width: '800px'
-      });
-
-    // Manually restore focus to the menu trigger
-    dialogRef.afterClosed().subscribe((res: { success: boolean, useDispatch: boolean }) => { 
-      if (res.success) {
-        this.loadingSavingNewBannerImage = true;
-        try {
-          this.subscriptionSavingNewBannerImage = this._profile.saveBannerImage(
-            this.bannerTx,
-            !res.useDispatch
-          ).subscribe({
-            next: (res) => {
-              const txId = res.id;
-              this._utils.message(`Success ${txId}`, 'success');
-              this.loadingSavingNewBannerImage = false;
-            },
-            error: (error) => {
-              this._utils.message('Error!', 'error');
-              this.loadingSavingNewBannerImage = false;
-              console.error(error);
-            }
-          })
-        } catch (error) {
-          this._utils.message('Error!', 'error');
-          this.loadingSavingNewBannerImage = false;
-          console.error(error);
-        }
-        
-      }
-    });
-  }
-
-  getImageUrl(txId: string) {
-    if (txId) {
-      return `${this._arweave.baseURL}${txId}`;
+  getProfileImageUrl(txId: string) {
+    let img = this._arweave.getImageUrl(txId)
+    if (!img) {
+      img = 'assets/images/blank-profile.jpg';
     }
-    return '';
+    return img;
   }
 
-  removeBannerImage() {
-    this.bannerImage = '';
-    this.bannerTx = '';
-    this.saveNewBannerImage = true;
+  removeProfileImage() {
+    this.profileImage = 'assets/images/blank-profile.jpg';
+    this.profileImageTX = '';
   }
 
-  ngOnDestroy() {
-    this.subscriptionSavingNewBannerImage.unsubscribe();
+  resetFrmValues() {
+    this.removeProfileImage();
+    this.username.enable();
+    this.username.setValue('');
+    this.name.setValue('');
+    this.bio.setValue('');
+    this.twitter.setValue('');
+    this.facebook.setValue('');
+    this.github.setValue('');
+    this.instagram.setValue('');
+    this.youtube.setValue('');
+    this.discord.setValue('');
   }
 
-  
-  loadBannerImage(from: string|string[]) {
-    const limit = 10;
-    this._profileSubscription = this._arweave.getNetworkInfo().pipe(
-      switchMap((info: NetworkInfoInterface) => {
-        const currentHeight = info.height;
-        return this._profile.getBannerImg(from, limit, currentHeight);
-      })
-    ).subscribe({
-      next: (tx: TransactionMetadata[]) => {
-        const txFirst = tx[0];
-        const tags = txFirst && txFirst.tags ? txFirst.tags : [];
-        const img = this._utils.sanitizeFull(this.findTag(tags, 'Img-Src-Id')); 
-        this.bannerImage = '';
-        this.bannerTx = '';
-
-        if (img && this._arweave.validateAddress(img)) {
-          this.bannerImage = this.getImageUrl(img);
-          this.bannerTx = img;
-        }
-
+  loadProfile(from: string) {
+    this._loadingProfileSubscription = this._profile.getProfileByAddress(from).subscribe({
+      next: (profile) => {
+        this.fillProfileFrm(profile);
       },
       error: (error) => {
-        console.error('BannerImg', error);
+        console.error(error);
       }
     });
   }
 
-  findTag(tags: {name: string, value: string}[], needle: string): string {
-    for (const t of tags) {
-      // Get metadata
-      if (t.name === needle) {
-        const value = t.value ? t.value.trim() : '';
-        return value;
-      }
+  submitProfile() {
+    this.loadingSavingProfile = true;
+    const address = this.mainAddress;
+    const jwk = this._auth.getPrivateKey();
+    const newProfile: ArProfile = {
+      handleName: this.profile && this.profile.handleName ? this.profile.handleName : '',
+      avatar: this.profile && this.profile.avatar ? this.profile.avatar : '',
+      avatarURL: '',
+      banner: this.profile && this.profile.banner ? this.profile.banner : '',
+      bannerURL: '',
+      name: this.profile && this.profile.name ? this.profile.name : '',
+      bio: this.profile && this.profile.bio ? this.profile.bio : '',
+      email: this.profile && this.profile.email ? this.profile.email : '',
+      links: this.profile && this.profile.links ? JSON.parse(JSON.stringify(this.profile.links)) : {},
+      wallets: this.profile && this.profile.wallets ? JSON.parse(JSON.stringify(this.profile.wallets)) : {},
+    };
+
+    if (this.profileImageTX.trim()) {
+      newProfile.avatar = `ar://${this.profileImageTX.trim()}`;
     }
-    return '';
+    if (this.username.value!.trim()) {
+      newProfile.handleName = `${this.username.value!.trim()}`;
+    }
+    if (this.name.value!.trim()) {
+      newProfile.name = `${this.name.value!.trim()}`;
+    }
+    if (this.bio.value!.trim()) {
+      newProfile.bio = `${this.bio.value!.trim()}`;
+    }
+    if (this.twitter.value!.trim()) {
+      newProfile.links['twitter'] = `${this.twitter.value!.trim()}`;
+    }
+    if (this.youtube.value!.trim()) {
+      newProfile.links['youtube'] = `${this.youtube.value!.trim()}`;
+    }
+    if (this.github.value!.trim()) {
+      newProfile.links['github'] = `${this.github.value!.trim()}`;
+    }
+    if (this.instagram.value!.trim()) {
+      newProfile.links['instagram'] = `${this.instagram.value!.trim()}`;
+    }
+    if (this.facebook.value!.trim()) {
+      newProfile.links['facebook'] = `${this.facebook.value!.trim()}`;
+    }
+    if (this.discord.value!.trim()) {
+      newProfile.links['discord'] = `${this.discord.value!.trim()}`;
+    }
+
+    this._savingProfileSubscription = this._profile.updateProfile(newProfile).subscribe({
+      next: (tx) => {
+        if (tx && tx.id) {
+          this._utils.message(`Success! Tx id: ${tx.id}`, 'success');
+        }
+        this.loadingSavingProfile = false;
+      },
+      error: (error) => {
+        console.error('OnSubmit', error);
+        this._utils.message('Error!', 'error');
+        this.loadingSavingProfile = false;
+      }
+    })
+
+
+  }
+
+  fillProfileFrm(profile: UserProfile|undefined|null) {
+    this.resetFrmValues();
+    if (profile) {
+      const image = profile.avatarURL ? profile.avatarURL.trim() : this.defaultProfileImage;
+      const username = profile.handleName ? profile.handleName.trim() : '';
+      const name = profile.name ? profile.name.trim() : '';
+      const bio = profile.bio ? profile.bio.trim() : '';
+      const addresses = profile.address ? [profile.address] : [];
+      const links = profile.links ? profile.links : {};
+      const twitter = links && Object.prototype.hasOwnProperty.call(links, 'twitter') ?
+        links['twitter'].trim() : '';
+      const facebook = links && Object.prototype.hasOwnProperty.call(links, 'facebook') ?
+        links['facebook'].trim() : '';
+      const github = links && Object.prototype.hasOwnProperty.call(links, 'github') ?
+        links['github'].trim() : '';
+      const instagram = links && Object.prototype.hasOwnProperty.call(links, 'instagram') ?
+        links['instagram'].trim() : '';
+      const youtube = links && Object.prototype.hasOwnProperty.call(links, 'youtube') ?
+        links['youtube'].trim() : '';
+      const discord = links && Object.prototype.hasOwnProperty.call(links, 'discord') ?
+        links['discord'].trim() : '';
+
+      this.profileImage = image;
+      this.username.setValue(username);
+      this.name.setValue(name);
+      this.bio.setValue(bio);
+      this.twitter.setValue(twitter);
+      this.facebook.setValue(facebook);
+      this.github.setValue(github);
+      this.instagram.setValue(instagram);
+      this.youtube.setValue(youtube);
+      this.discord.setValue(discord);
+    }
   }
 }

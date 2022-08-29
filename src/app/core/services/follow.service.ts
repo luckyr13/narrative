@@ -26,7 +26,6 @@ export class FollowService {
   }
 
   follow(
-    username: string,
     wallets: string[],
     disableDispatch: boolean,
     extraTags: {name: string, value: string}[] = []) {
@@ -34,9 +33,8 @@ export class FollowService {
     const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
       { name: 'App-Name', value: this._appSettings.protocolName },
-      { name: 'Version', value: this._appSettings.protocolVersion },
+    /*  { name: 'Version', value: this._appSettings.protocolVersion }, */
       { name: 'Type', value: 'Follow' },
-      { name: 'Username', value: username.trim() },
       ...extraTags
     ];
     const numWallets = wallets.length;
@@ -54,14 +52,10 @@ export class FollowService {
   }
 
   getFollowers(
-    username: string,
     wallets: string[] | string = [],
     limit?: number,
     maxHeight?: number): Observable<TransactionMetadata[]> {
-    const users: string[] = [''];
-    if (username.trim()) {
-      users.push(username.trim());
-    }
+    
     const tags = [
       {
         name: "App-Name",
@@ -78,10 +72,6 @@ export class FollowService {
       {
         name: "Type",
         values: ["Follow"]
-      },
-      {
-        name: "Username",
-        values: users
       },
       {
         name: "Wallet",

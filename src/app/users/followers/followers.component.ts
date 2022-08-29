@@ -2,15 +2,13 @@ import {
   Component, OnInit, OnDestroy, Input,
   ViewChild, ElementRef, NgZone } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
-import { VertoService } from '../../core/services/verto.service';
-import { UserInterface } from '@verto/js/dist/common/faces';
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Subscription, tap, Observable, of, from } from 'rxjs';
 import { switchMap, map, concatMap } from 'rxjs/operators';
 import { UtilsService } from '../../core/utils/utils.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { ProfileResolverService } from '../../core/route-guards/profile-resolver.service';
-import { UserProfile } from '../../core/interfaces/user-profile';
+import { UserProfileAddress } from '../../core/interfaces/user-profile-address';
 import { NetworkInfoInterface } from 'arweave/web/network';
 import { AppSettingsService } from '../../core/services/app-settings.service';
 import { FollowService } from '../../core/services/follow.service';
@@ -32,7 +30,6 @@ export class FollowersComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private _verto: VertoService,
     private _arweave: ArweaveService,
     private _follow: FollowService,
     private _utils: UtilsService,
@@ -41,17 +38,17 @@ export class FollowersComponent implements OnInit, OnDestroy {
     private _ngZone: NgZone) { }
 
   ngOnInit(): void {
-    this.route.data
+    this.route.parent!.data
       .subscribe(data => {
 
-        const profile: UserProfile = data['profile'];
-        const userAddressList = profile.profile ?
-          profile.profile.addresses :
+        const profile: UserProfileAddress = data['profile'];
+        const userAddressList = profile.profile && profile.profile.address ?
+          [profile.profile.address] :
           [profile.address];
         const username = profile.profile ?
           profile.profile.username :
           '';
-        this.loadFollowers(username, userAddressList);
+        this.loadFollowers(userAddressList);
       });
 
     this._appSettings.scrollTopStream.subscribe((scroll) => {
@@ -74,13 +71,13 @@ export class FollowersComponent implements OnInit, OnDestroy {
     this._nextResultsSubscription.unsubscribe();
   }
 
-  loadFollowers(username: string, wallets: string[]) {
+  loadFollowers(wallets: string[]) {
     this.loadingFollowers = true;
     this.followers.clear();
     this._followersSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._follow.getFollowers(username, wallets, this.maxFollowers, currentHeight);
+        return this._follow.getFollowers(wallets, this.maxFollowers, currentHeight);
       }),
     ).subscribe({
       next: (followers) => {

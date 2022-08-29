@@ -17,6 +17,7 @@
   background-position: center !important; 
   background-repeat: no-repeat !important; 
   background-size: cover !important;
+  position: relative;
 }
 
 /*
@@ -66,9 +67,10 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 .profile-subheader {
   max-width: 1000px;
   margin: 0 auto;
-  margin-top: -40px;
+  margin-top: -14px;
   min-height: 80px;
   overflow: auto;
+  position: relative;
 }
 .profile-img {
   width: 100%;
@@ -140,6 +142,11 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
   text-decoration: none;
   margin-bottom: 6px;
   display: block;
+  cursor: pointer;
+}
+
+.user-link:hover {
+  filter: brightness(160%);
 }
 
 .active {
@@ -148,4 +155,14 @@ background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, F
 
 .mat-tab-label, .mat-tab-link {
   letter-spacing: 1px;
+}
+.banner-img-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 10px;
+}
+.banner-img-btn span {
+  margin-left: 10px;
+  text-shadow: 1px 1px 1px #FFFFFF, 2px 2px 2px #000000;
 }

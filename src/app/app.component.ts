@@ -33,7 +33,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   loadAccountSubscription: Subscription = Subscription.EMPTY;
   loginSubscription: Subscription = Subscription.EMPTY;
   @ViewChild(MatSidenavContainer) sidenavContainer!: MatSidenavContainer;
-  menuPosition: 'end'|'start' = 'start';
 
   constructor(
     private _appSettings: AppSettingsService,
@@ -76,14 +75,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.consoleWelcomeMessage();
 
-    
-    this.updateWritingDirectionAndLoading(this._userSettings.getDefaultLang())
-    this._userSettings.currentLangStream.subscribe(this.updateWritingDirectionAndLoading)
-  }
-
-  updateWritingDirectionAndLoading = (lang: string) => {
-    const langObj: LanguageObj|null = this._lang.getLangObject(lang);
-    this.menuPosition = langObj && langObj.writing_system == 'RTL' ? 'end' : 'start'
   }
 
   ngOnDestroy() {

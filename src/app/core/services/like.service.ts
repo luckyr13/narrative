@@ -32,7 +32,7 @@ export class LikeService {
     const loginMethod = this._userAuth.loginMethod;
     const tags: {name: string, value: string}[] = [
       { name: 'App-Name', value: this._appSettings.protocolName },
-      { name: 'Version', value: this._appSettings.protocolVersion },
+      /* { name: 'Version', value: this._appSettings.protocolVersion }, */
       { name: 'Type', value: 'Like' },
       { name: 'Like-Target', value: txToLike.trim() },
       ...extraTags

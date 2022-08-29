@@ -9,7 +9,7 @@ import { StoryService } from '../../core/services/story.service';
 import { UtilsService } from '../../core/utils/utils.service';
 import { TransactionMetadata } from '../../core/interfaces/transaction-metadata';
 import { NetworkInfoInterface } from 'arweave/web/network';
-import { UserProfile } from '../../core/interfaces/user-profile';
+import { UserProfileAddress } from '../../core/interfaces/user-profile-address';
 import { ReplyService } from '../../core/services/reply.service';
 import { LikeService } from '../../core/services/like.service';
 import { ViewLikesDialogComponent } from '../../shared/view-likes-dialog/view-likes-dialog.component'; 
@@ -53,12 +53,12 @@ export class StoryComponent implements OnInit, OnDestroy {
     private _dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.route.data
+    this.route.parent!.data
       .subscribe((data: Data) => {
         const storyId = this.route.snapshot.paramMap.get('storyId')!;
-        const profile: UserProfile = data['profile'];
+        const profile: UserProfileAddress = data['profile'];
         const userAddressList = profile.profile ?
-          profile.profile.addresses :
+          [profile.profile.address] :
           [profile.address];
         this.loadPost(userAddressList, storyId);
         this.loadReplies(storyId);

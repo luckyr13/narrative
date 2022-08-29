@@ -31,6 +31,7 @@
     "ardb": "^1.1.10",
     "arverify": "^0.0.11",
     "arweave": "^1.11.4",
+    "arweave-account": "^1.3.2",
     "arweave-wallet-connector": "^0.0.31",
     "base64-js": "^1.5.1",
     "dompurify": "^2.3.10",

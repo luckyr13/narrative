@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserProfile } from '../../core/interfaces/user-profile';
+import { UserProfileAddress } from '../../core/interfaces/user-profile-address';
 import { ArweaveService } from '../../core/services/arweave.service';
 import { UserAuthService } from '../../core/services/user-auth.service';
 import { FollowDialogComponent } from '../../shared/follow-dialog/follow-dialog.component'; 
@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private _profileSubscription = Subscription.EMPTY;
   bannerImage = '';
   bannerTx = '';
-  
+
   constructor(
     private _route: ActivatedRoute,
     private _arweave: ArweaveService,
@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     // Profile already loaded
     this._route.data
     .subscribe(data => {
-      const profile: UserProfile = data['profile'];
+      const profile: UserProfileAddress = data['profile'];
       this.profileImage = 'assets/images/blank-profile.jpg';
       this.username = '';
       this.bio = '';
@@ -64,13 +64,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.name = '';
 
       if (profile.profile) {
-        if (profile.profile.image) {
-          this.profileImage = `${this._arweave.baseURL}${profile.profile.image}`;
+        if (profile.profile.avatarURL) {
+          this.profileImage = profile.profile.avatarURL;
         }
         this.name = profile.profile.name;
         this.username = profile.profile.username;
         this.bio = profile.profile.bio!;
-        this.addressList = profile.profile.addresses;
+        this.addressList = [profile.profile.address];
       } else if (profile.address) {
         this.addressList = [profile.address];
       }
@@ -80,7 +80,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.isLoggedIn = !!currentAddress;
       this.validateCurrentAddress(currentAddress);
 
-      this.loadFollowers(this.username, this.addressList);
+      this.loadFollowers(this.addressList);
       this.loadFollowing(this.addressList);
       this.loadBannerImage(this.addressList);
       
@@ -132,12 +132,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadFollowers(username: string, wallets: string|string[]) {
+  loadFollowers(wallets: string|string[]) {
     this.numFollowers = 0;
     this._followersSubscription = this._arweave.getNetworkInfo().pipe(
       switchMap((info: NetworkInfoInterface) => {
         const currentHeight = info.height;
-        return this._follow.getFollowers(username, wallets, this.maxFollowersQuery, currentHeight);
+        return this._follow.getFollowers(wallets, this.maxFollowersQuery, currentHeight);
       }),
     ).subscribe({
       next: (followers) => {
@@ -234,15 +234,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   scrollToEditPage() {
-    this._router.navigate(['/', this.username || this.addressList[0], 'edit']);
+    this._router.navigate(['/', this.addressList[0], 'edit']);
   }
 
-
   getImageUrl(txId: string) {
-    if (txId) {
-      return `${this._arweave.baseURL}${txId}`;
-    }
-    return '';
+    return this._arweave.getImageUrl(txId);
   }
   
   loadBannerImage(from: string|string[]) {
@@ -283,4 +279,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     return '';
   }
+  
+
 }
