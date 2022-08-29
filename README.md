@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://arweave.net/8flMQRZe3xNiBsA3YNURuhmadV8CSHfwtLAZJw2ZQxk" style="max-width: 100%">
+  <img src="https://arweave.net/Mkl1imDwNtyysWkuFlL8iRuJPWv_gB-dCZFnqIW6M-Q" style="max-width: 100%">
 </p>
 
 # Narrative
