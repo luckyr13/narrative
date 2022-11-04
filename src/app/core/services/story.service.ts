@@ -135,7 +135,7 @@ export class StoryService {
     return this._ardbSingle.searchOneTransaction(from, postId).pipe(
         map((tx: ArdbTransaction) => {
           if (!tx) {
-            throw new Error('Tx not found!');
+            throw new Error(`Tx not found! ${postId} From: ${from}`);
           }
           const post: TransactionMetadata = {
             id: tx.id,
