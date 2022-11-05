@@ -1,0 +1,4 @@
+# Narrative deployed versions
+
+## 0.4.4
+Backup (2022-08-29): https://arweave.net/fCBiUoqsoHkorgcm5-e5KHyX4LiePc0jRqmR2ZqVQpk
