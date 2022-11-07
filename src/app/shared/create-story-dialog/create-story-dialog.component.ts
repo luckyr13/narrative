@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-story-dialog',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateStoryDialogComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _dialogRef: MatDialogRef<CreateStoryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      account: string,
+    }) { }
 
   ngOnInit(): void {
+  }
+
+  newStoryCreated(tx: string) {
+    this.close(tx);
+  }
+
+  close(tx: string|null = null) {
+    this._dialogRef.close(tx);
   }
 
 }

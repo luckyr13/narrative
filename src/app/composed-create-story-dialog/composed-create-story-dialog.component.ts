@@ -50,15 +50,15 @@ export class ComposedCreateStoryDialogComponent implements OnInit, OnDestroy {
       {
         restoreFocus: false,
         autoFocus: false,
-        disableClose: false,
+        disableClose: true,
         data: {
-          address: this.account,
+          account: this.account,
         },
         direction: direction,
-        width: '480px'
+        width: '600px'
       });
 
-    dialogRef.afterClosed().subscribe((response: string) => {
+    dialogRef.afterClosed().subscribe((tx: string) => {
       this._activeDialogs.activeDialog = false;
       this.close();
     });
