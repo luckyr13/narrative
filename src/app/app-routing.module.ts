@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { InitPlatformGuard } from './core/route-guards/init-platform.guard';
+import { ComposedCreateStoryDialogComponent } from './composed-create-story-dialog/composed-create-story-dialog.component';
 
 const routes: Routes = [
 	{
@@ -14,6 +15,11 @@ const routes: Routes = [
 		path: 'profile-not-found',
 		canActivate: [InitPlatformGuard],
 		loadChildren: () => import('./profile-not-found/profile-not-found.module').then(m => m.ProfileNotFoundModule) },
+	{
+	  path: 'create-story',
+	  component: ComposedCreateStoryDialogComponent,
+	  outlet: 'popup'
+	},
 	{
 		path: '',
 		canActivateChild: [InitPlatformGuard],

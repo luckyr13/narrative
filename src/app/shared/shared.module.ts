@@ -55,6 +55,7 @@ import { PasswordDialogComponent } from './password-dialog/password-dialog.compo
 import { ViewLikesDialogComponent } from './view-likes-dialog/view-likes-dialog.component';
 import { ConfirmationDispatchDialogComponent } from './confirmation-dispatch-dialog/confirmation-dispatch-dialog.component';
 import { EditProfileBannerComponent } from '../users/edit-profile-banner/edit-profile-banner.component';
+import { CreateStoryDialogComponent } from './create-story-dialog/create-story-dialog.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { EditProfileBannerComponent } from '../users/edit-profile-banner/edit-pr
     PasswordDialogComponent,
     ViewLikesDialogComponent,
     ConfirmationDispatchDialogComponent,
-    EditProfileBannerComponent
+    EditProfileBannerComponent,
+    CreateStoryDialogComponent
   ],
   imports: [
     CommonModule,

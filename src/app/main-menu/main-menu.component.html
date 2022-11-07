@@ -3,57 +3,74 @@
     mat-list-item
     matRipple
     [routerLink]="['home']" 
-    [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
-    #rlaHome="routerLinkActive">
+    [ngClass]="{active: rlaHome.isActive && !activeDialogFlag, 'border-color-theme': rlaHome.isActive && !activeDialogFlag}"
+    [routerLinkActive]="[]"
+    #rlaHome="routerLinkActive"
+    [routerLinkActiveOptions]="{exact: true}">
     <mat-icon 
       mat-list-icon 
-      [class]="{ 'material-icons-outlined': !rlaHome.isActive }" 
-      [color]="rlaHome.isActive ? 'accent' : 'default'">house</mat-icon>
+      [class]="{ 'material-icons-outlined': !rlaHome.isActive || activeDialogFlag }" 
+      [color]="rlaHome.isActive && !activeDialogFlag ? 'accent' : 'default'">house</mat-icon>
     <div mat-line>{{ 'MAIN_MENU.HOME' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
+    [routerLink]="[{ outlets: { popup: ['create-story'] } }]" 
+    [routerLinkActive]="['active', 'border-color-theme']"
+    #rlaPost="routerLinkActive">
+    <mat-icon 
+      mat-list-icon
+      [class]="{ 'material-icons-outlined': !rlaPost.isActive }" 
+      [color]="rlaPost.isActive ? 'accent' : 'default'">post_add</mat-icon>
+    <div mat-line>Create Story</div>
+  </a>
+  <a mat-list-item
+    matRipple
     [routerLink]="['search']" 
-    [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
+    [ngClass]="{active: rlaSearch.isActive && !activeDialogFlag, 'border-color-theme': rlaSearch.isActive && !activeDialogFlag}"
+    [routerLinkActive]="[]"
     #rlaSearch="routerLinkActive">
     <mat-icon 
       mat-list-icon
-      [class]="{ 'material-icons-outlined': !rlaSearch.isActive }" 
-      [color]="rlaSearch.isActive ? 'accent' : 'default'">search</mat-icon>
+      [class]="{ 'material-icons-outlined': !rlaSearch.isActive || activeDialogFlag }" 
+      [color]="rlaSearch.isActive && !activeDialogFlag ? 'accent' : 'default'">search</mat-icon>
     <div mat-line>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
   </a>
   <a mat-list-item
     *ngIf="false"
     matRipple
     [routerLink]="['notifications']" 
-    [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
+    [ngClass]="{active: rlaNotifications.isActive && !activeDialogFlag, 'border-color-theme': rlaNotifications.isActive && !activeDialogFlag}"
+    [routerLinkActive]="[]"
     #rlaNotifications="routerLinkActive">
     <mat-icon
       mat-list-icon
-      [class]="{ 'material-icons-outlined': !rlaNotifications.isActive }" 
-      [color]="rlaNotifications.isActive ? 'accent' : 'default'">notifications</mat-icon>
+      [class]="{ 'material-icons-outlined': !rlaNotifications.isActive || activeDialogFlag  }" 
+      [color]="rlaNotifications.isActive && !activeDialogFlag ? 'accent' : 'default'">notifications</mat-icon>
     <div mat-line>{{ 'MAIN_MENU.NOTIFICATIONS' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
     [routerLink]="account" 
-    [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
+    [ngClass]="{active: rlaProfile.isActive && !activeDialogFlag, 'border-color-theme': rlaProfile.isActive && !activeDialogFlag}"
+    [routerLinkActive]="[]"
     #rlaProfile="routerLinkActive">
     <mat-icon
       mat-list-icon
-      [class]="{ 'material-icons-outlined': !rlaProfile.isActive }" 
-      [color]="rlaProfile.isActive ? 'accent' : 'default'">person</mat-icon>
+      [class]="{ 'material-icons-outlined': !rlaProfile.isActive || activeDialogFlag }" 
+      [color]="rlaProfile.isActive && !activeDialogFlag ? 'accent' : 'default'">person</mat-icon>
     <div mat-line>{{ 'MAIN_MENU.PROFILE' | translate }}</div>
   </a>
   <a mat-list-item
     matRipple
     [routerLink]="['settings']" 
-    [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
+    [ngClass]="{active: rlaSettings.isActive && !activeDialogFlag, 'border-color-theme': rlaSettings.isActive && !activeDialogFlag}"
+    [routerLinkActive]="[]"
     #rlaSettings="routerLinkActive">
     <mat-icon
       mat-list-icon
-      [class]="{ 'material-icons-outlined': !rlaSettings.isActive }" 
-      [color]="rlaSettings.isActive ? 'accent' : 'default'">settings</mat-icon>
+      [class]="{ 'material-icons-outlined': !rlaSettings.isActive  || activeDialogFlag }" 
+      [color]="rlaSettings.isActive && !activeDialogFlag ? 'accent' : 'default'">settings</mat-icon>
     <div mat-line>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
   </a>
 </mat-nav-list>
