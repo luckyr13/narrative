@@ -56,6 +56,7 @@ import { ViewLikesDialogComponent } from './view-likes-dialog/view-likes-dialog.
 import { ConfirmationDispatchDialogComponent } from './confirmation-dispatch-dialog/confirmation-dispatch-dialog.component';
 import { EditProfileBannerComponent } from '../users/edit-profile-banner/edit-profile-banner.component';
 import { CreateStoryDialogComponent } from './create-story-dialog/create-story-dialog.component';
+import { ViewRepostsDialogComponent } from './view-reposts-dialog/view-reposts-dialog.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { CreateStoryDialogComponent } from './create-story-dialog/create-story-d
     ViewLikesDialogComponent,
     ConfirmationDispatchDialogComponent,
     EditProfileBannerComponent,
-    CreateStoryDialogComponent
+    CreateStoryDialogComponent,
+    ViewRepostsDialogComponent
   ],
   imports: [
     CommonModule,

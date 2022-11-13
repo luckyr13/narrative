@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ArweaveService } from '../../core/services/arweave.service';
-import { ProfileService } from '../../core/services/profile.service';
 import { Router, ActivatedRoute, ParamMap, Params, Data } from '@angular/router';
 import { Subscription, tap, Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
@@ -15,6 +14,8 @@ import { ViewLikesDialogComponent } from '../../shared/view-likes-dialog/view-li
 import { Direction } from '@angular/cdk/bidi';
 import { UserSettingsService } from '../../core/services/user-settings.service';
 import { MatDialog } from '@angular/material/dialog';
+import { RepostService } from '../../core/services/repost.service';
+import { ViewRepostsDialogComponent } from '../../shared/view-reposts-dialog/view-reposts-dialog.component'; 
 
 @Component({
   selector: 'app-story',
@@ -35,21 +36,26 @@ export class StoryComponent implements OnInit, OnDestroy {
   @ViewChild('moreResultsCard', { read: ElementRef }) moreResultsCard!: ElementRef;
 
   public loadingLikes = false;
+  public loadingReposts = false;
   public likes: TransactionMetadata[] = [];
   private _likesSubscription: Subscription = Subscription.EMPTY;
   public maxLikes = 9;
   public maxLikesQuery = 20;
+  public reposts: TransactionMetadata[] = [];
+  private _repostsSubscription: Subscription = Subscription.EMPTY;
+  public maxReposts = 9;
+  public maxRepostsQuery = 20;
 
   constructor(
     private route: ActivatedRoute,
-    private _profile: ProfileService,
     private _arweave: ArweaveService,
     private _story: StoryService,
     private _utils: UtilsService,
     private _reply: ReplyService,
     private _like: LikeService,
     private _userSettings: UserSettingsService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _repost: RepostService) { }
 
   ngOnInit(): void {
     this.route.parent!.data
@@ -62,6 +68,7 @@ export class StoryComponent implements OnInit, OnDestroy {
         this.loadPost(userAddressList, storyId);
         this.loadReplies(storyId);
         this.loadLikes(storyId);
+        this.loadReposts(storyId);
       });
   }
 
@@ -70,6 +77,7 @@ export class StoryComponent implements OnInit, OnDestroy {
     this._repliesSubscription.unsubscribe();
     this._nextRepliesSubscription.unsubscribe();
     this._likesSubscription.unsubscribe();
+    this._repostsSubscription.unsubscribe();
   }
 
   loadPost(from: string|string[], storyId: string) {
@@ -175,5 +183,51 @@ export class StoryComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadReposts(storyId: string) {
+    this.loadingReposts = true;
+    this.reposts = [];
+    this._repliesSubscription = this._arweave.getNetworkInfo().pipe(
+      switchMap((info: NetworkInfoInterface) => {
+        const currentHeight = info.height;
+        return this._repost.getStoryReposts(storyId, this.maxLikesQuery, currentHeight)
+      }),
+    ).subscribe({
+      next: (reposts) => {
+        for (const rp of reposts) {
+          if (!this.reposts.find(v => v.id === rp.id)) {
+            this.reposts.push(rp);
+          }
+        }
+        this.loadingReposts = false;
+      },
+      error: (error) => {
+        this.loadingReposts = false;
+        this._utils.message(error, 'error');
+      }
+    })
+  }
+
+  viewReposts() {
+    const defLang = this._userSettings.getDefaultLang();
+    const defLangObj = this._userSettings.getLangObject(defLang);
+    let direction: Direction = defLangObj && defLangObj.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
+    const dialogRef = this._dialog.open(
+      ViewRepostsDialogComponent,
+      {
+        restoreFocus: false,
+        autoFocus: false,
+        disableClose: false,
+        data: {
+          postId: this.post ? this.post.id : 0
+        },
+        direction: direction
+      });
+
+    dialogRef.afterClosed().subscribe(() => { 
+     
+    });
+  }
 
 }
