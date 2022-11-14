@@ -1,7 +1,8 @@
 # Narrative deployed versions
 
 ## 0.4.7
-Backup (2022-11-14): https://arweave.net/1OCJrtXBI8rLzV1_Y6kWo5T-m59gnVffstTMyCId2Dw
+Backup (2022-11-14): https://arweave.net/S0rw7dvb2V5S8Rv--oZMwtUKGi9udncHaY7XnQiZq4U
+
 - Security fixes
 - Reposts detail added
 
