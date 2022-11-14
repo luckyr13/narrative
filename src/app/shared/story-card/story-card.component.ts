@@ -58,7 +58,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   repostId: string = '';
   isReposted = false;
-
+  maxLengthTagText = 120;
+  
   constructor(
     private _profile: ProfileService,
     private _auth: UserAuthService,
@@ -493,6 +494,11 @@ export class StoryCardComponent implements OnInit, OnDestroy {
 
   goBack() {
     this._location.back();
+  }
+
+  substr2(s: string, length: number) {
+    const ellipsis = length <= this.maxPreviewSize && length < s.length ? '...' : '';
+    return (this._utils.sanitizeFull(s.substr(0, length)) + ellipsis);
   }
 
 }
