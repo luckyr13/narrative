@@ -1,5 +1,10 @@
 # Narrative deployed versions
 
+## 0.4.7
+Backup (2022-11-14): 
+- Security fixes
+- Reposts detail added
+
 ## 0.4.6
 Backup (2022-11-07): https://arweave.net/d3VTco8CLpX-hL4AWyEsn9meF2tKuub_EBBCOGE8p8I
 - ArVerify replaced with Vouch Dao.
