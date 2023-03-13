@@ -1,5 +1,9 @@
 # Narrative deployed versions
 
+## 0.4.8
+Backup (2023-03-13): https://arweave.net/Xka46rgldNMAGE3ncBjU9vAjG7-BL3noESGAfSC7RI8
+- Replace YouTube player for a link
+
 ## 0.4.7
 Backup (2022-11-14): https://arweave.net/S0rw7dvb2V5S8Rv--oZMwtUKGi9udncHaY7XnQiZq4U
 
