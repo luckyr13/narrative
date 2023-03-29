@@ -19,3 +19,14 @@
 .mat-line {
 	margin-left: 10px;
 }
+
+.menu-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.small-text {
+	font-size: 12px !important;
+}
