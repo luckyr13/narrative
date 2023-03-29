@@ -9,10 +9,10 @@
       #rlaHome="routerLinkActive"
       [routerLinkActiveOptions]="{exact: true}">
       <mat-icon 
-        mat-list-icon 
+        matListItemIcon 
         [class]="{ 'material-icons-outlined': !rlaHome.isActive || activeDialogFlag }" 
         [color]="rlaHome.isActive && !activeDialogFlag ? 'accent' : 'default'">house</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.HOME' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.HOME' | translate }}</div>
     </a>
     <a mat-list-item
       matRipple
@@ -20,10 +20,10 @@
       [routerLinkActive]="['active', 'border-color-theme']"
       #rlaPost="routerLinkActive">
       <mat-icon 
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaPost.isActive }" 
         [color]="rlaPost.isActive ? 'accent' : 'default'">history_edu</mat-icon>
-      <div mat-line>Create Story</div>
+      <div matListItemTitle>Create Story</div>
     </a>
     <a mat-list-item
       matRipple
@@ -32,10 +32,10 @@
       [routerLinkActive]="[]"
       #rlaSearch="routerLinkActive">
       <mat-icon 
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaSearch.isActive || activeDialogFlag }" 
         [color]="rlaSearch.isActive && !activeDialogFlag ? 'accent' : 'default'">search</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
     </a>
     <a mat-list-item
       *ngIf="false"
@@ -45,10 +45,10 @@
       [routerLinkActive]="[]"
       #rlaNotifications="routerLinkActive">
       <mat-icon
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaNotifications.isActive || activeDialogFlag  }" 
         [color]="rlaNotifications.isActive && !activeDialogFlag ? 'accent' : 'default'">notifications</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.NOTIFICATIONS' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.NOTIFICATIONS' | translate }}</div>
     </a>
     <a mat-list-item
       matRipple
@@ -57,10 +57,10 @@
       [routerLinkActive]="[]"
       #rlaProfile="routerLinkActive">
       <mat-icon
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaProfile.isActive || activeDialogFlag }" 
         [color]="rlaProfile.isActive && !activeDialogFlag ? 'accent' : 'default'">person</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.PROFILE' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.PROFILE' | translate }}</div>
     </a>
     <a mat-list-item
       matRipple
@@ -69,10 +69,10 @@
       [routerLinkActive]="[]"
       #rlaSettings="routerLinkActive">
       <mat-icon
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaSettings.isActive  || activeDialogFlag }" 
         [color]="rlaSettings.isActive && !activeDialogFlag ? 'accent' : 'default'">settings</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
     </a>
   </mat-nav-list>
 
@@ -85,10 +85,10 @@
       #rlaHome2="routerLinkActive"
       [routerLinkActiveOptions]="{exact: true}">
       <mat-icon 
-        mat-list-icon 
+        matListItemIcon 
         [class]="{ 'material-icons-outlined': !rlaHome2.isActive }" 
         [color]="rlaHome2.isActive ? 'accent' : 'default'">house</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.HOME' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.HOME' | translate }}</div>
     </a>
     <a mat-list-item
       matRipple
@@ -96,10 +96,10 @@
       [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
       #rlaSearch2="routerLinkActive">
       <mat-icon 
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaSearch2.isActive }" 
         [color]="rlaSearch2.isActive ? 'accent' : 'default'">search</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.SEARCH' | translate }}</div>
     </a>
     <a mat-list-item
       matRipple
@@ -107,10 +107,10 @@
       [routerLinkActive]="['active', 'border-color-theme', 'color-accent-theme']"
       #rlaSettings2="routerLinkActive">
       <mat-icon
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaSettings2.isActive }" 
         [color]="rlaSettings2.isActive ? 'accent' : 'default'">settings</mat-icon>
-      <div mat-line>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.SETTINGS' | translate }}</div>
     </a>
   </mat-nav-list>
 
@@ -122,10 +122,10 @@
       [routerLinkActive]="[]"
       #rlaPrivacyPolicy="routerLinkActive">
       <mat-icon 
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaPrivacyPolicy.isActive || activeDialogFlag }" 
         [color]="rlaPrivacyPolicy.isActive && !activeDialogFlag ? 'accent' : 'default'">policy</mat-icon>
-      <div mat-line class="small-text">Privacy Policy</div>
+      <div matListItemTitle class="small-text">Privacy Policy</div>
     </a>
     <a mat-list-item
       matRipple
@@ -134,10 +134,10 @@
       [routerLinkActive]="[]"
       #rlaCookiePolicy="routerLinkActive">
       <mat-icon 
-        mat-list-icon
+        matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaCookiePolicy.isActive || activeDialogFlag }" 
         [color]="rlaCookiePolicy.isActive && !activeDialogFlag ? 'accent' : 'default'">cookie</mat-icon>
-      <div mat-line class="small-text">Cookie Policy</div>
+      <div matListItemTitle class="small-text">Cookie Policy</div>
     </a>
   </mat-nav-list>
 </div>

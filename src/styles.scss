@@ -7,6 +7,9 @@
 // Include the common styles for Angular Material. 
 @include mat.core();
 
+:root {
+  --mdc-list-list-item-one-line-container-height: 56px;
+}
 
 // Default app font
 $theme-font-family: 'Libre Baskerville';
@@ -172,14 +175,14 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container{
     background-color: #0f0f0f;
   }
-  .mat-dialog-container, .mat-dialog-container .mat-card, .mat-bottom-sheet-container {
+  .mat-mdc-dialog-container, .mat-mdc-dialog-container .mat-mdc-card, .mat-bottom-sheet-container {
     background-color: #3F3F3F;
   }
-  .mat-drawer, .mat-menu-panel {
+  .mat-drawer, .mat-mdc-menu-panel {
     background-color: #212121;
   }
 
-  .mat-card, .substory-container {
+  .mat-mdc-card, .substory-container {
     background-color: #0f0f0f;
   }
   .border-same-as-background {
@@ -239,14 +242,14 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #0f0f0f;
   }
-  .mat-dialog-container, .mat-dialog-container .mat-card, .mat-bottom-sheet-container {
+  .mat-mdc-dialog-container, .mat-mdc-dialog-container .mat-mdc-card, .mat-bottom-sheet-container {
     background-color: #3F3F3F;
   }
-  .mat-drawer, .mat-menu-panel {
+  .mat-drawer, .mat-mdc-menu-panel {
     background-color: #212121;
   }
 
-  .mat-card, .substory-container {
+  .mat-mdc-card, .substory-container {
     background-color: #0f0f0f;
   }
   .border-same-as-background {
@@ -274,14 +277,14 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #0f0f0f;
   }
-  .mat-dialog-container, .mat-dialog-container .mat-card, .mat-bottom-sheet-container {
+  .mat-mdc-dialog-container, .mat-mdc-dialog-container .mat-mdc-card, .mat-bottom-sheet-container {
     background-color: #3F3F3F;
   }
-  .mat-drawer, .mat-menu-panel {
+  .mat-drawer, .mat-mdc-menu-panel {
     background-color: #212121;
   }
 
-  .mat-card, .substory-container {
+  .mat-mdc-card, .substory-container {
     background-color: #0f0f0f;
   }
   .border-same-as-background {
@@ -342,14 +345,14 @@ $dark-blue-gray-theme: mat.define-dark-theme((
   .mat-drawer-container {
     background-color: #000a12;
 
-  }.mat-dialog-container, .mat-dialog-container .mat-card, .mat-bottom-sheet-container {
+  }.mat-mdc-dialog-container, .mat-mdc-dialog-container .mat-mdc-card, .mat-bottom-sheet-container {
     background-color: #333B41;
   }
-  .mat-drawer, .mat-menu-panel {
+  .mat-drawer, .mat-mdc-menu-panel {
     background-color: #172126;
   }
 
-  .mat-card, .substory-container {
+  .mat-mdc-card, .substory-container {
     background-color: #000a12;
   }
   .border-same-as-background {
@@ -435,12 +438,12 @@ body {
 
 
 /* GLOBAL STYLES FOR MATERIAL COMPONENTS */
-.mat-snack-bar-container.error, .mat-snack-bar-container.error .mat-button{
+.mat-mdc-snack-bar-container.error, .mat-snack-bar-container.error .mat-mdc-button{
   background-color: #f44336;
   color: #FFF;
 }
 
-.mat-snack-bar-container.success, .mat-snack-bar-container.success .mat-button{
+.mat-mdc-snack-bar-container.success, .mat-snack-bar-container.success .mat-mdc-button{
   background-color: #3BC661;
   color: #FFF;
 }
@@ -558,13 +561,15 @@ body {
 /*
 * FIX EMOJI TABS WIDTH
 */
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 .emoji-container .mat-tab-label {
   min-width: 72px !important;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 .emoji-container .mat-tab-body-content {
   padding-top: 10px;
 }
-.mat-menu-content:not(:empty) {
+.mat-mdc-menu-content:not(:empty) {
   padding-bottom: 0px !important;
   padding-top: 0px !important;
 }
@@ -611,7 +616,7 @@ a {
 * Fix menu panel width
 */
 @media (min-width: 600px) {
-  .mat-menu-panel {
+  .mat-mdc-menu-panel {
     max-width: 350px !important;
   }
 

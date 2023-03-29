@@ -19,11 +19,11 @@
 	margin-top: -6px;
 }
 
-.mat-dialog-container {
+.mat-mdc-dialog-container {
 	padding: 0px;
 }
 
-.mat-dialog-content {
+.mat-mdc-dialog-content {
 	border-top: 1px solid;
 	display: flex;
   flex-direction: column;
@@ -47,6 +47,7 @@
 	flex: 1;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .images-grid .mat-card-container {
 	float: left;
 	width: 50%;
@@ -54,7 +55,7 @@
 	font-size: 12px;
 }
 
-.images-grid .mat-card {
+.images-grid .mat-mdc-card {
 	cursor: pointer;
 }
 
@@ -111,15 +112,18 @@
 		max-width: 880px;
 		min-width: 800px;
 	}
+	/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 	.images-grid .mat-card-container {
 		width: 25%;
 	}
 	.card-img-container {
 		height: 140px;
 	}
+	/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 	.video-grid .mat-card-container {
 		width: 25%;
 	}
+	/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 	.audio-grid .mat-card-container {
 		width: 25%;
 	}
@@ -132,6 +136,7 @@
 	flex: 1;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .video-grid .mat-card-container {
 	float: left;
 	width: 50%;
@@ -139,7 +144,7 @@
 	font-size: 12px;
 }
 
-.video-grid .mat-card {
+.video-grid .mat-mdc-card {
 	cursor: pointer;
 }
 
@@ -162,6 +167,7 @@
 	flex: 1;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
 .audio-grid .mat-card-container {
 	float: left;
 	width: 50%;
@@ -169,7 +175,7 @@
 	font-size: 12px;
 }
 
-.audio-grid .mat-card {
+.audio-grid .mat-mdc-card {
 	cursor: pointer;
 }
 

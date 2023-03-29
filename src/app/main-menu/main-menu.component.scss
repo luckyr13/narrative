@@ -8,17 +8,19 @@
 	font-weight: bold;
 }
 
-.mat-list-base {
+.mat-mdc-list-base {
 	padding-top: 0px;
 }
 
-.mat-list-item {
+.mat-mdc-list-item {
 	letter-spacing: 2px;
 }
 
-.mat-line {
-	margin-left: 10px;
+.mat-mdc-list-item-title {
+	margin-left: 0px;
 }
+
+
 
 .menu-container {
   height: 100%;
