@@ -27,7 +27,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   profileSubscription: Subscription = Subscription.EMPTY;
   profile: UserProfile|null = null;
   profileImage: string = 'assets/images/blank-profile.jpg';
-  showThemeSelector = false;
+  showThemeSelector = true;
   showSettingsSelector = true;
   frmSearch: UntypedFormGroup = new UntypedFormGroup({
     'searchQry': new UntypedFormControl('', [Validators.required])
