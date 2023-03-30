@@ -117,7 +117,7 @@
   <mat-nav-list>
     <a mat-list-item
       matRipple
-      [routerLink]="['privacy-policy']" 
+      [routerLink]="['about', 'privacy-policy']" 
       [ngClass]="{active: rlaPrivacyPolicy.isActive && !activeDialogFlag, 'border-color-theme': rlaPrivacyPolicy.isActive && !activeDialogFlag}"
       [routerLinkActive]="[]"
       #rlaPrivacyPolicy="routerLinkActive">
@@ -129,7 +129,7 @@
     </a>
     <a mat-list-item
       matRipple
-      [routerLink]="['cookie-policy']" 
+      [routerLink]="['about', 'cookie-policy']" 
       [ngClass]="{active: rlaCookiePolicy.isActive && !activeDialogFlag, 'border-color-theme': rlaCookiePolicy.isActive && !activeDialogFlag}"
       [routerLinkActive]="[]"
       #rlaCookiePolicy="routerLinkActive">
