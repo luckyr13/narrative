@@ -26,7 +26,7 @@ export class ArweaveService {
   public readonly blockToSeconds: number = 0.5 / 60;
   public readonly arweaveWebWallet = new ArweaveWebWallet({
     name: 'Narrative App',
-    logo: 'https://arweave.net/wJGdli6nMQKCyCdtCewn84ba9-WsJ80-GS-KtKdkCLg'
+    logo: 'https://arweave.net/vkp2bEXMYqtfkb2otbW5T4OEPyrzW8boGzeZkCwJ2O4'
   });
   public readonly appInfo = { name: 'Narrative', logo: '' };
   // Limit: 120kb
