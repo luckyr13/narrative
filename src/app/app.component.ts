@@ -61,14 +61,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           this._translate.get('DIALOGS.RESUME_SESSION').subscribe((res: any) => {
             this.resumeSessionDialog(res.MESSAGE, res.CONFIRM, res.DISMISS);
           });
-          
 
-        } else if (error == 'Error: LaunchPasswordModal') {
+        } 
+        // Deprecated
+        /*
+        else if (error == 'Error: LaunchPasswordModal') {
           // Launch password modal
           this.passwordDialog();
-          
-
-        } else {
+        } 
+        */
+        else {
           this._utils.message(error, 'error');
         }
       }
@@ -95,7 +97,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       disableClose: true
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result) {
         const stayLoggedIn = this._auth.getStayLoggedIn();
         // Throw Arweave Web Wallet dialog
@@ -112,7 +114,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
           }
         });
       } else {
-        this._auth.logout();
+        await this._auth.logout();
       }
     });
   }
@@ -130,6 +132,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
   
   }
 
+  // Deprecated
+  /*
   passwordDialog() {
     const dialogRef = this.dialog.open(PasswordDialogComponent, {
       data: {
@@ -175,5 +179,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+  */
   
 }
