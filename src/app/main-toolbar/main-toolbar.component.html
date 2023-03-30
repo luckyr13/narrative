@@ -128,7 +128,8 @@
       mat-icon-button
       aria-label="User menu"
       [matMenuTriggerFor]="userMenu"
-      *ngIf="account">
+      *ngIf="account"
+      class="avatar-container">
       <img *ngIf="profileImage" class="avatar" [src]="profileImage">
       <mat-icon *ngIf="!profileImage">person</mat-icon>
     </button>
