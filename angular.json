@@ -44,7 +44,10 @@
               "smartweave",
               "arbundles/src/signing/chains",
               "arbundles",
-              "hash.js"
+              "hash.js",
+              "arweave-account",
+              "warp-contracts",
+              "dompurify",
             ]
           },
           "configurations": {
