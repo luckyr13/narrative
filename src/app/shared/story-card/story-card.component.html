@@ -106,10 +106,10 @@
 		        <mat-menu #moreOptionsMenu="matMenu">
 		        	<mat-list class="tx-info-container">
 				        <mat-list-item>
-				        	<h3 matLine>
+				        	<h3 matListItemLine>
 				            TX Info
 				          </h3>
-				          <div matLine>
+				          <div matListItemLine>
 				            <app-arweave-address
 				              [address]="post.id"
 				              [isAddress]="false"
@@ -119,14 +119,14 @@
 				        <mat-list-item 
 				        	class="tx-metadata-chips"
 				        	*ngIf="!loadingContent && !(post && (!post.blockId || post.blockHeight == 0))">
-						  		<h4 class="meta" matLine>Tx metadata:</h4>
-						  		<span matLine *ngIf="application">Application: {{ substr2(application, maxLengthTagText) }} </span>
-									<span matLine *ngIf="appName" >App-Name: {{ substr2(appName, maxLengthTagText) }}</span>
-									<span matLine *ngIf="service">Service: {{ substr2(service, maxLengthTagText) }} </span>
-									<span matLine *ngIf="storyType" >Story type: {{ substr2(storyType, maxLengthTagText) }}</span>
-									<span matLine *ngIf="storyContentType" >Content type: {{ substr2(storyContentType, maxLengthTagText) }}</span>
-									<span matLine *ngIf="owner" >Owner: {{ substr2(owner, maxLengthTagText) }}</span>
-									<span matLine *ngIf="storyVersion" >Version: {{ substr2(storyVersion, maxLengthTagText) }}</span>
+						  		<h4 class="meta" matListItemLine>Tx metadata:</h4>
+						  		<span matListItemLine *ngIf="application">Application: {{ substr2(application, maxLengthTagText) }} </span>
+									<span matListItemLine *ngIf="appName" >App-Name: {{ substr2(appName, maxLengthTagText) }}</span>
+									<span matListItemLine *ngIf="service">Service: {{ substr2(service, maxLengthTagText) }} </span>
+									<span matListItemLine *ngIf="storyType" >Story type: {{ substr2(storyType, maxLengthTagText) }}</span>
+									<span matListItemLine *ngIf="storyContentType" >Content type: {{ substr2(storyContentType, maxLengthTagText) }}</span>
+									<span matListItemLine *ngIf="owner" >Owner: {{ substr2(owner, maxLengthTagText) }}</span>
+									<span matListItemLine *ngIf="storyVersion" >Version: {{ substr2(storyVersion, maxLengthTagText) }}</span>
 				        </mat-list-item>
 				      </mat-list>
 						</mat-menu>
