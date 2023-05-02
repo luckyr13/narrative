@@ -8,9 +8,9 @@ import { UserSettingsService } from '../../core/services/user-settings.service';
 })
 export class StoryPlayerComponent implements OnInit {
   isDarkTheme = false;
-  @Input('substories') substories!: {id: string, type: string}[];
+  @Input('substories') substories!: {id: string, type: 'tx'|'youtube', position: number}[];
   @Input('fullMode') fullMode: boolean = false;
-  currentSubstory: { id: string, type: string }|null = null;
+  currentSubstory: { id: string, type: 'tx'|'youtube', position: number }|null = null;
   currentSubstoryIdArrPos = 0;
   infiniteScrollActive = true;
   loadingSubstory = false;

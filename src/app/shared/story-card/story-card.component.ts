@@ -40,7 +40,7 @@ export class StoryCardComponent implements OnInit, OnDestroy {
   isDarkTheme = false;
   themeSubscription = Subscription.EMPTY;
   @ViewChild('contentContainer') contentContainer!: ElementRef;
-  substories: {id: string, type: 'tx'|'youtube'}[] = [];
+  substories: {id: string, type: 'tx'|'youtube', position: number}[] = [];
   service: string = '';
   application: string = '';
   appName: string = '';
@@ -112,7 +112,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
       // Get substories
       if (t.name === 'Substory') {
         if (this._arweave.validateAddress(t.value)) {
-          this.substories.push({ id: t.value, type: 'tx' });
+          const position = this.substories.length;
+          this.substories.push({ id: t.value, type: 'tx', position: position });
         } else {
           console.error('Invalid Substory tag', t);
         }
@@ -366,7 +367,8 @@ export class StoryCardComponent implements OnInit, OnDestroy {
         const detectedYouTubeIds = this.detectYouTubeLinks(detectedLinks);
 
         for (const ytId of detectedYouTubeIds) {
-          this.substories.push({id: ytId, type: 'youtube'});
+          const position = this.substories.length;
+          this.substories.push({id: ytId, type: 'youtube', position: position});
         }
 
         this.content = this.substr(this.originalRawContent, this.maxPreviewSize);

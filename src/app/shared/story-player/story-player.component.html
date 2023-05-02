@@ -37,7 +37,7 @@
       <div 
         class="player-circle border-color-theme" 
         [ngClass]="{ 
-          'background-color-theme': currentSubstory && substory.id === currentSubstory.id
+          'background-color-theme': currentSubstory && substory.id === currentSubstory.id && substory.position === currentSubstoryIdArrPos
          }"
          (click)="playStoryByPosition(i)"></div>
     </ng-container>
