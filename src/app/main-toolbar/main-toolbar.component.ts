@@ -32,6 +32,7 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   frmSearch: UntypedFormGroup = new UntypedFormGroup({
     'searchQry': new UntypedFormControl('', [Validators.required])
   });
+  isDarkTheme = false;
   get searchQry() {
     return this.frmSearch.get('searchQry');
   }
@@ -49,8 +50,12 @@ export class MainToolbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.theme.setValue(this._userSettings.getDefaultTheme());
+    const defaultTheme = this._userSettings.getDefaultTheme();
+    this.isDarkTheme = this._userSettings.isDarkTheme(defaultTheme);
+    this.theme.setValue(defaultTheme);
+
     this._userSettings.currentThemeStream.subscribe((theme: string) => {
+      this.isDarkTheme = this._userSettings.isDarkTheme(theme);
       this.theme.setValue(theme);
     });
 

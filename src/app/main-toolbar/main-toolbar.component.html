@@ -7,7 +7,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <span class="logo" routerLink="./home">
-      <img width="86px" src="assets/images/narrative.png">
+      <img [ngClass]="{'logo-white-img': isDarkTheme}" width="86px" src="assets/images/narrative.png">
     </span>
     <span class="spacer"></span>
     <button 

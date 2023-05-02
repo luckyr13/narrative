@@ -7,9 +7,12 @@ mat-toolbar {
   z-index: 10;
 }
 
-.logo-img {
-	transform: rotate(-8deg);
-	-webkit-filter: drop-shadow(4px 4px 4px rgba(255,255,255,0.5));
+.logo-white-img {
+	/*
+		-webkit-filter: drop-shadow(4px 4px 4px rgba(255,255,255,0.5));
+	*/
+	-webkit-filter: invert(1) brightness(70);
+	filter: invert(1) brightness(70);
 }
 .logo{
 	font-weight: bold;
