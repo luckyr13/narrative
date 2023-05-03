@@ -23,7 +23,7 @@
         matListItemIcon
         [class]="{ 'material-icons-outlined': !rlaPost.isActive }" 
         [color]="rlaPost.isActive ? 'accent' : ''">history_edu</mat-icon>
-      <div matListItemTitle>Create Story</div>
+      <div matListItemTitle>{{ 'MAIN_MENU.CREATE_STORY' | translate }}</div>
     </a>
     <a mat-list-item
       matRipple
@@ -114,30 +114,56 @@
     </a>
   </mat-nav-list>
 
-  <mat-nav-list>
+  <mat-nav-list class="bottom-menu-list">
     <a mat-list-item
       matRipple
-      [routerLink]="['about', 'privacy-policy']" 
-      [ngClass]="{active: rlaPrivacyPolicy.isActive && !activeDialogFlag, 'border-color-theme': rlaPrivacyPolicy.isActive && !activeDialogFlag}"
-      [routerLinkActive]="[]"
-      #rlaPrivacyPolicy="routerLinkActive">
+      [matMenuTriggerFor]="menuPolicies"
+      [ngClass]="{
+        'active': (rlaPrivacyPolicy.isActive || rlaCookiePolicy.isActive) &&
+          !activeDialogFlag,
+        'border-color-theme': (rlaPrivacyPolicy.isActive ||
+        rlaCookiePolicy.isActive) && !activeDialogFlag}">
       <mat-icon 
         matListItemIcon
-        [class]="{ 'material-icons-outlined': !rlaPrivacyPolicy.isActive || activeDialogFlag }" 
-        [color]="rlaPrivacyPolicy.isActive && !activeDialogFlag ? 'accent' : ''">policy</mat-icon>
-      <div matListItemTitle class="small-text">Privacy Policy</div>
+        [class]="{ 'material-icons-outlined': (!rlaPrivacyPolicy.isActive && !rlaCookiePolicy.isActive) || activeDialogFlag }" 
+        [color]="(rlaPrivacyPolicy.isActive || rlaCookiePolicy.isActive) && !activeDialogFlag ? 'accent' : ''">policy</mat-icon>
+      <div matListItemTitle class="small-text">{{ 'MAIN_MENU.POLICIES' | translate }}</div>
+      <span matListItemMeta>
+        <mat-icon class="small-text" [inline]="true">chevron_right</mat-icon>
+      </span>
     </a>
-    <a mat-list-item
-      matRipple
-      [routerLink]="['about', 'cookie-policy']" 
-      [ngClass]="{active: rlaCookiePolicy.isActive && !activeDialogFlag, 'border-color-theme': rlaCookiePolicy.isActive && !activeDialogFlag}"
-      [routerLinkActive]="[]"
-      #rlaCookiePolicy="routerLinkActive">
-      <mat-icon 
-        matListItemIcon
-        [class]="{ 'material-icons-outlined': !rlaCookiePolicy.isActive || activeDialogFlag }" 
-        [color]="rlaCookiePolicy.isActive && !activeDialogFlag ? 'accent' : ''">cookie</mat-icon>
-      <div matListItemTitle class="small-text">Cookie Policy</div>
-    </a>
+
+
+    <mat-menu
+      #menuPolicies="matMenu" 
+      xPosition="before" direction="right">
+      <a mat-menu-item
+        matRipple
+        [routerLink]="['about', 'privacy-policy']" 
+        [ngClass]="{active: rlaPrivacyPolicy.isActive && !activeDialogFlag, 'border-color-theme': rlaPrivacyPolicy.isActive && !activeDialogFlag}"
+        [routerLinkActive]="[]"
+        #rlaPrivacyPolicy="routerLinkActive">
+        <mat-icon 
+          matListItemIcon
+          [class]="{ 'material-icons-outlined': !rlaPrivacyPolicy.isActive || activeDialogFlag }" 
+          [color]="rlaPrivacyPolicy.isActive && !activeDialogFlag ? 'accent' : ''">policy</mat-icon>
+        <div matListItemTitle class="small-text">{{ 'MAIN_MENU.PRIVACY_POLICY' | translate }}</div>
+
+      </a>
+      <a mat-menu-item
+        matRipple
+        [routerLink]="['about', 'cookie-policy']" 
+        [ngClass]="{active: rlaCookiePolicy.isActive && !activeDialogFlag, 'border-color-theme': rlaCookiePolicy.isActive && !activeDialogFlag}"
+        [routerLinkActive]="[]"
+        #rlaCookiePolicy="routerLinkActive">
+        <mat-icon 
+          matListItemIcon
+          [class]="{ 'material-icons-outlined': !rlaCookiePolicy.isActive || activeDialogFlag }" 
+          [color]="rlaCookiePolicy.isActive && !activeDialogFlag ? 'accent' : ''">cookie</mat-icon>
+        <div matListItemTitle class="small-text">{{ 'MAIN_MENU.COOKIE_POLICY' | translate }}</div>
+      </a>
+    </mat-menu>
+
+    
   </mat-nav-list>
 </div>
