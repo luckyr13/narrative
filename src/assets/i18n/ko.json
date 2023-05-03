@@ -5,7 +5,14 @@
 		"PROFILE": "Profile",
 		"FRIENDS": "Friends",
 		"SETTINGS": "설정",
-		"NOTIFICATIONS": "Notifications"
+		"NOTIFICATIONS": "Notifications",
+		"POLICIES": "Policies",
+		"PRIVACY_POLICY": "Privacy policy",
+		"COOKIE_POLICY": "Cookie policy",
+		"COMMUNITY_GUIDELINES": "Community guidelines",
+		"TERMS_OF_SERVICE": "Terms of service",
+		"CREATE_STORY": "Create story",
+		"ABOUT": "About"
 	},
 	"GENERAL": {
 		"BUTTONS": {

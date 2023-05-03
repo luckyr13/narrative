@@ -5,7 +5,14 @@
 		"PROFILE": "Perfil",
 		"FRIENDS": "Amigos",
 		"SETTINGS": "Ajustes",
-		"NOTIFICATIONS": "Notificaciones"
+		"NOTIFICATIONS": "Notificaciones",
+		"POLICIES": "Políticas",
+		"PRIVACY_POLICY": "Política de privacidad",
+		"COOKIE_POLICY": "Política de cookies",
+		"COMMUNITY_GUIDELINES": "Principios de la comunidad",
+		"TERMS_OF_SERVICE": "Términos de servicio",
+		"CREATE_STORY": "Create story",
+		"ABOUT": "Acerca de"
 	},
 	"GENERAL": {
 		"BUTTONS": {
