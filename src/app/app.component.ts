@@ -21,6 +21,8 @@ import { ArweaveService } from './core/services/arweave.service';
 // import { SubtleCryptoService } from './core/utils/subtle-crypto.service';
 import { JWKInterface } from 'arweave/web/lib/wallet';
 import * as b64 from 'base64-js';
+import { DialogCookiesMsgComponent } from './shared/dialog-cookies-msg/dialog-cookies-msg.component';
+import { Direction } from '@angular/cdk/bidi';
 
 @Component({
   selector: 'app-root',
@@ -76,6 +78,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
     this.consoleWelcomeMessage();
+
+    window.setTimeout(() => {
+      if (!this._userSettings.getCookiesAccepted()) {
+        this.displayCookiesMessage();
+      }
+    }, 1200);
 
   }
 
@@ -180,5 +188,31 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   */
+
+  displayCookiesMessage() {
+    const defLangCode = this._userSettings.getDefaultLang();
+    const defLang = this._userSettings.getLangObject(defLangCode);
+    let direction: Direction = defLang!.writing_system === 'LTR' ? 
+      'ltr' : 'rtl';
+
+    let dialogRef = this.dialog.open(DialogCookiesMsgComponent, {
+      hasBackdrop: false,
+      position: { bottom: '0px' },
+      direction: direction,
+      autoFocus: false,
+      disableClose: true,
+      closeOnNavigation: false
+    });
+
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'accept') {
+
+      } else if (result === 'learn-more') {
+
+      }
+    });
+
+  }
   
 }
