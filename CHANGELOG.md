@@ -1,5 +1,15 @@
 # Narrative deployed versions
 
+## 0.4.9
+Backup (2023-05-02): 
+- Upgraded from Angular 14 to Angular 15.
+- New logo added! (Thanks @cromatikap from https://github.com/MetaweaveTeam/)
+- About (policies) module added.
+- Privacy and Cookie policies added.
+- Cookie consent dialog added.
+- Login methods fixed and improved.
+- Arweave Account (ArProfile) links updated.
+
 ## 0.4.8
 Backup (2023-03-13): https://arweave.net/Xka46rgldNMAGE3ncBjU9vAjG7-BL3noESGAfSC7RI8
 - Replace YouTube player for a link
