@@ -1,7 +1,7 @@
 # Narrative deployed versions
 
 ## 0.4.9
-Backup (2023-05-02): 
+Backup (2023-05-02): https://arweave.net/22Feub5SpKrNcYavAhrW3TK7LUK0C3Gk3LYvAVn89n8
 - Upgraded from Angular 14 to Angular 15.
 - New logo added! (Thanks @cromatikap from https://github.com/MetaweaveTeam/)
 - About (policies) module added.
