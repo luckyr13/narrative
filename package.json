@@ -37,6 +37,7 @@
     "linkify-plugin-mention": "^4.0.2",
     "linkify-string": "^4.0.2",
     "linkifyjs": "^4.0.2",
+    "marked": "^5.0.0",
     "ngx-skeleton-loader": "^7.0.0",
     "rxjs": "^7.8.1",
     "tslib": "^2.4.1",
@@ -49,6 +50,7 @@
     "@angular/compiler-cli": "^15.2.8",
     "@types/dompurify": "^3.0.2",
     "@types/jasmine": "^4.3.1",
+    "@types/marked": "^4.3.0",
     "@types/node": "^18.16.3",
     "arconnect": "^0.4.2",
     "jasmine-core": "^4.5.0",
@@ -59,13 +61,9 @@
     "karma-jasmine-html-reporter": "^2.0.0",
     "typescript": "^4.8.4"
   },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "@three-em/node": false,
-    "@three-em/js": false,
-    "crypto": false,
-    "stream": false,
-    "zlib": false
+  "overrides": {
+    "arweave-account": {
+      "arweave": "1.13.4"
+    }
   }
 }
